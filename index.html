@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#090f1a" />
   <meta name="description" content="A premium football card collecting game. Roll and customise player cards, collect your club, and build your ultimate squad." />
-  <script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794434355698&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000c65881f4895bb771ea98c303%26fn%3Dindex%252820261111-220416%2529.html%26cd%3Dattachment%26ts%3D498454%26p%3Dfs%26cid%3D1%26sig%3D54d74ce80cc353b18f4e1c4af2eaa51af7f1d398fe76479e3732f274201de51d%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-ua=TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE1Ni4wLjAuMCBTYWZhcmkvNTM3LjM2&amp;st-ch-brands=W3siYnJhbmQiOiJOb3Q6QS1CcmFuZCIsInZlcnNpb24iOiI4In0sIHsiYnJhbmQiOiJDaHJvbWl1bSIsInZlcnNpb24iOiIxNTYifSwgeyJicmFuZCI6Ikdvb2dsZSBDaHJvbWUiLCJ2ZXJzaW9uIjoiMTU2In1d&amp;st-ch-mobile=ZmFsc2U=&amp;st-ch-platform=V2luZG93cw==&amp;st-push&amp;st-loc&amp;st-dnt&amp;st-1pcttl=4320"></script><script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794434355698&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;name=Web%20of%20Trust&amp;type=user-script"></script><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%230b1a20%22%2F%3E%3Cpath%20d%3D%22M32%207%2052%2016v21c0%2010-8%2017-20%2021C20%2054%2012%2047%2012%2037V16L32%207Z%22%20fill%3D%22none%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%224%22%2F%3E%3Cpath%20d%3D%22m32%2020%2012%208v12l-12%208-12-8V28Z%22%20fill%3D%22%23193d32%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%230b1a20%22%2F%3E%3Cpath%20d%3D%22M32%207%2052%2016v21c0%2010-8%2017-20%2021C20%2054%2012%2047%2012%2037V16L32%207Z%22%20fill%3D%22none%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%224%22%2F%3E%3Cpath%20d%3D%22m32%2020%2012%208v12l-12%208-12-8V28Z%22%20fill%3D%22%23193d32%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E" />
   
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -1946,6 +1946,333 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
 .team-toolbar-actions #resetEverythingButton {background:rgba(234,83,114,.08);border:1px solid rgba(234,111,140,.2);color:#f49caf;}
 .team-toolbar-actions #resetEverythingButton:hover {background:rgba(234,83,114,.18);}
 @media (max-width:690px) {.top-actions #fullscreenButton {flex:0 1 auto;}.top-actions .sound-controls {order:4;}.team-toolbar-actions #resetEverythingButton {flex:0 1 auto;}}
+
+
+/* V4 polish: Diamond roll, playstyle tooltips, improved customiser and tighter squad fit */
+.luck-hud {display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.luck-hud-meters {display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;max-width:100%;}
+.diamond-meter { width:140px; border:1px solid rgba(143,220,255,.30); background:linear-gradient(145deg,rgba(17,63,94,.26),rgba(12,25,38,.5));border-radius:11px; padding:7px 9px; }
+.diamond-meter-top {display:flex;justify-content:space-between;align-items:center;gap:3px;margin-bottom:5px;font-size:.56rem;white-space:nowrap;font-weight:880;color:#b4e7ff; }
+.diamond-label b { color:#f5fdff; font-weight:950; }
+.diamond-counter {color:#90a8b6;font-variant-numeric:tabular-nums;font-size:.53rem;}
+.diamond-track {height:4px;border-radius:999px;background:rgba(138,210,255,.13);overflow:hidden;}
+.diamond-fill {height:100%;background:linear-gradient(90deg,#69d9ff,#f3fdff,#8cc8ff);box-shadow:0 0 13px rgba(135,212,255,.9);border-radius:999px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+.luck-display.diamond-active {background:linear-gradient(110deg,#234464,#4f8fc7) !important;color:#effcff; border-color:#97dfff; box-shadow:0 0 24px rgba(115,212,255,.24);animation:diamondLuckPulse 1s ease-in-out infinite alternate;}
+@keyframes diamondLuckPulse {to{transform:translateY(-1px) scale(1.02);filter:brightness(1.09);}}
+.football-card.diamond-roll-active {border-color:#93ddff !important;box-shadow:0 0 0 4px rgba(122,222,255,.10),0 0 35px rgba(111,219,255,.46),0 0 70px rgba(240,252,255,.18),0 28px 70px rgba(0,0,0,.52) !important;animation:diamondCardLift 2.4s ease-in-out infinite alternate;}
+@keyframes diamondCardLift {to{filter:saturate(1.12) brightness(1.09);transform:translateY(-2px);}}
+.playstyle-tooltip {position:fixed;z-index:200;max-width:min(280px,calc(100vw - 24px));padding:12px 14px;border-radius:14px;background:rgba(5,12,20,.97);border:1px solid rgba(255,255,255,.14);box-shadow:0 16px 38px rgba(0,0,0,.45);pointer-events:none;opacity:0;transform:translateY(6px) scale(.98);transition:opacity .16s ease,transform .16s ease;}
+.playstyle-tooltip.show {opacity:1;transform:translateY(0) scale(1);}
+.playstyle-tooltip-name {display:flex;align-items:center;gap:8px;font-weight:950;font-size:.88rem;color:#f8fafc;}
+.playstyle-tooltip-icon {width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:rgba(255,255,255,.08);font-size:1rem;}
+.playstyle-tooltip-body {margin-top:7px;color:#d7e4ef;font-size:.76rem;line-height:1.38;}
+.playstyle-tooltip-plus {margin-top:7px;color:#f6e9a9;font-size:.68rem;font-weight:900;}
+.playstyle-badge {cursor:help;}
+.playstyle-badge:focus-visible {outline:2px solid rgba(255,255,255,.85);outline-offset:2px;}
+.customizer-grid {align-items:start !important;}
+.form-panel .section-title {display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 8px;color:#eef6ff;font-size:.78rem;font-weight:950;letter-spacing:.06em;text-transform:uppercase;}
+.form-panel .section-title::after {content:"";flex:1;border-top:1px solid rgba(255,255,255,.12);}
+.customizer-note {padding:11px 13px;border-radius:14px;background:rgba(59,130,246,.08);border:1px solid rgba(110,168,255,.18);color:#dbeafe;font-size:.76rem;line-height:1.4;margin-bottom:10px;}
+.customizer-note strong {color:#fff;}
+#clubKitSetup.hidden {display:none !important;}
+#clubKitSetup .kit-palette-row {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+#clubKitSetup .small-note {margin-top:6px;display:block;line-height:1.35;}
+.form-grid .wide-field {grid-column:1 / -1;}
+.customizer-chip-row {display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.customizer-chip {padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:.66rem;font-weight:900;color:#dbeafe;}
+.preview-panel .stage-bottom-label {display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+#teamView .pitch-panel {padding:8px;}
+#teamView .pitch {min-height:620px;}
+#teamView .slot {width:clamp(58px,5vw,78px);min-height:clamp(74px,11vh,102px);}
+#teamView .slot .mini-name {font-size:clamp(.48rem,.55vw,.58rem);}
+#teamView .club-panel {grid-template-rows:auto auto auto auto minmax(0,1fr);}
+#teamView .club-grid {grid-template-rows:repeat(4,minmax(122px,1fr));align-content:stretch;}
+#teamView .club-item {overflow:hidden;}
+#teamView .club-item .mini-card {height:100%;}
+@media (max-width: 980px){
+  .luck-hud-meters {width:100%;}
+  .diamond-meter,.cosmic-meter {width:min(48%, 180px);max-width:none;}
+}
+@media (max-width: 760px){
+  .playstyle-tooltip {max-width:min(250px,calc(100vw - 16px));padding:10px 12px;}
+  #clubKitSetup .kit-palette-row {grid-template-columns:1fr;gap:8px;}
+  .diamond-meter,.cosmic-meter {width:calc(50% - 4px);min-width:0;}
+  #teamView .pitch {min-height:560px;}
+  #teamView .club-grid {grid-template-rows:repeat(4,minmax(90px,1fr));}
+}
+
+html,body {width:100%!important;height:100%!important;height:100dvh!important;min-height:0!important;overflow:hidden!important;overscroll-behavior:none;}
+body {min-height:0!important;}
+.app-shell {box-sizing:border-box;display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;width:100%!important;height:100dvh!important;min-height:0!important;max-height:100dvh!important;max-width:1650px!important;margin:auto!important;padding:clamp(6px,1.1vw,14px)!important;overflow:hidden!important;gap:0;}
+header {box-sizing:border-box;min-height:0!important;height:auto!important;display:flex!important;align-items:center!important;gap:8px!important;margin:0 0 clamp(4px,.7vh,8px)!important;padding:0 0 clamp(4px,.7vh,8px)!important;overflow:visible!important;flex-wrap:wrap!important;}
+.brand {min-width:0;}
+.brand-mark {width:38px;height:40px;flex-basis:38px;}
+.brand-mark svg {width:27px;height:27px;}
+.brand h1 {font-size:clamp(1.05rem,1.45vw,1.55rem)!important;}
+.brand-eyebrow {font-size:.47rem;margin-bottom:2px;}
+.brand p {font-size:.51rem;margin-top:3px;}
+.top-actions {min-height:0;gap:5px!important;flex:1 1 auto;align-content:center;}
+.top-actions button {min-height:32px!important;padding:5px 8px!important;font-size:clamp(.57rem,.7vw,.73rem)!important;border-radius:9px!important;}
+.top-actions .sound-controls {min-height:32px;padding:2px 4px;}
+.top-actions .sound-toggle {width:25px;height:25px;min-height:25px!important;}
+#volumeControl {width:42px;}
+.luck-hud {gap:5px!important;flex-wrap:nowrap!important;}
+.luck-hud-meters {flex-wrap:nowrap!important;gap:5px!important;}
+.luck-display {min-height:32px;padding:5px 7px;font-size:clamp(.55rem,.65vw,.7rem);white-space:nowrap;}
+.diamond-meter,.cosmic-meter {width:clamp(91px,8.6vw,142px);min-width:0;min-height:32px;padding:4px 6px;border-radius:8px;}
+.diamond-meter-top,.cosmic-meter-top {font-size:.5rem;margin-bottom:3px;}
+.diamond-counter,.cosmic-counter {font-size:.48rem;}
+main {flex:1 1 auto;min-width:0;min-height:0!important;height:100%!important;overflow:hidden!important;}
+.view {display:none!important;height:100%!important;min-width:0;min-height:0!important;overflow:hidden!important;}
+.view.active,#teamView.active {height:100%!important;display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;align-content:stretch;overflow:hidden!important;}
+.view-intro {min-height:0;display:flex;flex-wrap:nowrap;gap:8px;margin:0 0 clamp(5px,.8vh,10px);}
+.view-intro .eyebrow {font-size:.49rem;line-height:1.1;}
+.view-intro h2 {font-size:clamp(1.18rem,2.25vw,2rem);margin:2px 0 3px;line-height:1.05;}
+.view-intro p {font-size:clamp(.57rem,.9vw,.72rem);line-height:1.15;}
+.view-intro-tag {padding:6px 9px;font-size:.49rem;}
+.panel {min-height:0!important;min-width:0!important;}
+.roll-layout,.customizer-grid {display:grid!important;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)!important;gap:clamp(5px,1vw,14px)!important;height:100%!important;min-height:0!important;overflow:hidden!important;align-items:stretch!important;}
+.card-stage,.preview-panel {height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:stretch!important;overflow:hidden!important;padding:clamp(6px,.8vw,11px)!important;}
+.stage-top {min-height:16px;font-size:.51rem;}
+.stage-status {font-size:.48rem;}
+.card-spotlight,.preview-panel .card-spotlight {display:flex!important;justify-content:center!important;align-items:center!important;flex:1 1 auto!important;min-height:0!important;height:0!important;width:100%;padding:clamp(3px,.8vh,9px) 5px!important;overflow:hidden!important;}
+.card-stage .football-card,.preview-panel .football-card {height:100%!important;width:auto!important;aspect-ratio:.72!important;max-width:100%!important;max-height:100%!important;min-height:0!important;}
+.stage-bottom-label {min-height:0;margin:2px 0 4px;line-height:1.15;font-size:.46rem;}
+.roll-controls {margin:2px 0 0;gap:5px;flex:0 0 auto;}
+.roll-controls button {min-height:34px!important;padding:6px 8px;font-size:.73rem;}
+.roll-log {height:100%!important;min-height:0!important;padding:clamp(7px,1.2vw,16px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;}
+.reveal-header {min-height:0;margin-bottom:clamp(3px,.7vh,8px);}
+.reveal-header h2 {font-size:clamp(.94rem,1.35vw,1.5rem);margin:2px 0 3px;}
+.reveal-header p {font-size:.65rem;line-height:1.2;}
+.reveal-glyph {font-size:2rem;}
+.reveal-progress-label {margin:4px 0 6px;font-size:.53rem;}
+.step-list {flex:1 1 auto;min-height:0!important;grid-template-rows:repeat(9,minmax(0,1fr))!important;gap:clamp(2px,.55vh,6px)!important;overflow:hidden!important;}
+.step-row {min-height:0!important;padding:2px 7px;grid-template-columns:25px minmax(0,1fr) auto;gap:6px;border-radius:8px;}
+.step-icon {height:23px;width:23px;font-size:.83rem;border-radius:6px;}
+.step-name {gap:5px;font-size:clamp(.59rem,.8vw,.81rem);}
+.step-index {font-size:.49rem;}
+.step-result {font-size:.7rem;max-width:100px;}
+.tip-box {display:none!important;}
+.customizer-grid {align-items:stretch!important;}
+.form-panel {height:100%!important;padding:clamp(7px,1.15vw,17px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:0;}
+.form-panel .eyebrow {font-size:.47rem;line-height:1.1;}
+.form-panel h2 {font-size:clamp(1rem,1.55vw,1.55rem);margin:3px 0;line-height:1.05;}
+.form-panel > p {font-size:.63rem;line-height:1.15;margin:0 0 7px;}
+.customizer-note {font-size:.62rem;line-height:1.2;padding:6px 8px;margin-bottom:6px;border-radius:8px;}
+#clubKitSetup .kit-palette-row {margin-top:5px!important;gap:7px;}
+#clubKitSetup .small-note {font-size:.57rem;margin-top:3px;line-height:1.15;}
+.form-grid {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:clamp(4px,.9vh,10px) clamp(4px,.7vw,8px)!important;min-height:0;}
+.form-grid label {min-width:0;font-size:.61rem;gap:3px;line-height:1.15;}
+.form-grid input,.form-grid select {font-size:clamp(.64rem,.84vw,.82rem)!important;min-height:clamp(27px,4.1vh,39px)!important;height:clamp(27px,4.1vh,39px)!important;padding:4px 7px!important;border-radius:8px;}
+.form-grid input[type=color] {padding:3px!important;}
+#clubKitSetup input {min-height:29px!important;height:29px!important;padding:3px!important;}
+.form-grid .wide-field {display:none!important;}
+.form-actions {margin:auto 0 0!important;padding-top:5px!important;gap:5px!important;flex-wrap:nowrap!important;}
+.form-actions button {flex:1 1 0!important;min-width:0;min-height:34px!important;padding:6px 5px!important;font-size:clamp(.55rem,.75vw,.75rem)!important;line-height:1.1;}
+#teamView.active {grid-template-rows:auto auto minmax(0,1fr)!important;gap:clamp(4px,.7vh,7px)!important;}
+#teamView .view-intro {margin-bottom:0;}
+.team-toolbar {height:auto!important;min-height:0!important;margin:0!important;padding:clamp(5px,.75vw,10px)!important;gap:clamp(5px,.8vw,10px)!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;}
+.team-heading {gap:8px!important;flex-wrap:nowrap!important;}
+.team-heading > div:first-child {display:none!important;}
+.squad-summary {display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;}
+.summary-chip {min-width:0!important;padding:4px 6px!important;border-radius:7px;}
+.summary-chip strong {font-size:.9rem;line-height:1;}
+.summary-chip span {font-size:.46rem;margin-top:1px;}
+.team-toolbar-actions {gap:4px!important;flex-wrap:nowrap!important;align-items:end;}
+.team-toolbar-actions label {gap:2px;font-size:.54rem;}
+.formation-control {min-width:90px!important;flex:0 0 auto!important;}
+.team-toolbar-actions select {min-height:30px!important;height:30px;padding:3px 6px!important;font-size:.67rem;}
+.team-toolbar-actions button {min-height:30px!important;padding:4px 7px!important;font-size:clamp(.54rem,.7vw,.7rem)!important;white-space:nowrap;}
+.team-layout {display:grid!important;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)!important;height:100%!important;min-height:0!important;gap:clamp(5px,.8vw,11px)!important;align-items:stretch!important;overflow:hidden!important;}
+.team-layout > div {display:grid!important;grid-template-rows:minmax(0,1fr) minmax(65px,17%)!important;gap:clamp(4px,.55vh,7px)!important;min-height:0!important;overflow:hidden!important;}
+#teamView .pitch-panel {height:100%!important;min-height:0!important;padding:5px!important;overflow:hidden!important;}
+#teamView .pitch {height:100%!important;min-height:0!important;overflow:hidden!important;}
+#teamView .slot {width:clamp(35px,5.3vw,74px)!important;min-height:0!important;height:clamp(45px,9.5vh,86px)!important;padding:2px!important;}
+#teamView .slot .mini-card {height:100%!important;min-height:0!important;}
+#teamView .slot-remove,.sub-slot .slot-remove {width:18px;height:18px;top:1px;right:1px;font-size:.65rem;}
+#teamView .subs-panel {height:100%!important;min-height:0!important;margin:0!important;padding:clamp(4px,.55vw,8px)!important;overflow:hidden!important;}
+#teamView .subs-panel h3 {font-size:.6rem;margin:0 0 4px;line-height:1.1;}
+#teamView .subs-grid {height:calc(100% - 16px)!important;min-height:0!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:100%!important;gap:5px!important;}
+#teamView .sub-slot {height:100%!important;min-height:0!important;padding:2px;border-radius:7px;}
+#teamView .club-panel {display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important;overflow:hidden!important;padding:clamp(5px,.75vw,10px)!important;}
+.club-heading h2 {font-size:clamp(.88rem,1.2vw,1.2rem);margin:2px 0;}
+.club-heading .eyebrow {font-size:.46rem;}
+.club-heading p {font-size:.58rem;line-height:1.15;}
+.club-filter-row {grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important;margin:5px 0!important;}
+.club-filter-row select {min-height:29px!important;height:29px!important;padding:3px 5px!important;font-size:clamp(.53rem,.68vw,.7rem)!important;}
+.selection-banner {font-size:.55rem;padding:4px 5px;margin:3px 0;}
+.club-pager {grid-template-columns:28px 1fr 28px;gap:4px;margin:2px 0 4px;}
+.club-pager button {min-height:23px!important;padding:2px;}
+.club-pager span {font-size:.59rem;}
+#teamView .club-grid {display:grid!important;flex:1 1 auto!important;min-height:0!important;height:100%!important;max-height:none!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important;gap:4px!important;align-content:stretch!important;overflow:hidden!important;}
+#teamView .club-item {min-height:0!important;padding:3px!important;overflow:hidden!important;grid-template-rows:minmax(0,1fr) auto!important;}
+#teamView .club-item .mini-card {min-height:0!important;height:100%!important;}
+.club-actions {gap:3px;margin-top:2px;}
+.club-actions button {min-height:20px!important;padding:2px 3px!important;font-size:.53rem!important;}
+.mini-card .mini-name {padding:2px;font-size:clamp(.38rem,.5vw,.5rem);}
+.mini-card .mini-rating {top:3px;left:4px;font-size:.74rem;}
+.mini-card .mini-pos {font-size:.42rem;}
+.help-dialog {max-height:calc(100dvh - 24px);overflow:hidden!important;padding:clamp(8px,1vw,18px);display:flex;flex-direction:column;gap:4px;}
+.help-dialog h2 {font-size:clamp(1.1rem,2vw,1.5rem);margin:3px 0;}
+.help-dialog h3 {font-size:.79rem;margin:4px 0 0;}
+.help-dialog p {font-size:clamp(.56rem,.8vw,.77rem);line-height:1.25;margin:0 0 4px;}
+.help-dialog .help-close {min-height:32px;margin:4px 0 0;}
+@media(max-width:1180px){
+header {gap:5px!important;}
+.brand p,.brand-eyebrow {display:none!important;}
+.brand h1 {font-size:1.12rem!important;}
+.top-actions {justify-content:flex-end!important;}
+.team-layout {grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr)!important;}
+.team-toolbar-actions button {padding:4px 5px!important;}
+}
+@media(max-width:830px){
+header {flex-direction:column!important;align-items:stretch!important;}
+.brand {display:none!important;}
+.top-actions {display:flex!important;justify-content:center!important;flex:0 0 auto!important;gap:4px!important;}
+.luck-hud {justify-content:center;}
+.view-intro-tag {display:none!important;}
+.roll-layout,.customizer-grid {grid-template-columns:minmax(0,.81fr) minmax(0,1.19fr)!important;}
+.form-panel > p {display:none!important;}
+.team-toolbar-actions {flex-wrap:wrap!important;}
+.team-layout {grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)!important;}
+.club-grid {gap:3px!important;}
+}
+@media(max-width:600px){
+.app-shell {padding:5px!important;}
+header {margin-bottom:3px!important;padding-bottom:4px!important;}
+.top-actions {display:grid!important;grid-template-columns:29px .9fr 1.35fr .95fr 1fr!important;grid-template-rows:32px 32px!important;gap:3px!important;align-items:stretch!important;}
+.luck-hud {grid-column:1/-1!important;grid-row:1!important;display:grid!important;grid-template-columns:minmax(0,1.14fr) minmax(0,2fr)!important;gap:3px!important;align-items:stretch!important;}
+.luck-hud-meters {width:100%;min-width:0;display:grid!important;grid-template-columns:1fr 1fr!important;gap:3px!important;}
+.luck-display,.diamond-meter,.cosmic-meter {min-width:0;width:100%;height:32px;max-width:100%;}
+.luck-display {font-size:clamp(.51rem,1.9vw,.7rem);padding:6px 4px;display:flex;align-items:center;justify-content:center;}
+.diamond-meter,.cosmic-meter {padding:5px 4px;}
+.diamond-meter-top,.cosmic-meter-top {font-size:.43rem;}
+.diamond-counter,.cosmic-counter {display:none;}
+.top-actions .sound-controls {grid-column:1!important;grid-row:2!important;min-width:0!important;justify-content:center!important;min-height:32px!important;padding:2px!important;}
+.top-actions .sound-toggle {width:24px!important;}
+#volumeControl {display:none!important;}
+.top-actions [data-view="rollView"] {grid-column:2!important;grid-row:2!important;}
+.top-actions [data-view="teamView"] {grid-column:3!important;grid-row:2!important;}
+.top-actions #fastRollButton {grid-column:4!important;grid-row:2!important;}
+.top-actions #controlsButton {grid-column:5!important;grid-row:2!important;}
+.top-actions #fullscreenButton {display:none!important;}
+.top-actions button {min-width:0!important;min-height:32px!important;height:32px!important;padding:3px 2px!important;font-size:clamp(.51rem,1.85vw,.69rem)!important;}
+.view-intro {margin-bottom:4px!important;}
+.view-intro h2 {font-size:clamp(.98rem,4.1vw,1.45rem);margin:1px 0;}
+.view-intro p {display:none!important;}
+.view-intro .eyebrow {font-size:.42rem;}
+.roll-layout {grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr)!important;gap:4px!important;}
+.card-stage {padding:4px!important;}
+.roll-log {padding:5px!important;}
+.stage-top {font-size:.39rem;gap:2px;}
+.stage-top .stage-status {font-size:.39rem;}
+.stage-bottom-label {display:none!important;}
+.roll-controls button {min-height:32px!important;font-size:.55rem!important;padding:3px!important;}
+.reveal-header {margin-bottom:3px;}
+.reveal-header h2 {font-size:.86rem;margin:0;}
+.reveal-header p,.reveal-glyph {display:none!important;}
+.reveal-progress-label {font-size:.44rem;margin:3px 0 4px;}
+.step-list {gap:2px!important;}
+.step-row {padding:1px 3px;grid-template-columns:16px minmax(0,1fr) auto;gap:2px;border-radius:5px;}
+.step-icon {width:16px;height:18px;font-size:.65rem;border:0;background:none;}
+.step-name {font-size:.52rem;gap:3px;}
+.step-index {display:none;}
+.step-result {font-size:.54rem;max-width:55px;}
+.football-card .rating-block {width:clamp(32px,7vw,52px);min-height:clamp(36px,8vw,57px);border-radius:8px;padding:4px 2px;}
+.football-card .overall {font-size:clamp(1rem,4vw,1.5rem);}
+.football-card .position-label {font-size:clamp(.5rem,2vw,.75rem);}
+.football-card .rarity-label {min-height:22px;padding:3px 4px;font-size:.5rem;max-width:80px;}
+.football-card .card-top {inset:11px 10px auto;}
+.football-card .player-name {font-size:clamp(.7rem,2.7vw,1rem);}
+.football-card .stat-strip {padding:5px 2px 4px;}
+.football-card .stat-value {font-size:clamp(.62rem,2.8vw,1.08rem);}
+.football-card .stat-name {font-size:.37rem;}
+.football-card .stat-emoji {font-size:.66rem;}
+.football-card .playstyle-stack {left:4px;gap:2px;}
+.football-card .playstyle-badge {height:20px;width:20px;font-size:.65rem;border-radius:5px;}
+.customizer-grid {grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(92px,30%) minmax(0,1fr)!important;gap:4px!important;}
+.preview-panel {padding:3px 5px!important;}
+.preview-panel .stage-top,.preview-panel .stage-bottom-label {display:none!important;}
+.preview-panel .card-spotlight {padding:2px!important;}
+.form-panel {padding:5px!important;}
+.form-panel > .eyebrow,.form-panel h2,.form-panel > p,.form-panel > .customizer-note:not(#clubKitSetup) {display:none!important;}
+#clubKitSetup {padding:4px 6px!important;margin:0 0 4px!important;font-size:.52rem;}
+#clubKitSetup .kit-palette-row {margin-top:3px!important;gap:4px!important;}
+#clubKitSetup .kit-palette-row label {font-size:.52rem;}
+#clubKitSetup input {height:24px!important;min-height:24px!important;}
+#clubKitSetup .small-note {display:none!important;}
+.form-grid {grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:clamp(3px,.65vh,7px) 4px!important;}
+.form-grid label {font-size:.52rem;gap:2px;}
+.form-grid input,.form-grid select {height:clamp(24px,4vh,33px)!important;min-height:clamp(24px,4vh,33px)!important;font-size:.63rem!important;padding:3px!important;border-radius:6px;}
+.form-actions {padding-top:4px!important;gap:4px!important;}
+.form-actions button {min-height:30px!important;font-size:.52rem!important;padding:3px!important;}
+.team-toolbar {padding:4px!important;gap:4px!important;flex-wrap:wrap!important;}
+.team-heading {width:100%;}
+.squad-summary {width:100%;gap:3px!important;}
+.summary-chip {padding:2px!important;}
+.summary-chip strong {font-size:.71rem;}
+.summary-chip span {font-size:.42rem;}
+.team-toolbar-actions {width:100%;justify-content:space-between;flex-wrap:wrap!important;gap:3px!important;}
+.team-toolbar-actions select {height:26px!important;min-height:26px!important;font-size:.6rem;padding:2px 3px!important;}
+.team-toolbar-actions button {min-height:26px!important;padding:2px 4px!important;font-size:.52rem!important;}
+.team-toolbar-actions label {font-size:.48rem;}
+.formation-control {min-width:80px!important;max-width:90px;}
+.team-layout {grid-template-columns:minmax(0,1.18fr) minmax(0,1fr)!important;gap:4px!important;}
+.team-layout > div {grid-template-rows:minmax(0,1fr) minmax(47px,16%)!important;gap:4px!important;}
+#teamView .pitch-panel {padding:3px!important;}
+#teamView .slot {width:clamp(26px,9vw,40px)!important;height:clamp(32px,7.2vh,55px)!important;border-radius:5px!important;padding:1px!important;}
+#teamView .slot.empty::after {font-size:.48rem;}
+#teamView .slot-remove,.sub-slot .slot-remove {width:14px;height:14px;font-size:.52rem;}
+.mini-card {border-radius:5px!important;}
+.mini-card .mini-rating {font-size:.48rem!important;top:1px;left:2px;}
+.mini-card .mini-pos {font-size:.36rem!important;}
+.mini-card .mini-name {font-size:.34rem!important;padding:1px!important;bottom:1px;}
+.mini-card .mini-playstyle-stack {top:12px;left:1px;gap:1px;}
+.mini-card .mini-playstyle-stack .playstyle-badge {width:9px;height:9px;font-size:.36rem;}
+.subs-panel h3 {font-size:.46rem!important;margin:0 0 2px!important;}
+#teamView .subs-panel {padding:3px!important;}
+#teamView .subs-grid {height:calc(100% - 10px)!important;gap:2px!important;}
+.sub-slot.empty {font-size:.43rem;}
+#teamView .club-panel {padding:4px!important;}
+.club-heading h2 {font-size:.76rem;}
+.club-heading .eyebrow {font-size:.4rem;}
+.club-heading p {font-size:.47rem;line-height:1.1;}
+.club-filter-row {grid-template-columns:1fr!important;gap:2px!important;margin:3px 0!important;}
+.club-filter-row select {height:24px!important;min-height:24px!important;padding:2px!important;font-size:.56rem!important;}
+#teamView .club-grid {grid-template-columns:1fr!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:3px!important;}
+.club-item {border-radius:6px!important;}
+.club-actions {margin-top:1px!important;gap:2px!important;}
+.club-actions button {font-size:.47rem!important;min-height:16px!important;padding:1px 2px!important;}
+.selection-banner {font-size:.49rem;padding:2px;}
+.club-pager {grid-template-columns:20px 1fr 20px!important;margin:2px 0;}
+.club-pager button {min-height:19px!important;}
+.club-pager span {font-size:.48rem;}
+}
+@media(max-height:680px){
+.view-intro p {display:none!important;}
+.view-intro h2 {font-size:clamp(.95rem,1.8vw,1.4rem);}
+.stage-top,.stage-bottom-label {display:none!important;}
+.reveal-header p {display:none!important;}
+.form-panel > p,.form-panel > .customizer-note:not(#clubKitSetup) {display:none!important;}
+.step-row {padding:0 4px!important;}
+.step-icon {height:17px;width:17px;font-size:.65rem;}
+.step-name {font-size:.59rem;}
+.step-result {font-size:.6rem;}
+.form-grid {gap:3px 5px!important;}
+.form-panel h2 {margin:1px 0;}
+.team-toolbar {gap:3px!important;padding:3px!important;}
+.summary-chip span {display:none!important;}
+#teamView .subs-panel h3 {margin:0 0 2px;}
+.help-dialog h3 {font-size:.68rem;}
+.help-dialog p {font-size:.57rem;line-height:1.13;}
+}
+@media(min-width:320px) and (max-width:600px) and (min-height:750px){
+.customizer-grid {grid-template-rows:minmax(100px,38%) minmax(0,1fr)!important;}
+}
+@media(max-width:600px){
+.reveal-header .eyebrow {display:none!important;}
+.reveal-header h2 {font-size:.79rem!important;line-height:1.08;}
+}
 </style>
 </head>
 <body>
@@ -1966,11 +2293,17 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
           <button id="soundToggleButton" class="sound-toggle" type="button" aria-label="Mute sound effects">🔊</button>
           <input id="volumeControl" type="range" min="0" max="1" step="0.05" value="0.55" aria-label="Sound effects volume" />
         </div>
-        <div class="luck-hud" aria-label="Roll luck and Cosmic Roll progress">
+        <div class="luck-hud" aria-label="Roll luck and special roll progress">
           <div id="luckDisplay" class="luck-display" title="Higher luck improves your stat rolls">🍀 1.0×</div>
-          <div class="cosmic-meter" title="Every 100th roll gets 15× base luck">
-            <div class="cosmic-meter-top"><span class="cosmic-label">✦ COSMIC <b id="cosmicCountdown">100 TO GO</b></span><span id="cosmicCounter" class="cosmic-counter">0/100</span></div>
-            <div class="cosmic-track"><div id="cosmicFill" class="cosmic-fill" style="width:0%"></div></div>
+          <div class="luck-hud-meters">
+            <div class="diamond-meter" title="Every 30th roll gets 6.5× base luck">
+              <div class="diamond-meter-top"><span class="diamond-label">◇ DIAMOND <b id="diamondCountdown">30 TO GO</b></span><span id="diamondCounter" class="diamond-counter">0/30</span></div>
+              <div class="diamond-track"><div id="diamondFill" class="diamond-fill" style="width:0%"></div></div>
+            </div>
+            <div class="cosmic-meter" title="Every 100th roll gets 15× base luck">
+              <div class="cosmic-meter-top"><span class="cosmic-label">✦ COSMIC <b id="cosmicCountdown">100 TO GO</b></span><span id="cosmicCounter" class="cosmic-counter">0/100</span></div>
+              <div class="cosmic-track"><div id="cosmicFill" class="cosmic-fill" style="width:0%"></div></div>
+            </div>
           </div>
         </div>
         <button class="nav-button active" data-view="rollView">🎲 Roll</button>
@@ -2032,7 +2365,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
             <div class="reveal-progress-label"><span>ROLL SEQUENCE</span><span id="revealProgressText">00 / 09</span></div>
             <div id="stepList" class="step-list"></div>
             <div class="tip-box">
-              <strong>HOW IT WORKS</strong> Your overall determines which rarities are possible. Luck influences the stats that lead you there. Golden rolls happen every 8th draw; Cosmic Rolls fire every 100th for <strong>15× luck.</strong>
+              <strong>HOW IT WORKS</strong> Your overall determines which rarities are possible. Luck influences the stats that lead you there. Golden rolls happen every 8th draw, Diamond Rolls fire every 30th for <strong>6.5× luck</strong>, and Cosmic Rolls fire every 100th for <strong>15× luck.</strong>
             </div>
           </div>
         </div>
@@ -2063,7 +2396,21 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
             <span class="eyebrow">IDENTITY &amp; APPEARANCE</span>
             <h2>Player design<span class="period">.</span></h2>
             <p class="small-note">Give your card its signature look. Stats, position and rarity remain locked.</p>
-
+            <div class="customizer-note"><strong>Studio update:</strong> smarter randomisation, cleaner proportions, and club kit setup for your very first player. Outfielders and goalkeepers can now share a consistent look.</div>
+            <div id="clubKitSetup" class="customizer-note hidden">
+              <strong>Choose your club colours.</strong>
+              <div class="kit-palette-row" style="margin-top:10px;">
+                <label>
+                  Team outfield kit
+                  <input id="teamKitColorInput" type="color" value="#2563eb" />
+                </label>
+                <label>
+                  Goalkeeper kit
+                  <input id="goalkeeperKitColorInput" type="color" value="#f59e0b" />
+                </label>
+              </div>
+              <span class="small-note">These become your default club colours after you save your first customised player.</span>
+            </div>
             <div class="form-grid">
               <label>
                 Player name
@@ -2136,13 +2483,22 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
               </label>
 
               <label>
-                Shirt colour
+                Player kit colour
                 <input id="shirtColorInput" type="color" value="#2563eb" />
+              </label>
+
+              <label class="wide-field">
+                Style note
+                <div class="customizer-chip-row" aria-hidden="true">
+                  <span class="customizer-chip">Better head / neck alignment</span>
+                  <span class="customizer-chip">Smart position-aware randomize</span>
+                  <span class="customizer-chip">Club kit colour defaults</span>
+                </div>
               </label>
             </div>
 
             <div class="form-actions">
-              <button id="randomizePlayerButton" class="secondary-button">🎲 Randomize</button>
+              <button id="randomizePlayerButton" class="secondary-button">🎲 Smart Randomize</button>
               <button id="savePlayerButton" class="primary-button">✅ Add Player to Club</button>
               <button id="backToRollButton" class="secondary-button">← Back to Rolled Card</button>
             </div>
@@ -2250,12 +2606,14 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       <h3>🎮 Controller (when supported by the browser)</h3>
       <p><kbd>D-pad</kbd> / <kbd>left stick</kbd> move focus, <kbd>A / ✕</kbd> select, <kbd>B / ◯</kbd> back, <kbd>X / □</kbd> roll or primary action, <kbd>Y / △</kbd> squad, <kbd>LB / RB</kbd> switch tabs, <kbd>LT / RT</kbd> change club pages and <kbd>Menu / Options</kbd> open controls. Use left/right to change a focused dropdown, and A to move to its next option.</p>
       <h3>📱 iPad and touch</h3>
-      <p>Tap to interact, scroll to see all sections, and use landscape or portrait. An iPad-compatible Bluetooth controller may work if Safari exposes it to the Gamepad API. You can also add the GitHub Pages site to your Home Screen.</p>
+      <p>Tap to interact. Every screen is designed to fit without page scrolling in landscape or portrait. An iPad-compatible Bluetooth controller may work if Safari exposes it to the Gamepad API. You can also add the GitHub Pages site to your Home Screen.</p>
       <h3>💾 Saves and hosting</h3>
-      <p>Progress saves locally in this browser. Use <strong>Backup</strong> and <strong>Restore</strong> to move it between devices. Every 8th roll is Golden (4.75× luck); every 100th roll is a Cosmic Roll (15× base luck), replacing Golden if both land together. Existing saves start their Cosmic counter at zero. Xbox Edge may work with controllers; other consoles may limit web access.</p>
+      <p>Progress saves locally in this browser. Use <strong>Backup</strong> and <strong>Restore</strong> to move it between devices. Every 8th roll is Golden (4.75× luck); every 30th roll is Diamond (6.5× base luck); every 100th roll is Cosmic (15× base luck). When they overlap, Cosmic beats Diamond and Diamond beats Golden. Existing saves start their Cosmic counter at zero. Xbox Edge may work with controllers; other consoles may limit web access.</p>
       <button id="closeControlsButton" class="primary-button help-close" type="button">Got it ✓</button>
     </div>
   </div>
+
+  <div id="playstyleTooltip" class="playstyle-tooltip hidden" aria-hidden="true"></div>
 
   <script>
     "use strict";
@@ -2286,26 +2644,26 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       { key: "positioning", label: "Positioning", emoji: "📍" }
     ];
     const OUTFIELD_PLAYSTYLES = [
-      { id: "rapid", name: "Rapid", icon: "⚡", stats: [0] },
-      { id: "finesse", name: "Finesse Shot", icon: "🎯", stats: [1] },
-      { id: "power-shot", name: "Power Shot", icon: "💥", stats: [1, 4] },
-      { id: "incisive-pass", name: "Incisive Pass", icon: "🪡", stats: [2] },
-      { id: "tiki-taka", name: "Tiki Taka", icon: "🔄", stats: [2] },
-      { id: "technical", name: "Technical", icon: "🪄", stats: [0, 2] },
-      { id: "trivela", name: "Trivela", icon: "🌀", stats: [1, 2] },
-      { id: "intercept", name: "Intercept", icon: "🧱", stats: [3] },
-      { id: "anticipate", name: "Anticipate", icon: "🧠", stats: [3] },
-      { id: "bruiser", name: "Bruiser", icon: "🦾", stats: [3, 4] },
-      { id: "aerial", name: "Aerial", icon: "🦅", stats: [3, 4] },
-      { id: "relentless", name: "Relentless", icon: "🔋", stats: [0, 4] }
+      { id: "rapid", name: "Rapid", description: "Explosive acceleration that helps this player burst past defenders.", icon: "⚡", stats: [0] },
+      { id: "finesse", name: "Finesse Shot", description: "Curled finishing and composed placement around the box.", icon: "🎯", stats: [1] },
+      { id: "power-shot", name: "Power Shot", description: "Blasts through the ball with extra force and conviction.", icon: "💥", stats: [1, 4] },
+      { id: "incisive-pass", name: "Incisive Pass", description: "Cuts lines with sharp through balls and split-defence passes.", icon: "🪡", stats: [2] },
+      { id: "tiki-taka", name: "Tiki Taka", description: "Quick one-touch combinations and smooth ball circulation.", icon: "🔄", stats: [2] },
+      { id: "technical", name: "Technical", description: "Close control and nimble technique in tight spaces.", icon: "🪄", stats: [0, 2] },
+      { id: "trivela", name: "Trivela", description: "Outside-of-the-foot flair for shots and creative passing.", icon: "🌀", stats: [1, 2] },
+      { id: "intercept", name: "Intercept", description: "Reads the lane early and breaks up attacks cleanly.", icon: "🧱", stats: [3] },
+      { id: "anticipate", name: "Anticipate", description: "Sharp defensive awareness and smart reactions.", icon: "🧠", stats: [3] },
+      { id: "bruiser", name: "Bruiser", description: "Wins physical battles and imposes themselves in duels.", icon: "🦾", stats: [3, 4] },
+      { id: "aerial", name: "Aerial", description: "Dominates in the air at both ends of the pitch.", icon: "🦅", stats: [3, 4] },
+      { id: "relentless", name: "Relentless", description: "Keeps sprinting, pressing and battling all match long.", icon: "🔋", stats: [0, 4] }
     ];
 
     const GK_PLAYSTYLES = [
-      { id: "far-reach", name: "Far Reach", icon: "🖐️", stats: [0] },
-      { id: "safe-hands", name: "Safe Hands", icon: "🧤", stats: [1] },
-      { id: "long-ball", name: "Long Ball", icon: "🦵", stats: [2] },
-      { id: "cat-reflexes", name: "Cat Reflexes", icon: "🐈", stats: [3] },
-      { id: "sweeper", name: "Sweeper Keeper", icon: "🧭", stats: [4] }
+      { id: "far-reach", name: "Far Reach", description: "Extends to claw away shots headed for the corners.", icon: "🖐️", stats: [0] },
+      { id: "safe-hands", name: "Safe Hands", description: "Secure handling and clean collection under pressure.", icon: "🧤", stats: [1] },
+      { id: "long-ball", name: "Long Ball", description: "Launches accurate kicks and starts attacks from deep.", icon: "🦵", stats: [2] },
+      { id: "cat-reflexes", name: "Cat Reflexes", description: "Lightning reactions for point-blank saves.", icon: "🐈", stats: [3] },
+      { id: "sweeper", name: "Sweeper Keeper", description: "Commands space behind the line and positions early.", icon: "🧭", stats: [4] }
     ];
 
 
@@ -2381,6 +2739,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       shirtColor: "#2563eb",
       shirtNumber: 10
     };
+    const defaultTeamKit = { outfield: "#2563eb", goalkeeper: "#f59e0b", locked: false };
 
     let state = loadState();
     let currentRoll = null;
@@ -2388,7 +2747,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
     let selectedPlayerId = null;
     let clubPage = 0;
     let clubPageCount = 1;
-    const CLUB_PAGE_SIZE = 8;
+    function getClubPageSize() { return window.innerWidth <= 600 ? 4 : 8; }
 
     const $ = (id) => document.getElementById(id);
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, fastRollEnabled ? Math.max(15, Math.round(ms * .20)) : ms));
@@ -2418,6 +2777,11 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
               : 0,
             // Legacy saves have no lifetime roll counter; their Cosmic cycle starts at 0.
             totalRolls: Number.isSafeInteger(saved.totalRolls) && saved.totalRolls >= 0 ? saved.totalRolls : 0,
+            teamKit: {
+              outfield: typeof saved.teamKit?.outfield === "string" && /^#[a-f0-9]{6}$/i.test(saved.teamKit.outfield) ? saved.teamKit.outfield : defaultTeamKit.outfield,
+              goalkeeper: typeof saved.teamKit?.goalkeeper === "string" && /^#[a-f0-9]{6}$/i.test(saved.teamKit.goalkeeper) ? saved.teamKit.goalkeeper : defaultTeamKit.goalkeeper,
+              locked: saved.teamKit?.locked === true
+            },
             squad: {
               formation: FORMATIONS[saved.squad.formation] ? saved.squad.formation : "4-3-3",
               starters: saved.squad.starters || {},
@@ -2433,6 +2797,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         luckMultiplier: 1,
         rollsSinceGolden: 0,
         totalRolls: 0,
+        teamKit: { ...defaultTeamKit },
         squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
       };
     }
@@ -2451,34 +2816,48 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       }
     }
 
-    function updateLuckDisplay(activeRollLuck = null, isGoldenRoll = false, isCosmicRoll = false) {
+    function updateLuckDisplay(activeRollLuck = null, isGoldenRoll = false, isCosmicRoll = false, isDiamondRoll = false) {
       const display = $("luckDisplay");
       if (!display) return;
       const baseLuck = Math.max(1, roundLuck(state.luckMultiplier || 1));
       const goldenRemaining = 8 - Math.max(0, Math.min(7, state.rollsSinceGolden || 0));
       const total = Math.max(0, state.totalRolls || 0);
       const cosmicProgress = total % 100;
-      const cosmicRemaining = 100 - cosmicProgress;
+      const cosmicRemaining = 100 - cosmicProgress || 100;
+      const diamondProgress = total % 30;
+      const diamondRemaining = 30 - diamondProgress || 30;
       const cosmicCount = $("cosmicCountdown");
       const cosmicCounter = $("cosmicCounter");
       const cosmicFill = $("cosmicFill");
+      const diamondCount = $("diamondCountdown");
+      const diamondCounter = $("diamondCounter");
+      const diamondFill = $("diamondFill");
       cosmicCount.textContent = isCosmicRoll ? "LIVE · 15×" : `${cosmicRemaining} TO GO`;
       cosmicCounter.textContent = `${isCosmicRoll ? 100 : cosmicProgress}/100`;
       cosmicFill.style.width = `${isCosmicRoll ? 100 : cosmicProgress}%`;
+      if (diamondCount && diamondCounter && diamondFill) {
+        diamondCount.textContent = isDiamondRoll ? "LIVE · 6.5×" : `${diamondRemaining} TO GO`;
+        diamondCounter.textContent = `${isDiamondRoll ? 30 : diamondProgress}/30`;
+        diamondFill.style.width = `${isDiamondRoll ? 100 : diamondProgress / 30 * 100}%`;
+      }
       const hud = document.querySelector(".luck-hud");
       hud?.classList.toggle("cosmic-hud-active", isCosmicRoll);
       display.classList.toggle("golden-active", isGoldenRoll);
       display.classList.toggle("cosmic-active", isCosmicRoll);
+      display.classList.toggle("diamond-active", isDiamondRoll);
       document.body.classList.toggle("cosmic-roll-running", isCosmicRoll && rolling);
       if (isCosmicRoll && activeRollLuck !== null) {
         display.textContent = `✦ COSMIC ${activeRollLuck.toFixed(2)}×`;
         display.title = `Cosmic Roll: ${baseLuck.toFixed(1)}× base luck × 15`;
+      } else if (isDiamondRoll && activeRollLuck !== null) {
+        display.textContent = `◇ DIAMOND ${activeRollLuck.toFixed(2)}×`;
+        display.title = `Diamond Roll: ${baseLuck.toFixed(1)}× base luck × 6.5`;
       } else if (isGoldenRoll && activeRollLuck !== null) {
         display.textContent = `✧ GOLDEN ${activeRollLuck.toFixed(2)}×`;
         display.title = `Golden Roll: ${baseLuck.toFixed(1)}× base luck × 4.75`;
       } else {
-        display.textContent = `☘ ${baseLuck.toFixed(1)}×  ·  GOLD IN ${goldenRemaining}`;
-        display.title = `Base luck ${baseLuck.toFixed(1)}× · ${goldenRemaining} roll${goldenRemaining === 1 ? "" : "s"} until Golden`;
+        display.textContent = `☘ ${baseLuck.toFixed(1)}× · GOLD ${goldenRemaining} · DIA ${diamondRemaining}`;
+        display.title = `Base luck ${baseLuck.toFixed(1)}× · ${goldenRemaining} until Golden · ${diamondRemaining} until Diamond`;
       }
     }
 
@@ -2621,6 +3000,12 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         case "golden":
           [330, 494, 659, 988].forEach((frequency, index) =>
             playTone(frequency, index * 0.09, 0.22, "sine", 0.11)
+          );
+          break;
+        case "diamond-roll":
+          playTone(180, 0, .35, "triangle", .12);
+          [370, 494, 740, 988].forEach((frequency, index) =>
+            playTone(frequency, .05 + index * .07, .24, "sine", .09)
           );
           break;
         case "cosmic-roll":
@@ -2769,8 +3154,17 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
     }
 
     function calculateOverall(values, position) {
-      const weights = POSITION_WEIGHTS[position];
-      const score = values.reduce((sum, value, index) => sum + value * weights[index], 0);
+      const weights = POSITION_WEIGHTS[position] || Array(values.length).fill(1 / values.length);
+      const weighted = values.reduce((sum, value, index) => sum + value * weights[index], 0);
+      const average = values.reduce((sum, value) => sum + value, 0) / Math.max(1, values.length);
+      const sorted = [...values].sort((a, b) => b - a);
+      const topThree = (sorted[0] + sorted[1] + sorted[2]) / 3;
+      const lowest = sorted[sorted.length - 1];
+      const spread = sorted[0] - lowest;
+      const consistency = Math.max(-6, Math.min(4, (lowest - 45) * 0.14 - spread * 0.05));
+      const specialistBoost = Math.max(0, weighted - average) * 0.18;
+      const eliteBonus = values.filter(value => value >= 90).length * 1.3 + (sorted[0] >= 97 ? 0.8 : 0);
+      const score = average * 0.46 + weighted * 0.34 + topThree * 0.20 + consistency + specialistBoost + eliteBonus;
       return Math.max(1, Math.min(99, Math.round(score)));
     }
 
@@ -2882,13 +3276,21 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
 
     function renderPlaystyles(container, playstyles = [], revealingIndex = -1) {
       if (!container) return;
-      container.innerHTML = playstyles.slice(0, 5).map((playstyle, index) => `
+      container.innerHTML = playstyles.slice(0, 5).map((playstyle, index) => {
+        const name = `${playstyle.name}${playstyle.plus ? "+" : ""}`;
+        const description = `${playstyle.description || "Special trait that improves the linked stats."}`;
+        return `
         <div
           class="playstyle-badge ${playstyle.plus ? "plus" : ""} ${index === revealingIndex ? "revealing" : ""}"
-          title="${escapeHtml(playstyle.name)}${playstyle.plus ? "+" : ""}"
-          aria-label="${escapeHtml(playstyle.name)}${playstyle.plus ? " plus" : ""}"
-        >${playstyle.icon}</div>
-      `).join("");
+          title="${escapeHtml(name)}"
+          aria-label="${escapeHtml(name)}"
+          data-playstyle-name="${escapeHtml(playstyle.name)}"
+          data-playstyle-icon="${escapeHtml(playstyle.icon)}"
+          data-playstyle-description="${escapeHtml(description)}"
+          data-playstyle-plus="${playstyle.plus ? "1" : "0"}"
+          tabindex="0"
+        >${playstyle.icon}</div>`;
+      }).join("");
     }
 
     function rollPlayerPlaystyles(isGoalkeeper, rarity, rollLuck, isGoldenRoll) {
@@ -3021,7 +3423,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
     function resetMainCard() {
       currentRoll = null;
       clearRarityClasses($("mainCard"));
-      $("mainCard").classList.remove("golden-roll-active", "cosmic-roll-active");
+      $("mainCard").classList.remove("golden-roll-active", "diamond-roll-active", "cosmic-roll-active");
       document.body.classList.remove("cosmic-roll-running");
       $("stageStatus").textContent = "READY TO ROLL";
       $("overallDisplay").textContent = "--";
@@ -3058,22 +3460,24 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
 
       // Every full card roll adds +0.1 base luck.
       state.luckMultiplier = roundLuck((state.luckMultiplier || 1) + 0.1);
+      state.totalRolls = Math.max(0, (state.totalRolls || 0)) + 1;
 
-      // Special draw schedule: every 8th draw is Golden, every 100th is Cosmic.
-      // If both coincide (e.g. roll 200), Cosmic takes priority (15×, not stacked).
-      state.totalRolls = (Number.isSafeInteger(state.totalRolls) ? state.totalRolls : 0) + 1;
+      // Special draw schedule: Golden every 8th, Diamond every 30th, Cosmic every 100th.
+      // When they overlap, the higher tier replaces the lower one instead of stacking.
       const isCosmicRoll = state.totalRolls % 100 === 0;
+      const isDiamondRoll = !isCosmicRoll && state.totalRolls % 30 === 0;
       const goldenDue = (state.rollsSinceGolden || 0) >= 7;
-      const isGoldenRoll = goldenDue && !isCosmicRoll;
-      const rollLuck = roundLuck(state.luckMultiplier * (isCosmicRoll ? 15 : isGoldenRoll ? 4.75 : 1));
+      const isGoldenRoll = goldenDue && !isCosmicRoll && !isDiamondRoll;
+      const rollLuck = roundLuck(state.luckMultiplier * (isCosmicRoll ? 15 : isDiamondRoll ? 6.5 : isGoldenRoll ? 4.75 : 1));
       state.rollsSinceGolden = goldenDue ? 0 : (state.rollsSinceGolden || 0) + 1;
 
       saveState();
-      updateLuckDisplay(rollLuck, isGoldenRoll, isCosmicRoll);
+      updateLuckDisplay(rollLuck, isGoldenRoll, isCosmicRoll, isDiamondRoll);
       $("mainCard").classList.toggle("golden-roll-active", isGoldenRoll);
+      $("mainCard").classList.toggle("diamond-roll-active", isDiamondRoll);
       $("mainCard").classList.toggle("cosmic-roll-active", isCosmicRoll);
-      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW · 15×" : isGoldenRoll ? "✧ GOLDEN DRAW · 4.75×" : `ROLL ${String(state.totalRolls).padStart(3, "0")} IN PROGRESS`;
-      playSfx(isCosmicRoll ? "cosmic-roll" : isGoldenRoll ? "golden" : "roll");
+      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW · 15×" : isDiamondRoll ? "◇ DIAMOND DRAW · 6.5×" : isGoldenRoll ? "✧ GOLDEN DRAW · 4.75×" : `ROLL ${String(state.totalRolls).padStart(3, "0")} IN PROGRESS`;
+      playSfx(isCosmicRoll ? "cosmic-roll" : isDiamondRoll ? "diamond-roll" : isGoldenRoll ? "golden" : "roll");
 
       $("rollButton").disabled = true;
       $("rerollButton").classList.add("hidden");
@@ -3210,6 +3614,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         rarity,
         rollLuck,
         isGoldenRoll,
+        isDiamondRoll,
         isCosmicRoll
       };
 
@@ -3217,11 +3622,11 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       document.body.classList.remove("cosmic-roll-running");
       // Return the HUD to the actual banked base luck and next scheduled draw.
       updateLuckDisplay();
-      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW COMPLETE" : isGoldenRoll ? "✧ GOLDEN DRAW COMPLETE" : "REVEAL COMPLETE";
+      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW COMPLETE" : isDiamondRoll ? "◇ DIAMOND DRAW COMPLETE" : isGoldenRoll ? "✧ GOLDEN DRAW COMPLETE" : "REVEAL COMPLETE";
       $("rollButton").classList.add("hidden");
       $("rerollButton").classList.remove("hidden");
       $("customizeButton").classList.remove("hidden");
-      toast(`${isCosmicRoll ? "✦ COSMIC ROLL! · " : ""}${rarity} ${overall} ${formatPositions(playablePositions)} rolled!`);
+      toast(`${isCosmicRoll ? "✦ COSMIC ROLL! · " : isDiamondRoll ? "◇ DIAMOND ROLL! · " : ""}${rarity} ${overall} ${formatPositions(playablePositions)} rolled!`);
       } catch (error) {
         console.error("Card roll failed:", error);
         rolling = false;
@@ -3268,26 +3673,75 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       "#2563eb", "#dc2626", "#16a34a", "#f59e0b", "#7c3aed",
       "#db2777", "#0891b2", "#111827", "#f8fafc", "#ea580c"
     ];
+    const APPEARANCE_ARCHETYPES = [
+      { face: ["oval", "square"], hairStyle: ["short", "buzz"], facialHair: ["none", "stubble", "beard"], accessory: ["none", "headband", "armband"] },
+      { face: ["round", "oval"], hairStyle: ["curls", "short", "buzz"], facialHair: ["none", "stubble", "goatee"], accessory: ["none", "earring", "headband"] },
+      { face: ["angular", "square"], hairStyle: ["mohawk", "short", "buzz"], facialHair: ["none", "moustache", "goatee"], accessory: ["none", "armband"] },
+      { face: ["oval", "angular"], hairStyle: ["long", "curls", "short"], facialHair: ["none", "stubble"], accessory: ["none", "glasses", "headband"] }
+    ];
+
+    function getTeamKit() {
+      return { ...defaultTeamKit, ...(state.teamKit || {}) };
+    }
+
+    function getClubKitColorForPosition(position) {
+      const kit = getTeamKit();
+      return position === "GK" ? kit.goalkeeper : kit.outfield;
+    }
+
+    function updateClubKitSetupVisibility() {
+      const firstClubPlayer = state.club.length === 0 && !(state.teamKit && state.teamKit.locked);
+      $("clubKitSetup")?.classList.toggle("hidden", !firstClubPlayer);
+      const teamKit = getTeamKit();
+      if ($("teamKitColorInput")) $("teamKitColorInput").value = teamKit.outfield;
+      if ($("goalkeeperKitColorInput")) $("goalkeeperKitColorInput").value = teamKit.goalkeeper;
+    }
+
+    function getSuggestedNumberForPosition(position) {
+      const pool = {
+        GK: [1, 12, 13, 16, 23],
+        CB: [4, 5, 6, 15], LB: [2, 3, 12], RB: [2, 3, 17],
+        CM: [6, 8, 14, 18], LM: [7, 11, 17], RM: [7, 11, 17],
+        LW: [7, 10, 11], RW: [7, 10, 11], ST: [9, 10, 19]
+      }[position] || [10];
+      return randomChoice(pool);
+    }
+
+    function getSmartRandomAppearance() {
+      const archetype = randomChoice(APPEARANCE_ARCHETYPES);
+      return {
+        face: randomChoice(archetype.face),
+        hairStyle: randomChoice(archetype.hairStyle),
+        hairColor: randomChoice(RANDOM_HAIR_COLORS),
+        skinTone: randomChoice(["#f8d9c2", "#e6b98e", "#c98f65", "#9a6546", "#633f2e"]),
+        facialHair: randomChoice(archetype.facialHair),
+        accessory: randomChoice(archetype.accessory)
+      };
+    }
 
     function setRandomCustomization() {
-      $("playerNameInput").value =
-        `${randomChoice(RANDOM_FIRST_NAMES)} ${randomChoice(RANDOM_LAST_NAMES)}`;
-      $("shirtNumberInput").value = randomInt(1, 99);
-      $("faceInput").value = randomChoice(["oval", "round", "square", "angular"]);
-      $("hairStyleInput").value = randomChoice(["short", "curls", "mohawk", "long", "buzz", "bald"]);
-      $("hairColorInput").value = randomChoice(RANDOM_HAIR_COLORS);
-      $("skinToneInput").value = randomChoice(["#f8d9c2", "#e6b98e", "#c98f65", "#9a6546", "#633f2e"]);
-      $("facialHairInput").value = randomChoice(["none", "stubble", "moustache", "beard", "goatee"]);
-      $("accessoryInput").value = randomChoice(["none", "none", "headband", "glasses", "earring", "armband"]);
-      $("shirtColorInput").value = randomChoice(RANDOM_SHIRT_COLORS);
+      const smart = getSmartRandomAppearance();
+      $("playerNameInput").value = `${randomChoice(RANDOM_FIRST_NAMES)} ${randomChoice(RANDOM_LAST_NAMES)}`;
+      $("shirtNumberInput").value = getSuggestedNumberForPosition(currentRoll?.position || "ST");
+      $("faceInput").value = smart.face;
+      $("hairStyleInput").value = smart.hairStyle;
+      $("hairColorInput").value = smart.hairColor;
+      $("skinToneInput").value = smart.skinTone;
+      $("facialHairInput").value = smart.facialHair;
+      $("accessoryInput").value = smart.accessory;
+      const preferredKit = getClubKitColorForPosition(currentRoll?.position || "ST");
+      $("shirtColorInput").value = preferredKit || randomChoice(RANDOM_SHIRT_COLORS);
       updateCustomizerPreview();
     }
 
     function openCustomizer() {
       if (!currentRoll) return;
       showView("customizeView");
-      $("playerNameInput").value = "Your Player";
-      $("shirtNumberInput").value = "10";
+      updateClubKitSetupVisibility();
+      $("playerNameInput").value = `${randomChoice(RANDOM_FIRST_NAMES)} ${randomChoice(RANDOM_LAST_NAMES)}`;
+      $("shirtNumberInput").value = String(getSuggestedNumberForPosition(currentRoll.position));
+      $("shirtColorInput").value = getClubKitColorForPosition(currentRoll.position);
+      setRandomCustomization();
       updateCustomizerPreview();
     }
 
@@ -3296,7 +3750,6 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       const appearance = getAppearanceFromForm();
       const name = $("playerNameInput").value.trim() || "Your Player";
       const card = $("customCard");
-
       clearRarityClasses(card);
       card.classList.add(rarityClass(currentRoll.rarity));
       $("customOverall").textContent = currentRoll.overall;
@@ -3305,6 +3758,12 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       $("customCardName").textContent = name;
       renderStats($("customStats"), currentRoll.statDefs, currentRoll.values);
       renderPlaystyles($("customPlaystyles"), currentRoll.playstyles || []);
+      if (state.club.length === 0 && !(state.teamKit && state.teamKit.locked)) {
+        const outfield = $("teamKitColorInput")?.value || defaultTeamKit.outfield;
+        const goalkeeper = $("goalkeeperKitColorInput")?.value || defaultTeamKit.goalkeeper;
+        appearance.shirtColor = currentRoll.position === "GK" ? goalkeeper : outfield;
+        $("shirtColorInput").value = appearance.shirtColor;
+      }
       renderAvatar($("customAvatar"), appearance);
     }
 
@@ -3316,7 +3775,17 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         $("playerNameInput").focus();
         return;
       }
-
+      if (state.club.length === 0 && !(state.teamKit && state.teamKit.locked)) {
+        state.teamKit = {
+          outfield: $("teamKitColorInput")?.value || defaultTeamKit.outfield,
+          goalkeeper: $("goalkeeperKitColorInput")?.value || defaultTeamKit.goalkeeper,
+          locked: true
+        };
+      }
+      const appearance = getAppearanceFromForm();
+      if (state.teamKit?.locked && appearance.shirtColor === defaultAppearance.shirtColor) {
+        appearance.shirtColor = getClubKitColorForPosition(currentRoll.position);
+      }
       const player = {
         id: window.crypto && typeof window.crypto.randomUUID === "function" ? window.crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
         name,
@@ -3327,10 +3796,9 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         values: [...currentRoll.values],
         overall: currentRoll.overall,
         rarity: currentRoll.rarity,
-        appearance: getAppearanceFromForm(),
+        appearance,
         createdAt: Date.now()
       };
-
       state.club.unshift(player);
       saveState();
       playSfx("save");
@@ -3344,80 +3812,67 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       const hair = appearance.hairColor || defaultAppearance.hairColor;
       const shirt = appearance.shirtColor || defaultAppearance.shirtColor;
       const faceShapes = {
-        oval: '<path d="M92 64 C62 64 50 88 55 120 C59 153 75 170 92 172 C109 170 125 153 129 120 C134 88 122 64 92 64Z"/>',
-        round: '<ellipse cx="92" cy="118" rx="38" ry="48"/>',
-        square: '<path d="M56 78 Q61 62 92 62 Q123 62 128 78 L127 139 Q115 169 92 172 Q69 169 57 139Z"/>',
-        angular: '<path d="M58 74 Q68 60 92 61 Q116 60 126 74 L122 141 L104 167 L92 173 L80 167 L62 141Z"/>'
+        oval: '<path d="M92 62 C70 62 57 80 57 111 C57 145 72 167 92 170 C112 167 127 145 127 111 C127 80 114 62 92 62Z"/>',
+        round: '<path d="M92 65 C67 65 55 84 55 113 C55 145 71 167 92 170 C113 167 129 145 129 113 C129 84 117 65 92 65Z"/>',
+        square: '<path d="M60 78 Q66 62 92 62 Q118 62 124 78 L124 136 Q114 165 92 170 Q70 165 60 136Z"/>',
+        angular: '<path d="M60 75 Q71 61 92 61 Q113 61 124 75 L121 138 L107 163 L92 170 L77 163 L63 138Z"/>'
       };
-
       const hairStyles = {
-        short: `<path d="M56 93 Q55 58 92 55 Q129 58 128 94 Q115 74 92 76 Q70 73 56 93Z" fill="${hair}"/>`,
-        curls: `<g fill="${hair}">
-          <circle cx="58" cy="84" r="15"/><circle cx="70" cy="68" r="17"/><circle cx="91" cy="63" r="18"/>
-          <circle cx="112" cy="68" r="17"/><circle cx="126" cy="84" r="15"/><circle cx="76" cy="84" r="15"/><circle cx="106" cy="83" r="15"/>
-        </g>`,
-        mohawk: `<path d="M80 66 Q85 31 93 22 Q104 36 105 68Z" fill="${hair}"/><path d="M62 88 Q70 66 92 65 Q116 67 124 88 Q108 75 92 76 Q76 75 62 88Z" fill="${hair}"/>`,
-        long: `<path d="M52 89 Q54 52 92 52 Q132 54 132 96 L126 154 L112 148 L116 92 Q108 72 92 73 Q74 73 65 93 L70 151 L55 154Z" fill="${hair}"/>`,
-        buzz: `<path d="M58 86 Q62 59 92 58 Q122 60 126 86 Q109 74 92 75 Q74 74 58 86Z" fill="${hair}" opacity=".82"/>`,
+        short: `<path d="M58 89 Q59 58 92 55 Q125 58 126 91 Q113 73 92 75 Q72 73 58 89Z" fill="${hair}"/>`,
+        curls: `<g fill="${hair}"><circle cx="61" cy="83" r="13"/><circle cx="74" cy="69" r="15"/><circle cx="92" cy="63" r="16"/><circle cx="110" cy="69" r="15"/><circle cx="123" cy="83" r="13"/><circle cx="77" cy="84" r="13"/><circle cx="107" cy="84" r="13"/></g>`,
+        mohawk: `<path d="M83 68 Q88 34 93 24 Q99 34 102 68Z" fill="${hair}"/><path d="M61 88 Q71 67 92 66 Q113 67 123 88 Q109 75 92 76 Q75 75 61 88Z" fill="${hair}"/>`,
+        long: `<path d="M55 89 Q56 53 92 52 Q128 53 129 95 L123 158 L110 150 L113 93 Q105 72 92 73 Q79 72 70 93 L73 150 L61 158Z" fill="${hair}"/>`,
+        buzz: `<path d="M60 85 Q66 61 92 59 Q118 61 124 85 Q108 75 92 75 Q76 75 60 85Z" fill="${hair}" opacity=".9"/>`,
         bald: ""
       };
-
       const facialHair = {
         none: "",
-        stubble: `<path d="M70 137 Q92 158 114 137 Q110 164 92 169 Q74 164 70 137Z" fill="${hair}" opacity=".28"/>`,
-        moustache: `<path d="M77 137 Q84 130 92 137 Q100 130 108 137 Q101 146 92 141 Q83 146 77 137Z" fill="${hair}"/>`,
-        beard: `<path d="M65 130 Q70 166 92 177 Q114 166 119 130 Q112 151 92 155 Q72 151 65 130Z" fill="${hair}" opacity=".95"/>`,
-        goatee: `<path d="M84 145 Q92 151 100 145 L97 169 L92 175 L87 169Z" fill="${hair}"/>`
+        stubble: `<path d="M70 136 Q92 155 114 136 Q110 160 92 166 Q74 160 70 136Z" fill="${hair}" opacity=".25"/>`,
+        moustache: `<path d="M77 137 Q85 130 92 136 Q99 130 107 137 Q100 145 92 141 Q84 145 77 137Z" fill="${hair}"/>`,
+        beard: `<path d="M67 130 Q72 162 92 176 Q112 162 117 130 Q109 149 92 153 Q75 149 67 130Z" fill="${hair}" opacity=".95"/>`,
+        goatee: `<path d="M84 145 Q92 151 100 145 L98 167 L92 173 L86 167Z" fill="${hair}"/>`
       };
-
       const accessory = {
         none: "",
-        headband: `<path d="M57 88 Q92 74 127 88" fill="none" stroke="#f8fafc" stroke-width="7"/>`,
-        glasses: `<g fill="none" stroke="#111827" stroke-width="4"><rect x="64" y="103" width="24" height="17" rx="7"/><rect x="96" y="103" width="24" height="17" rx="7"/><path d="M88 110 H96"/></g>`,
-        earring: `<circle cx="126" cy="126" r="5" fill="#fde047" stroke="#fff" stroke-width="2"/>`,
-        armband: `<rect x="140" y="211" width="21" height="14" rx="4" fill="#fde047"/><text x="150.5" y="222" text-anchor="middle" font-size="10" font-weight="900" fill="#111827">C</text>`
+        headband: `<path d="M60 89 Q92 77 124 89" fill="none" stroke="#f8fafc" stroke-width="7"/>`,
+        glasses: `<g fill="none" stroke="#111827" stroke-width="4"><rect x="65" y="102" width="23" height="16" rx="7"/><rect x="96" y="102" width="23" height="16" rx="7"/><path d="M88 109 H96"/></g>`,
+        earring: `<circle cx="124" cy="124" r="5" fill="#fde047" stroke="#fff" stroke-width="2"/>`,
+        armband: `<rect x="141" y="211" width="21" height="14" rx="4" fill="#fde047"/><text x="151.5" y="222" text-anchor="middle" font-size="10" font-weight="900" fill="#111827">C</text>`
       };
-
       return `
         <svg viewBox="0 0 184 260" xmlns="http://www.w3.org/2000/svg" aria-label="Custom football player avatar">
           <defs>
             <linearGradient id="shirt-${uid}" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="${shirt}"/>
-              <stop offset=".58" stop-color="${shirt}"/>
+              <stop offset=".62" stop-color="${shirt}"/>
               <stop offset="1" stop-color="#08111f" stop-opacity=".42"/>
             </linearGradient>
             <linearGradient id="skin-${uid}" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
-              <stop offset=".25" stop-color="${skin}"/>
+              <stop offset="0" stop-color="#fff" stop-opacity=".22"/>
+              <stop offset=".28" stop-color="${skin}"/>
               <stop offset="1" stop-color="${skin}"/>
             </linearGradient>
             <filter id="shadow-${uid}">
               <feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".24"/>
             </filter>
           </defs>
-
           <g filter="url(#shadow-${uid})">
-            <path d="M28 260 Q30 202 57 187 Q72 177 78 174 L106 174 Q112 177 127 187 Q154 202 156 260Z"
-              fill="url(#shirt-${uid})"/>
-            <path d="M76 170 L76 190 Q92 203 108 190 L108 170Z" fill="${skin}"/>
+            <path d="M27 260 Q30 204 57 187 Q73 177 79 174 L105 174 Q111 177 127 187 Q154 203 157 260Z" fill="url(#shirt-${uid})"/>
+            <path d="M79 168 L79 191 Q92 201 105 191 L105 168Z" fill="${skin}"/>
+            <path d="M63 162 Q77 194 92 202 Q107 194 121 162" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="4"/>
             <g fill="url(#skin-${uid})">${faceShapes[appearance.face] || faceShapes.oval}</g>
             ${hairStyles[appearance.hairStyle] ?? hairStyles.short}
-
-            <ellipse cx="78" cy="114" rx="4" ry="5" fill="#111827"/>
-            <ellipse cx="106" cy="114" rx="4" ry="5" fill="#111827"/>
-            <circle cx="76.7" cy="112.4" r="1.1" fill="white"/>
-            <circle cx="104.7" cy="112.4" r="1.1" fill="white"/>
-            <path d="M89 119 Q87 131 92 132" fill="none" stroke="#7c4a35" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M79 143 Q92 151 105 143" fill="none" stroke="#5d2632" stroke-width="3" stroke-linecap="round"/>
-            <path d="M69 103 Q77 98 84 102 M100 102 Q107 98 115 103" fill="none" stroke="${hair}" stroke-width="3" stroke-linecap="round"/>
-
+            <ellipse cx="79" cy="112" rx="4" ry="5" fill="#111827"/>
+            <ellipse cx="105" cy="112" rx="4" ry="5" fill="#111827"/>
+            <circle cx="77.5" cy="110.4" r="1.1" fill="white"/>
+            <circle cx="103.5" cy="110.4" r="1.1" fill="white"/>
+            <path d="M87 118 Q85 129 92 131" fill="none" stroke="#7c4a35" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M80 142 Q92 149 104 142" fill="none" stroke="#5d2632" stroke-width="2.8" stroke-linecap="round"/>
+            <path d="M70 101 Q76 97 84 101 M100 101 Q108 97 114 101" fill="none" stroke="${hair}" stroke-width="3" stroke-linecap="round"/>
             ${facialHair[appearance.facialHair] ?? ""}
             ${accessory[appearance.accessory] ?? ""}
-
-            <path d="M49 206 Q66 190 77 188 Q92 199 107 188 Q121 191 136 206" fill="none" stroke="rgba(255,255,255,.48)" stroke-width="4"/>
-            <text x="92" y="242" text-anchor="middle" font-size="37" font-weight="1000" fill="rgba(255,255,255,.9)">
-              ${Number(appearance.shirtNumber) || 1}
-            </text>
+            <path d="M49 206 Q66 190 78 188 Q92 198 106 188 Q120 190 136 206" fill="none" stroke="rgba(255,255,255,.48)" stroke-width="4"/>
+            <text x="92" y="242" text-anchor="middle" font-size="37" font-weight="1000" fill="rgba(255,255,255,.9)">${Number(appearance.shirtNumber) || 1}</text>
           </g>
         </svg>
       `;
@@ -3654,9 +4109,10 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         ? `Selected: ${selected.name} (${selected.overall} ${formatPositions(getPlayerPositions(selected))}) · ${getPlayerPlaystyles(selected).length} playstyle${getPlayerPlaystyles(selected).length === 1 ? "" : "s"}`
         : "";
 
-      clubPageCount = Math.max(1, Math.ceil(availablePlayers.length / CLUB_PAGE_SIZE));
+      const pageSize = getClubPageSize();
+      clubPageCount = Math.max(1, Math.ceil(availablePlayers.length / pageSize));
       clubPage = Math.min(clubPage, clubPageCount - 1);
-      $("clubPager").classList.toggle("hidden", availablePlayers.length <= CLUB_PAGE_SIZE);
+      $("clubPager").classList.toggle("hidden", availablePlayers.length <= pageSize);
       $("clubPageLabel").textContent = `Page ${clubPage + 1} / ${clubPageCount}`;
       $("clubPrevButton").disabled = clubPage === 0;
       $("clubNextButton").disabled = clubPage >= clubPageCount - 1;
@@ -3671,8 +4127,8 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       }
 
       const players = availablePlayers.slice(
-        clubPage * CLUB_PAGE_SIZE,
-        (clubPage + 1) * CLUB_PAGE_SIZE
+        clubPage * pageSize,
+        (clubPage + 1) * pageSize
       );
 
       players.forEach(player => {
@@ -3905,7 +4361,79 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
       $(id).addEventListener("change", updateCustomizerPreview);
     });
 
-    window.addEventListener("resize", () => requestAnimationFrame(positionPitchSlots));
+    ["teamKitColorInput", "goalkeeperKitColorInput"].forEach(id => {
+      $(id)?.addEventListener("input", updateCustomizerPreview);
+      $(id)?.addEventListener("change", updateCustomizerPreview);
+    });
+
+    const playstyleTooltipState = { timer: null, visibleForHold: false };
+    function hidePlaystyleTooltip(force = false) {
+      clearTimeout(playstyleTooltipState.timer);
+      playstyleTooltipState.timer = null;
+      playstyleTooltipState.visibleForHold = false;
+      const tip = $("playstyleTooltip");
+      if (!tip) return;
+      tip.classList.add("hidden");
+      tip.classList.remove("show");
+      tip.setAttribute("aria-hidden", "true");
+      if (force) tip.innerHTML = "";
+    }
+    function showPlaystyleTooltip(target) {
+      const tip = $("playstyleTooltip");
+      if (!tip || !target?.dataset?.playstyleName) return;
+      const plus = target.dataset.playstylePlus === "1";
+      tip.innerHTML = `<div class="playstyle-tooltip-name"><span class="playstyle-tooltip-icon">${escapeHtml(target.dataset.playstyleIcon || "⭐")}</span><span>${escapeHtml(target.dataset.playstyleName)}${plus ? "+" : ""}</span></div><div class="playstyle-tooltip-body">${escapeHtml(target.dataset.playstyleDescription || "")}</div>${plus ? '<div class="playstyle-tooltip-plus">Playstyle+ rerolls each linked stat twice for a better result.</div>' : ''}`;
+      tip.classList.remove("hidden");
+      tip.setAttribute("aria-hidden", "false");
+      const rect = target.getBoundingClientRect();
+      requestAnimationFrame(() => {
+        const tipRect = tip.getBoundingClientRect();
+        let left = rect.left + rect.width / 2 - tipRect.width / 2;
+        left = Math.max(10, Math.min(window.innerWidth - tipRect.width - 10, left));
+        let top = rect.top - tipRect.height - 10;
+        if (top < 10) top = rect.bottom + 10;
+        tip.style.left = `${left}px`;
+        tip.style.top = `${top}px`;
+        tip.classList.add("show");
+      });
+    }
+    document.addEventListener("pointerenter", event => {
+      const badge = event.target.closest?.('.playstyle-badge');
+      if (badge && event.pointerType === 'mouse') showPlaystyleTooltip(badge);
+    }, true);
+    document.addEventListener("pointerleave", event => {
+      if (event.target.closest?.('.playstyle-badge')) hidePlaystyleTooltip();
+    }, true);
+    document.addEventListener("focusin", event => {
+      const badge = event.target.closest?.('.playstyle-badge');
+      if (badge) showPlaystyleTooltip(badge);
+    });
+    document.addEventListener("focusout", event => {
+      if (event.target.closest?.('.playstyle-badge')) hidePlaystyleTooltip();
+    });
+    document.addEventListener("pointerdown", event => {
+      const badge = event.target.closest?.('.playstyle-badge');
+      if (!badge || event.pointerType === 'mouse') return;
+      clearTimeout(playstyleTooltipState.timer);
+      playstyleTooltipState.timer = setTimeout(() => {
+        playstyleTooltipState.visibleForHold = true;
+        showPlaystyleTooltip(badge);
+      }, 380);
+    }, { passive: true });
+    ["pointerup", "pointercancel"].forEach(type => document.addEventListener(type, event => {
+      const badge = event.target.closest?.('.playstyle-badge');
+      clearTimeout(playstyleTooltipState.timer);
+      if (playstyleTooltipState.visibleForHold && badge) {
+        setTimeout(() => hidePlaystyleTooltip(), 1400);
+      }
+      playstyleTooltipState.timer = null;
+      playstyleTooltipState.visibleForHold = false;
+    }, { passive: true }));
+
+    window.addEventListener("resize", () => {
+      requestAnimationFrame(positionPitchSlots);
+      if (document.querySelector("#teamView.active")) renderClub();
+    });
     document.addEventListener("fullscreenchange", () => requestAnimationFrame(positionPitchSlots));
 
     if (!document.documentElement.requestFullscreen || !document.fullscreenEnabled) {
@@ -3952,6 +4480,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
         luckMultiplier: 1,
         rollsSinceGolden: 0,
         totalRolls: 0,
+        teamKit: { ...defaultTeamKit },
         squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
       };
       selectedPlayerId = null;
@@ -3993,7 +4522,7 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
     });
 
     function downloadBackup() {
-      const backup = { format: "rng-football-card-maker", version: 3, exportedAt: new Date().toISOString(), save: state };
+      const backup = { format: "rng-football-card-maker", version: 4, exportedAt: new Date().toISOString(), save: state };
       const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -4089,6 +4618,11 @@ body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ell
           luckMultiplier: Number.isFinite(backup.luckMultiplier) ? Math.max(1, Math.min(1000, roundLuck(backup.luckMultiplier))) : 1,
           rollsSinceGolden: Number.isInteger(backup.rollsSinceGolden) ? Math.max(0, Math.min(7, backup.rollsSinceGolden)) : 0,
           totalRolls: Number.isSafeInteger(backup.totalRolls) && backup.totalRolls >= 0 ? backup.totalRolls : 0,
+          teamKit: {
+            outfield: typeof backup.teamKit?.outfield === "string" && /^#[a-f0-9]{6}$/i.test(backup.teamKit.outfield) ? backup.teamKit.outfield : defaultTeamKit.outfield,
+            goalkeeper: typeof backup.teamKit?.goalkeeper === "string" && /^#[a-f0-9]{6}$/i.test(backup.teamKit.goalkeeper) ? backup.teamKit.goalkeeper : defaultTeamKit.goalkeeper,
+            locked: backup.teamKit?.locked === true
+          },
           squad: { formation, starters, subs }
         };
         selectedPlayerId = null;
