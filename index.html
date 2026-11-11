@@ -1,0 +1,3835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Roll football cards, customise your players and build a dream squad. Works with mouse, keyboard, touch and supported gamepads." />
+  <title>RNG Football Card Maker</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: rgba(17, 24, 39, 0.88);
+      --panel-2: rgba(30, 41, 59, 0.92);
+      --line: rgba(255,255,255,.12);
+      --text: #f8fafc;
+      --muted: #a8b4c7;
+      --accent: #4ade80;
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --card-radius: 30px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(14,165,233,.16), transparent 28rem),
+        radial-gradient(circle at 90% 20%, rgba(168,85,247,.14), transparent 30rem),
+        linear-gradient(145deg, #050b14, #0b1526 55%, #07111e);
+    }
+
+    button, input, select { font: inherit; }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      color: white;
+      background: #334155;
+      transition: transform .16s ease, filter .16s ease, background .16s ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .app-shell {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 4vw, 2.5rem);
+      letter-spacing: -.04em;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .luck-display {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border: 1px solid rgba(134, 239, 172, .45);
+      border-radius: 14px;
+      color: #dcfce7;
+      background: linear-gradient(135deg, rgba(34,197,94,.22), rgba(16,185,129,.08));
+      box-shadow: inset 0 0 18px rgba(74,222,128,.08);
+      font-weight: 1000;
+      white-space: nowrap;
+    }
+
+    .luck-display.golden-active {
+      color: #fff7c2;
+      border-color: rgba(253, 224, 71, .9);
+      background: linear-gradient(135deg, rgba(234,179,8,.48), rgba(249,115,22,.22));
+      box-shadow:
+        0 0 22px rgba(250,204,21,.35),
+        inset 0 0 18px rgba(255,255,255,.13);
+      animation: goldenLuckPulse .7s ease-in-out infinite alternate;
+    }
+
+    @keyframes goldenLuckPulse {
+      to { transform: translateY(-1px) scale(1.025); filter: brightness(1.18); }
+    }
+
+    .football-card.golden-roll-active {
+      border-color: #fde047 !important;
+      box-shadow:
+        0 0 30px rgba(250,204,21,.55),
+        0 24px 70px rgba(0,0,0,.48),
+        inset 0 0 25px rgba(253,224,71,.18) !important;
+    }
+
+    .nav-button, .secondary-button, .danger-button, .primary-button {
+      border-radius: 14px;
+      padding: 11px 16px;
+      font-weight: 800;
+    }
+
+    .nav-button.active, .primary-button {
+      color: #04210f;
+      background: linear-gradient(135deg, #86efac, #22c55e);
+    }
+
+    .secondary-button { background: #334155; }
+    .danger-button { background: linear-gradient(135deg, #fb7185, #e11d48); }
+
+    .view { display: none; }
+    .view.active { display: block; animation: appear .3s ease; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      backdrop-filter: blur(18px);
+    }
+
+    .roll-layout {
+      display: grid;
+      grid-template-columns: minmax(290px, 430px) minmax(280px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card-stage {
+      padding: 22px;
+      display: grid;
+      justify-items: center;
+    }
+
+    .football-card {
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 370px);
+      aspect-ratio: 0.72;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,.34);
+      border-radius: var(--card-radius);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,.15), transparent 25%),
+        linear-gradient(145deg, #334155, #111827);
+      box-shadow:
+        0 24px 70px rgba(0,0,0,.48),
+        inset 0 0 0 2px rgba(255,255,255,.12);
+      transition: background .5s ease, border-color .5s ease, box-shadow .5s ease;
+    }
+
+    .football-card::before,
+    .mini-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .44;
+      background:
+        linear-gradient(135deg, transparent 0 40%, rgba(255,255,255,.14) 41% 43%, transparent 44%),
+        repeating-linear-gradient(120deg, rgba(255,255,255,.05) 0 2px, transparent 2px 18px);
+      pointer-events: none;
+    }
+
+    .rarity-bronze {
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.2), transparent 28%),
+        linear-gradient(145deg, #c08457, #7c3f20 58%, #3f1f12) !important;
+      border-color: #e7b58c !important;
+    }
+
+    .rarity-silver {
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.45), transparent 30%),
+        linear-gradient(145deg, #f1f5f9, #94a3b8 55%, #475569) !important;
+      color: #08111f !important;
+      border-color: #fff !important;
+    }
+
+    .rarity-gold {
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.44), transparent 30%),
+        linear-gradient(145deg, #fff0a8, #eab308 52%, #854d0e) !important;
+      color: #211600 !important;
+      border-color: #fff1a6 !important;
+    }
+
+    .rarity-shiny {
+      background:
+        radial-gradient(circle at 70% 18%, rgba(255,255,255,.85), transparent 8%),
+        radial-gradient(circle at 25% 20%, rgba(255,244,167,.55), transparent 24%),
+        linear-gradient(135deg, #ffe36e 0%, #30a7e8 42%, #fef3c7 62%, #2563eb 100%) !important;
+      border-color: #fff7bf !important;
+      box-shadow:
+        0 0 24px rgba(56,189,248,.65),
+        0 24px 70px rgba(0,0,0,.48),
+        inset 0 0 28px rgba(255,255,255,.45) !important;
+      animation: shinyPulse 2.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes shinyPulse {
+      to { filter: saturate(1.2) brightness(1.08); box-shadow: 0 0 42px rgba(250,204,21,.5), 0 0 34px rgba(56,189,248,.55), 0 24px 70px rgba(0,0,0,.48); }
+    }
+
+    .rarity-champion {
+      background:
+        radial-gradient(circle at 50% 15%, rgba(250,204,21,.32), transparent 30%),
+        linear-gradient(145deg, #171717, #713f12 58%, #020617) !important;
+      border-color: #fde047 !important;
+      box-shadow: 0 0 36px rgba(250,204,21,.35), 0 24px 70px rgba(0,0,0,.5) !important;
+    }
+
+    .rarity-goat {
+      background:
+        radial-gradient(circle at 48% 12%, rgba(255,255,255,.58), transparent 25%),
+        linear-gradient(145deg, #f9a8d4, #ec4899 45%, #a855f7 100%) !important;
+      border-color: #fce7f3 !important;
+      box-shadow: 0 0 38px rgba(244,114,182,.56), 0 24px 70px rgba(0,0,0,.5) !important;
+    }
+
+    .card-top {
+      position: absolute;
+      inset: 22px 22px auto;
+      display: flex;
+      justify-content: space-between;
+      z-index: 3;
+    }
+
+    .rating-block {
+      width: 80px;
+      min-height: 88px;
+      padding: 8px 8px 6px;
+      display: grid;
+      place-items: center;
+      border: 2px solid currentColor;
+      border-radius: 18px;
+      background: rgba(255,255,255,.13);
+      backdrop-filter: blur(9px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .overall {
+      font-size: 2.25rem;
+      font-weight: 1000;
+      line-height: .9;
+    }
+
+    .position-label {
+      font-size: 1.05rem;
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-align: center;
+      line-height: 1.05;
+    }
+
+    .position-label.multi-position {
+      font-size: .72rem;
+      letter-spacing: .02em;
+    }
+
+    .rarity-label {
+      align-self: start;
+      max-width: 150px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 1000;
+      text-align: center;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .avatar-zone {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 20%;
+      height: 49%;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+
+    .avatar-zone svg { width: 100%; height: 100%; filter: drop-shadow(0 16px 18px rgba(0,0,0,.26)); }
+
+    .player-name {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 30%;
+      z-index: 4;
+      font-size: 1.35rem;
+      font-weight: 1000;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      text-shadow: 0 2px 7px rgba(0,0,0,.42);
+    }
+
+    .stat-strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 29%;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      align-items: center;
+      padding: 18px 12px 16px;
+      z-index: 5;
+      border-top: 2px solid rgba(255,255,255,.42);
+      background: rgba(5, 10, 18, .36);
+      backdrop-filter: blur(12px);
+    }
+
+    .stat {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .stat-emoji {
+      display: block;
+      font-size: 1.28rem;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
+    }
+
+    .stat-value {
+      display: block;
+      margin-top: 2px;
+      font-size: 1.5rem;
+      font-weight: 1000;
+    }
+
+    .stat-name {
+      display: block;
+      margin-top: 1px;
+      font-size: .66rem;
+      font-weight: 900;
+      line-height: 1.1;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .rolling-flash { animation: rollFlash .14s linear infinite alternate; }
+    @keyframes rollFlash { to { transform: scale(1.06); filter: brightness(1.35); } }
+
+    .roll-controls {
+      width: 100%;
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .roll-controls button { min-height: 52px; }
+
+    .roll-log {
+      padding: 22px;
+    }
+
+    .roll-log h2 { margin: 0 0 8px; }
+    .roll-log > p { color: var(--muted); margin-top: 0; }
+
+    .step-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 52px;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .step-row.active {
+      border-color: rgba(74,222,128,.7);
+      box-shadow: 0 0 0 3px rgba(74,222,128,.08);
+    }
+
+    .step-row.done { background: rgba(34,197,94,.08); }
+    .step-icon { font-size: 1.3rem; text-align: center; }
+    .step-name { font-weight: 850; }
+    .step-result { font-weight: 1000; color: #d8fce5; }
+
+    .tip-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 16px;
+      color: #dbeafe;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(96,165,250,.24);
+    }
+
+    .customizer-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 430px) minmax(320px, 1fr);
+      gap: 24px;
+    }
+
+    .preview-panel { padding: 22px; display: grid; justify-items: center; }
+    .form-panel { padding: 22px; }
+    .form-panel h2 { margin-top: 0; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: #dbe4f0;
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 45px;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 12px;
+      background: #111c2e;
+      padding: 9px 11px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74,222,128,.12);
+    }
+
+    input[type="color"] { padding: 4px; }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .team-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .team-toolbar h2 { margin: 0 0 4px; }
+    .team-toolbar p { margin: 0; color: var(--muted); }
+
+    .formation-control {
+      min-width: 190px;
+    }
+
+    .team-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(310px, .65fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .pitch-panel { padding: 16px; }
+
+    .pitch {
+      position: relative;
+      min-height: 740px;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,.6);
+      border-radius: 22px;
+      background:
+        linear-gradient(rgba(255,255,255,.07) 50%, transparent 50%),
+        repeating-linear-gradient(90deg, #167c45 0 12.5%, #12723e 12.5% 25%);
+      background-size: 100% 25%, 100% 100%;
+      box-shadow: inset 0 0 50px rgba(0,0,0,.2);
+    }
+
+    .pitch::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,.55);
+    }
+
+    .pitch::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 120px;
+      height: 120px;
+      border: 2px solid rgba(255,255,255,.55);
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+    }
+
+    .slot {
+      position: absolute;
+      z-index: 2;
+      width: 112px;
+      min-height: 146px;
+      transform: translate(-50%,-50%);
+      border: 2px dashed rgba(255,255,255,.48);
+      border-radius: 18px;
+      background: rgba(2,6,23,.24);
+      color: white;
+      padding: 5px;
+    }
+
+    .slot:hover { background: rgba(255,255,255,.1); }
+
+    .slot.empty::after {
+      content: attr(data-position);
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      font-weight: 1000;
+    }
+
+    .slot-remove {
+      position: absolute;
+      right: -7px;
+      top: -7px;
+      z-index: 8;
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e11d48;
+      font-size: .78rem;
+      font-weight: 1000;
+    }
+
+    .mini-card {
+      position: relative;
+      isolation: isolate;
+      min-height: 134px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,.45);
+      border-radius: 15px;
+      background: linear-gradient(145deg, #475569, #0f172a);
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+    }
+
+    .mini-card .mini-rating {
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      z-index: 4;
+      font-size: 1.05rem;
+      font-weight: 1000;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .mini-card .mini-pos {
+      display: block;
+      margin-top: 3px;
+      font-size: .65rem;
+    }
+
+    .mini-avatar {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 12%;
+      height: 70%;
+    }
+
+    .mini-avatar svg { width: 100%; height: 100%; }
+
+    .mini-name {
+      position: absolute;
+      left: 3px;
+      right: 3px;
+      bottom: 5px;
+      z-index: 4;
+      padding: 3px;
+      border-radius: 7px;
+      background: rgba(0,0,0,.35);
+      font-size: .62rem;
+      font-weight: 1000;
+      text-align: center;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .wrong-position {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(190,18,60,.78);
+      font-size: 5rem;
+      font-weight: 1000;
+      text-shadow: 0 5px 14px rgba(0,0,0,.5);
+      backdrop-filter: blur(2px);
+    }
+
+    .subs-panel { padding: 16px; margin-top: 16px; }
+    .subs-panel h3 { margin: 0 0 12px; }
+
+    .subs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+    }
+
+    .sub-slot {
+      min-height: 145px;
+      position: relative;
+      border: 2px dashed rgba(255,255,255,.26);
+      border-radius: 16px;
+      padding: 5px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .sub-slot.empty {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .club-panel { padding: 17px; }
+    .club-panel h2 { margin: 0 0 5px; }
+    .club-panel > p { margin: 0 0 15px; color: var(--muted); }
+
+    .club-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      max-height: 940px;
+      overflow: auto;
+      padding-right: 5px;
+    }
+
+    .club-item {
+      padding: 8px;
+      border: 2px solid transparent;
+      border-radius: 18px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .club-item.selected {
+      border-color: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74,222,128,.1);
+    }
+
+    .club-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 7px;
+      margin-top: 7px;
+    }
+
+    .club-actions button {
+      min-height: 34px;
+      border-radius: 9px;
+      font-size: .76rem;
+      font-weight: 900;
+    }
+
+    .release-button { background: #9f1239; }
+
+    .empty-message {
+      grid-column: 1 / -1;
+      padding: 30px 18px;
+      border: 2px dashed rgba(255,255,255,.15);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .selection-banner {
+      margin-bottom: 14px;
+      padding: 11px 13px;
+      border-radius: 13px;
+      color: #dcfce7;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(74,222,128,.24);
+      font-weight: 800;
+    }
+
+    .hidden { display: none !important; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 100;
+      max-width: min(92vw, 520px);
+      padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      color: white;
+      background: rgba(15,23,42,.94);
+      box-shadow: 0 15px 45px rgba(0,0,0,.4);
+      transform: translate(-50%, 120px);
+      opacity: 0;
+      transition: .28s ease;
+    }
+
+    .toast.show { transform: translate(-50%,0); opacity: 1; }
+
+    .small-note { color: var(--muted); font-size: .86rem; }
+
+    @media (max-width: 1040px) {
+      .roll-layout, .customizer-grid, .team-layout { grid-template-columns: 1fr; }
+      .club-grid { max-height: none; grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .app-shell { padding: 12px; }
+      header { align-items: flex-start; flex-direction: column; }
+      .football-card { width: min(100%, 345px); }
+      .form-grid { grid-template-columns: 1fr; }
+      .club-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .pitch { min-height: 650px; }
+      .slot { width: 92px; min-height: 123px; }
+      .subs-grid { grid-template-columns: repeat(2,1fr); }
+      .stat-name { font-size: .57rem; }
+      .stat-value { font-size: 1.25rem; }
+    }
+
+    @media (max-width: 430px) {
+      .card-stage, .roll-log, .preview-panel, .form-panel { padding: 14px; }
+      .club-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .pitch { min-height: 590px; }
+      .slot { width: 78px; min-height: 108px; padding: 3px; }
+      .mini-card { min-height: 100px; }
+      .mini-name { font-size: .52rem; }
+      .wrong-position { font-size: 3.7rem; }
+    }
+
+    /* Stable no-scroll viewport layout */
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    body { min-height: 0; }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1500px;
+      height: 100vh;
+      height: 100dvh;
+      margin: 0 auto;
+      padding: clamp(8px, 1vw, 14px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    header {
+      min-height: 56px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .brand h1 { font-size: clamp(1.35rem, 2.1vw, 2rem); }
+    .brand p { margin-top: 2px; font-size: clamp(.72rem, 1vw, .9rem); }
+    .top-actions { flex-wrap: nowrap; gap: 7px; }
+    .top-actions button { padding: 9px 12px; white-space: nowrap; font-size: clamp(.72rem, .95vw, .9rem); }
+
+    main, .view { min-height: 0; height: 100%; overflow: hidden; }
+    .view.active { display: block; }
+
+    .panel { min-width: 0; min-height: 0; }
+
+    /* Roll */
+    .roll-layout {
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(330px, 430px) minmax(0, 1fr);
+      gap: clamp(10px, 1.2vw, 18px);
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .card-stage {
+      min-height: 0;
+      padding: clamp(9px, 1vw, 15px);
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .card-stage .football-card,
+    .preview-panel .football-card {
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      aspect-ratio: .72;
+    }
+
+    .roll-controls { margin-top: 8px; gap: 7px; }
+    .roll-controls button { min-height: 42px; padding: 8px 12px; }
+
+    .roll-log {
+      min-height: 0;
+      padding: clamp(10px, 1.15vw, 17px);
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      overflow: hidden;
+    }
+
+    .roll-log h2 { margin: 0 0 2px; font-size: clamp(1.1rem, 1.6vw, 1.45rem); }
+    .roll-log > p { margin: 0 0 5px; font-size: clamp(.72rem, .9vw, .86rem); line-height: 1.25; }
+
+    .step-list {
+      min-height: 0;
+      margin-top: 4px;
+      display: grid;
+      grid-template-rows: repeat(9, minmax(0, 1fr));
+      gap: 5px;
+      overflow: hidden;
+    }
+
+    .step-row {
+      min-height: 0;
+      padding: 4px 10px;
+      grid-template-columns: 32px minmax(0, 1fr) auto;
+    }
+    .step-icon { font-size: 1.08rem; }
+    .step-name, .step-result { font-size: clamp(.76rem, .95vw, .92rem); }
+
+    .tip-box { margin-top: 7px; padding: 8px 10px; font-size: clamp(.68rem, .82vw, .78rem); line-height: 1.25; }
+
+    /* Customizer */
+    .customizer-grid {
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(330px, 430px) minmax(0, 1fr);
+      gap: clamp(10px, 1.2vw, 18px);
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .preview-panel {
+      min-height: 0;
+      padding: clamp(9px, 1vw, 15px);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .form-panel {
+      min-height: 0;
+      padding: clamp(10px, 1.1vw, 17px);
+      overflow: hidden;
+    }
+    .form-panel h2 { margin: 0 0 2px; font-size: clamp(1.1rem, 1.6vw, 1.45rem); }
+    .form-panel > p { margin: 0 0 8px; font-size: .8rem; }
+    .form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 10px; }
+    label { gap: 3px; font-size: clamp(.68rem, .82vw, .78rem); }
+    input, select { min-height: 35px; padding: 5px 8px; font-size: clamp(.72rem, .85vw, .82rem); }
+    .form-actions { margin-top: 9px; gap: 8px; }
+    .form-actions button { padding: 8px 12px; }
+
+    /* Team */
+    #teamView.active {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 9px;
+    }
+
+    .team-toolbar {
+      min-height: 58px;
+      margin: 0;
+      padding: 9px 13px;
+      align-items: center;
+    }
+    .team-toolbar h2 { font-size: 1.25rem; }
+    .team-toolbar p { font-size: .76rem; }
+    .formation-control { min-width: 165px; }
+
+    .team-layout {
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, .5fr);
+      gap: clamp(9px, 1vw, 14px);
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .team-layout > div {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) 124px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .pitch-panel { min-height: 0; padding: 8px; overflow: hidden; }
+    .pitch { width: 100%; height: 100%; min-height: 0; }
+    .slot { width: clamp(70px, 6.3vw, 88px); min-height: clamp(92px, 8.2vw, 112px); padding: 3px; }
+
+    .subs-panel { height: 124px; margin: 0; padding: 7px; overflow: hidden; }
+    .subs-panel h3 { margin: 0 0 4px; font-size: .92rem; }
+    .subs-grid { height: 94px; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .sub-slot { min-height: 0; height: 94px; }
+
+    .club-panel {
+      min-height: 0;
+      padding: 9px;
+      display: grid;
+      grid-template-rows: auto auto auto auto auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+    .club-panel h2 { margin: 0 0 1px; font-size: 1.2rem; }
+    .club-panel > p { margin: 0 0 5px; font-size: .75rem; }
+    .selection-banner { margin: 0 0 5px; padding: 6px 8px; font-size: .7rem; }
+
+    .club-pager {
+      display: grid;
+      grid-template-columns: 30px 1fr 30px;
+      gap: 5px;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .club-pager.hidden { display: none; }
+    .club-pager button { min-height: 27px; border-radius: 8px; font-weight: 900; }
+    .club-pager span { text-align: center; color: var(--muted); font-size: .7rem; font-weight: 850; }
+
+    .club-grid {
+      min-height: 0;
+      max-height: none;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+      gap: 5px;
+      overflow: hidden;
+      padding: 0;
+    }
+    .club-item { min-height: 0; padding: 4px; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+    .club-item .mini-card { min-height: 0; height: 100%; }
+    .club-actions { margin-top: 3px; gap: 4px; }
+    .club-actions button { min-height: 24px; font-size: .62rem; }
+    .mini-name { font-size: .52rem; }
+    .empty-message { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; place-items: center; }
+
+    @media (max-width: 980px) {
+      header { min-height: 50px; }
+      .brand p { display: none; }
+      .top-actions button { padding: 7px 9px; }
+      .roll-layout, .customizer-grid { grid-template-columns: minmax(285px, 38%) minmax(0, 62%); }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .team-layout { grid-template-columns: minmax(0, 1fr) 275px; }
+      .team-toolbar p { display: none; }
+      .club-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-height: 700px) {
+      header { min-height: 46px; margin-bottom: 7px; }
+      .brand p { display: none; }
+      .roll-log > p, .tip-box { display: none; }
+      .form-panel > p { display: none; }
+      .step-list { margin-top: 0; gap: 3px; }
+      .step-row { padding: 2px 8px; }
+      .team-toolbar { min-height: 49px; padding: 6px 10px; }
+      .team-layout > div { grid-template-rows: minmax(0, 1fr) 105px; }
+      .subs-panel { height: 105px; }
+      .subs-grid, .sub-slot { height: 78px; }
+      .slot { width: 70px; min-height: 91px; }
+    }
+
+    @media (max-width: 760px) {
+      .brand { display: none; }
+      header { justify-content: center; }
+      .top-actions { width: 100%; justify-content: center; }
+      .top-actions button { flex: 1; padding: 7px 5px; font-size: .68rem; }
+
+      .roll-layout {
+        grid-template-columns: minmax(0, 1fr) 190px;
+        gap: 7px;
+      }
+      .roll-log { padding: 7px; }
+      .roll-log h2, .roll-log > p, .tip-box { display: none; }
+      .step-name { font-size: .68rem; }
+      .step-result { font-size: .72rem; }
+
+      .customizer-grid { grid-template-columns: minmax(230px, 42%) minmax(0, 58%); gap: 7px; }
+      .preview-panel, .form-panel { padding: 7px; }
+      .form-panel h2, .form-panel > p { display: none; }
+      .form-grid { gap: 4px 6px; }
+      label { font-size: .61rem; }
+      input, select { min-height: 29px; padding: 3px 5px; font-size: .68rem; }
+      .form-actions { margin-top: 5px; }
+      .form-actions button { padding: 6px 7px; font-size: .66rem; }
+
+      .team-layout { grid-template-columns: minmax(0, 1fr) 205px; gap: 6px; }
+      .team-toolbar h2, .team-toolbar p { display: none; }
+      .team-toolbar { min-height: 43px; justify-content: flex-end; }
+      .formation-control { min-width: 140px; }
+      .team-layout > div { grid-template-rows: minmax(0, 1fr) 90px; }
+      .subs-panel { height: 90px; }
+      .subs-grid, .sub-slot { height: 65px; }
+      .subs-panel h3 { font-size: .68rem; }
+      .slot { width: 57px; min-height: 75px; }
+      .club-panel { padding: 6px; }
+      .club-panel h2 { font-size: .9rem; }
+      .club-panel > p { display: none; }
+      .club-grid { gap: 3px; }
+      .club-actions button { min-height: 20px; font-size: .52rem; padding: 2px; }
+    }
+
+
+    .playstyle-stack {
+      position: absolute;
+      left: 10px;
+      top: 31%;
+      z-index: 7;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .playstyle-badge {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(255,255,255,.8);
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(145deg, rgba(15,23,42,.94), rgba(51,65,85,.92));
+      box-shadow: 0 5px 12px rgba(0,0,0,.32), inset 0 0 10px rgba(255,255,255,.08);
+      font-size: 1.12rem;
+      line-height: 1;
+    }
+
+    .playstyle-badge.plus {
+      border-radius: 50%;
+      color: #251600;
+      border-color: #fff7b2;
+      background: radial-gradient(circle at 35% 30%, #fff7b2, #facc15 48%, #a16207);
+      box-shadow: 0 0 15px rgba(250,204,21,.58), 0 5px 12px rgba(0,0,0,.32);
+    }
+
+    .playstyle-badge.revealing {
+      animation: playstylePop .42s cubic-bezier(.2,.9,.25,1.3);
+    }
+
+    @keyframes playstylePop {
+      0% { transform: scale(.3) rotate(-16deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    .mini-playstyle-stack {
+      position: absolute;
+      left: 3px;
+      top: 35px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mini-playstyle-stack .playstyle-badge {
+      width: 15px;
+      height: 15px;
+      border-width: 1px;
+      border-radius: 4px;
+      font-size: .58rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,.28);
+    }
+
+    .mini-playstyle-stack .playstyle-badge.plus {
+      border-radius: 50%;
+    }
+
+    .team-heading {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .squad-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(74px, 1fr));
+      gap: 7px;
+    }
+
+    .summary-chip {
+      min-width: 0;
+      padding: 6px 9px;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 11px;
+      text-align: center;
+      background: rgba(255,255,255,.045);
+    }
+
+    .summary-chip strong {
+      display: block;
+      color: #dcfce7;
+      font-size: .95rem;
+      line-height: 1.05;
+    }
+
+    .summary-chip span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .58rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .team-toolbar-actions {
+      display: flex;
+      align-items: end;
+      gap: 7px;
+    }
+
+    .team-toolbar-actions button {
+      min-height: 36px;
+      padding: 7px 10px;
+      white-space: nowrap;
+      font-size: .73rem;
+    }
+
+    .club-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .club-heading h2 {
+      margin: 0 0 1px;
+    }
+
+    .club-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .72rem;
+    }
+
+    .club-filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+
+    .club-filter-row select {
+      min-height: 30px;
+      padding: 4px 6px;
+      font-size: .66rem;
+    }
+
+    @media (max-width: 980px) {
+      .squad-summary {
+        grid-template-columns: repeat(2, minmax(65px, 1fr));
+      }
+
+      .team-heading > div:first-child {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .playstyle-stack {
+        left: 5px;
+        gap: 3px;
+      }
+
+      .playstyle-badge {
+        width: 25px;
+        height: 25px;
+        font-size: .82rem;
+      }
+
+      .squad-summary {
+        grid-template-columns: repeat(4, minmax(45px, 1fr));
+        gap: 3px;
+      }
+
+      .summary-chip {
+        padding: 4px;
+      }
+
+      .summary-chip strong {
+        font-size: .72rem;
+      }
+
+      .summary-chip span {
+        display: none;
+      }
+
+      .team-toolbar-actions button {
+        padding: 5px 6px;
+        font-size: .58rem;
+      }
+
+      .club-filter-row {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+    }
+
+
+    /* Keep every starter card and its remove button fully inside the pitch. */
+    #teamView,
+    #teamView .team-layout,
+    #teamView .team-layout > div,
+    #teamView .pitch-panel {
+      min-width: 0;
+      min-height: 0;
+    }
+
+    #teamView .pitch-panel {
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    #teamView .pitch {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    #teamView .slot {
+      width: clamp(62px, 5.6vw, 82px);
+      min-height: clamp(78px, 12vh, 104px);
+      padding: 3px;
+    }
+
+    #teamView .slot .mini-card {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    #teamView .slot-remove {
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      z-index: 20;
+      border: 2px solid rgba(255,255,255,.9);
+      box-shadow: 0 3px 9px rgba(0,0,0,.48);
+    }
+
+    @media (max-height: 700px) {
+      #teamView .pitch-panel {
+        padding: 7px;
+      }
+
+      #teamView .slot {
+        width: clamp(56px, 5vw, 72px);
+        min-height: clamp(70px, 11vh, 88px);
+      }
+    }
+
+    @media (max-width: 760px) {
+      #teamView .slot {
+        width: clamp(52px, 8.5vw, 62px);
+        min-height: clamp(68px, 12vh, 82px);
+      }
+
+      #teamView .slot-remove {
+        top: 2px;
+        right: 2px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+
+    .rarity-icon {
+      color: #2d2108 !important;
+      background:
+        radial-gradient(circle at 52% 12%, rgba(255,255,255,.95), transparent 25%),
+        repeating-linear-gradient(132deg, rgba(255,255,255,.34) 0 3px, transparent 3px 20px),
+        linear-gradient(145deg, #fffdf1 0%, #e7d7a8 42%, #c39a42 70%, #6f4f16 100%) !important;
+      border-color: #fff7c2 !important;
+      box-shadow:
+        0 0 34px rgba(250,204,21,.46),
+        0 24px 70px rgba(0,0,0,.5),
+        inset 0 0 30px rgba(255,255,255,.5) !important;
+    }
+
+    .rarity-icon .stat-strip,
+    .rarity-icon .mini-name {
+      color: white;
+    }
+
+    .rarity-cosmic {
+      color: #f8fafc !important;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255,255,255,.95) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 24%, rgba(103,232,249,.9) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 34% 66%, rgba(244,114,182,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 70% 76%, rgba(255,255,255,.75) 0 1px, transparent 2px),
+        radial-gradient(circle at 48% 28%, rgba(124,58,237,.62), transparent 33%),
+        radial-gradient(circle at 62% 65%, rgba(8,145,178,.5), transparent 36%),
+        linear-gradient(145deg, #020617 0%, #1e1b4b 38%, #581c87 67%, #0e7490 100%) !important;
+      background-size: 70px 70px, 95px 95px, 82px 82px, 110px 110px, auto, auto, auto !important;
+      border-color: #c4b5fd !important;
+      box-shadow:
+        0 0 26px rgba(168,85,247,.68),
+        0 0 48px rgba(34,211,238,.32),
+        0 24px 70px rgba(0,0,0,.55),
+        inset 0 0 34px rgba(255,255,255,.13) !important;
+      animation: cosmicDrift 3.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes cosmicDrift {
+      to {
+        filter: saturate(1.18) brightness(1.08);
+        background-position: 16px 8px, -12px 18px, 10px -10px, -8px 12px, center, center, center;
+      }
+    }
+
+    .sound-controls {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 9px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 13px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .sound-toggle {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border-radius: 9px;
+      background: rgba(15,23,42,.86);
+    }
+
+    #volumeControl {
+      width: 76px;
+      min-height: 0;
+      padding: 0;
+      accent-color: #4ade80;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    @media (max-width: 900px) {
+      #volumeControl {
+        display: none;
+      }
+
+      .sound-controls {
+        padding: 4px;
+      }
+    }
+
+
+    /* v2: accessible navigation, touch/iPad and TV-friendly browser layout. */
+    :focus-visible, .controller-focus {
+      outline: 3px solid #fef08a !important;
+      outline-offset: 3px !important;
+      box-shadow: 0 0 0 6px rgba(250,204,21,.22) !important;
+    }
+    button, select, input, [role="button"] { touch-action: manipulation; }
+    .top-actions { flex-wrap: wrap; }
+    .top-actions .utility-button { min-height: 40px; }
+    .top-actions .utility-button[aria-pressed="true"] { background: #0e7490; }
+    .help-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+      background: rgba(2,6,23,.85);
+      backdrop-filter: blur(12px);
+    }
+    .help-dialog {
+      width: min(620px, 100%);
+      max-height: min(88dvh, 760px);
+      overflow-y: auto;
+      padding: 26px;
+      border-radius: 22px;
+      border: 1px solid rgba(134,239,172,.4);
+      background: #142238;
+      box-shadow: 0 24px 70px rgba(0,0,0,.6);
+    }
+    .help-dialog h2 { margin: 0 0 10px; }
+    .help-dialog h3 { margin: 17px 0 6px; font-size: 1rem; }
+    .help-dialog p { line-height: 1.5; color: #dbeafe; }
+    .help-dialog kbd { display: inline-block; padding: 2px 7px; margin: 1px; border-radius: 6px; border: 1px solid #64748b; background: #263a54; font: inherit; font-size: .86em; }
+    .help-dialog .help-close { margin-top: 10px; min-height: 46px; }
+    .input-hint { color: #cbd5e1; font-size: .75rem; font-weight: 750; }
+    .team-toolbar-actions { flex-wrap: wrap; }
+    /* Fixed-height squad layouts need explicit card heights, not percent heights
+       inside a min-height-only box (otherwise mini cards collapse to 4px). */
+    #teamView .slot { height: clamp(78px, 12vh, 104px); }
+    #teamView .slot .mini-card { height: 100%; min-height: 0; }
+    .sub-slot .mini-card { height: 100%; min-height: 0; width: 100%; }
+    .club-panel { display: flex; flex-direction: column; }
+    .club-grid { flex: 1 1 auto; min-height: 0; }
+    .sub-slot[role="button"] { cursor: pointer; }
+    .slot, .sub-slot { -webkit-tap-highlight-color: rgba(134,239,172,.3); }
+    .toast { pointer-events: none; }
+    @media (hover: none) and (pointer: coarse) {
+      .top-actions button, .roll-controls button, .form-actions button,
+      .team-toolbar-actions button, .club-actions button, .club-pager button,
+      .sound-toggle { min-height: 44px; }
+      input, select { min-height: 44px; font-size: 16px; }
+    }
+    /* iPad portrait, small laptops, phones, and short-window desktop browsers:
+       permit natural scrolling instead of clipping entire sections. */
+    @media (max-width: 1250px), (max-height: 580px) {
+      html, body { height: auto !important; min-height: 100% !important; overflow-x: hidden !important; overflow-y: auto !important; }
+      .app-shell {
+        display: block !important;
+        height: auto !important;
+        min-height: 100dvh;
+        max-width: 960px;
+        overflow: visible !important;
+        padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+      }
+      header { display: flex; min-height: 0; height: auto; overflow: visible; flex-direction: column; gap: 10px; align-items: stretch; margin-bottom: 14px; }
+      .brand { display: block; }
+      .brand h1 { font-size: clamp(1.3rem, 4vw, 1.85rem); }
+      .brand p { display: block; font-size: .8rem; }
+      .top-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 8px; }
+      .top-actions button { flex: 0 1 auto; min-height: 42px; font-size: .8rem; padding: 9px 12px; }
+      .sound-controls { min-height: 42px; }
+      #volumeControl { display: block; }
+      main, .view, .view.active { height: auto !important; min-height: 0; overflow: visible !important; }
+      .roll-layout, .customizer-grid { display: grid; grid-template-columns: minmax(0, 1fr) !important; height: auto !important; overflow: visible !important; gap: 14px; }
+      .card-stage, .preview-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: visible; padding: 18px; }
+      .card-stage .football-card, .preview-panel .football-card {
+        width: min(100%, 340px) !important; height: auto !important;
+        max-height: none !important; aspect-ratio: .72;
+      }
+      .roll-controls { width: min(100%, 440px); margin-top: 14px; }
+      .roll-log { display: block; padding: 17px; overflow: visible; }
+      .roll-log h2, .roll-log > p, .tip-box { display: block; }
+      .step-list { display: grid; margin-top: 12px; grid-template-rows: none; gap: 7px; overflow: visible; }
+      .step-row { min-height: 42px; padding: 8px 11px; }
+      .form-panel { padding: 17px; overflow: visible; }
+      .form-panel h2, .form-panel > p { display: block; }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      label { font-size: .82rem; gap: 5px; }
+      input, select { min-height: 40px; padding: 8px 10px; font-size: 1rem; }
+      .form-actions { gap: 9px; margin-top: 16px; }
+      .form-actions button { font-size: .85rem; padding: 10px 12px; }
+      #teamView.active { display: block; }
+      .team-toolbar { display: flex; flex-wrap: wrap; height: auto; min-height: 0; padding: 12px; margin-bottom: 14px; gap: 10px; justify-content: space-between; }
+      .team-heading { flex-wrap: wrap; }
+      .team-heading > div:first-child { display: block; }
+      .team-toolbar h2 { display: block; font-size: 1.15rem; }
+      .team-toolbar p { display: block; }
+      .team-toolbar-actions { flex-wrap: wrap; align-items: end; }
+      .team-toolbar-actions button { min-height: 40px; font-size: .8rem; }
+      .formation-control { min-width: 150px; }
+      .team-layout { display: grid; grid-template-columns: minmax(0, 1fr) !important; height: auto; overflow: visible; gap: 14px; }
+      .team-layout > div { display: flex; flex-direction: column; gap: 10px; overflow: visible; }
+      .pitch-panel { height: clamp(530px, 75vh, 740px); min-height: 530px; padding: 10px; }
+      .pitch { width: 100%; height: 100%; min-height: 0; }
+      #teamView .slot { width: clamp(60px, 10vw, 82px); height: clamp(80px, 11vh, 104px); min-height: clamp(80px, 11vh, 104px); }
+      .subs-panel { height: auto; min-height: 165px; padding: 10px; }
+      .subs-panel h3 { font-size: 1rem; }
+      .subs-grid { height: auto; min-height: 130px; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+      .sub-slot { height: 130px; min-height: 130px; }
+      .club-panel { display: block; height: auto; padding: 13px; overflow: visible; }
+      .club-panel h2 { font-size: 1.15rem; }
+      .club-panel > p { display: block; }
+      .club-filter-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .club-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); grid-template-rows: none; height: auto; max-height: none; gap: 10px; overflow: visible; }
+      .club-item { min-height: 190px; padding: 7px; grid-template-rows: minmax(130px,1fr) auto; }
+      .club-item .mini-card { min-height: 130px; height: auto; }
+      .club-actions button { min-height: 40px; padding: 8px; font-size: .78rem; }
+      .club-pager { grid-template-columns: 45px 1fr 45px; }
+      .club-pager button { min-height: 40px; }
+      .selection-banner { font-size: .8rem; padding: 9px; }
+    }
+    @media (max-width: 540px) {
+      .brand p { display: none; }
+      .top-actions { gap: 5px; }
+      .top-actions button { font-size: .72rem; padding: 8px; }
+      .luck-display { font-size: .76rem; padding: 8px; }
+      .card-stage .football-card, .preview-panel .football-card { width: min(100%, 320px) !important; }
+      .form-grid { grid-template-columns: minmax(0,1fr); }
+      .team-heading { gap: 6px; }
+      .squad-summary { width: 100%; grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .summary-chip { padding: 6px 3px; }
+      .summary-chip span { display: block; font-size: .53rem; }
+      .team-toolbar-actions { width: 100%; }
+      .formation-control { flex: 1 1 130px; }
+      .pitch-panel { height: 560px; min-height: 560px; padding: 5px; }
+      #teamView .slot { width: clamp(47px, 15vw, 64px); height: 75px; min-height: 75px; }
+      .subs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .club-grid { gap: 7px; }
+      .club-item { min-height: 170px; padding: 4px; grid-template-rows: minmax(110px, 1fr) auto; }
+      .club-item .mini-card { min-height: 110px; }
+      .club-actions { grid-template-columns: 1fr 1fr; }
+      .club-actions button { min-height: 39px; padding: 5px 2px; font-size: .66rem; }
+      .help-dialog { padding: 17px; }
+    }
+    @media (min-width: 1500px) and (min-height: 750px) {
+      .app-shell { max-width: 1850px; padding: clamp(16px, 1.7vw, 30px); }
+      .roll-layout, .customizer-grid { grid-template-columns: minmax(410px, 520px) minmax(0,1fr); }
+      .top-actions button, .roll-controls button, .team-toolbar-actions button { min-height: 50px; font-size: .95rem; }
+      .roll-log .step-row { min-height: 45px; }
+    }
+    @media (min-width: 1251px) and (max-width: 1480px) {
+      .brand { flex: 0 0 350px; }
+      .brand h1 { font-size: 1.35rem; }
+      .brand p { display: none; }
+      .top-actions { flex: 1; flex-wrap: nowrap; gap: 4px; justify-content: flex-end; }
+      .top-actions button { padding: 8px 7px; font-size: .77rem; }
+      .luck-display { padding: 8px; font-size: .82rem; }
+      #volumeControl { width: 48px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+<script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794432550763&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000d20c81f4aca0d87fcba8af01%26fn%3Dindex%252820261111-200254%2529.html%26cd%3Dattachment%26ts%3D498453%26p%3Dfs%26cid%3D1%26sig%3D6ecd14feb62dd27a42fc165afb80bdc371f8a31b0e08a83e8e063471267f2ca6%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-ua=TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE1Ni4wLjAuMCBTYWZhcmkvNTM3LjM2&amp;st-ch-brands=W3siYnJhbmQiOiJOb3Q6QS1CcmFuZCIsInZlcnNpb24iOiI4In0sIHsiYnJhbmQiOiJDaHJvbWl1bSIsInZlcnNpb24iOiIxNTYifSwgeyJicmFuZCI6Ikdvb2dsZSBDaHJvbWUiLCJ2ZXJzaW9uIjoiMTU2In1d&amp;st-ch-mobile=ZmFsc2U=&amp;st-ch-platform=V2luZG93cw==&amp;st-push&amp;st-loc&amp;st-dnt&amp;st-1pcttl=4320"></script><script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794432550763&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;name=Web%20of%20Trust&amp;type=user-script"></script></head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <h1>⚽ RNG Football Card Maker</h1>
+        <p>Roll a player, build an avatar, and assemble your dream squad.</p>
+      </div>
+      <div class="top-actions">
+        <div class="sound-controls" title="Sound effects">
+          <button id="soundToggleButton" class="sound-toggle" type="button" aria-label="Mute sound effects">🔊</button>
+          <input id="volumeControl" type="range" min="0" max="1" step="0.05" value="0.55" aria-label="Sound effects volume" />
+        </div>
+        <div id="luckDisplay" class="luck-display" title="Higher luck gently improves future stat rolls">🍀 Luck 1.0×</div>
+        <button class="nav-button active" data-view="rollView">🎲 Roll</button>
+        <button class="nav-button" data-view="teamView">🏟️ Club & Team</button>
+        <button class="secondary-button utility-button" id="fastRollButton" type="button" aria-pressed="false" title="Toggle shorter reveal animations">⚡ Fast: Off</button>
+        <button class="secondary-button utility-button" id="controlsButton" type="button">🎮 Controls</button>
+        <button class="secondary-button" id="fullscreenButton">⛶ Fullscreen</button>
+        <button class="danger-button" id="resetEverythingButton">🗑️ Reset Save</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="rollView" class="view active">
+        <div class="roll-layout">
+          <div class="panel card-stage">
+            <div id="mainCard" class="football-card">
+              <div class="card-top">
+                <div class="rating-block">
+                  <span id="overallDisplay" class="overall">--</span>
+                  <span id="positionDisplay" class="position-label">---</span>
+                </div>
+                <div id="rarityDisplay" class="rarity-label">Unrolled</div>
+              </div>
+
+              <div id="mainPlaystyles" class="playstyle-stack" aria-label="Player playstyles"></div>
+              <div id="mainAvatar" class="avatar-zone"></div>
+              <div id="cardName" class="player-name">Mystery Player</div>
+
+              <div id="statStrip" class="stat-strip"></div>
+            </div>
+
+            <div class="roll-controls">
+              <button id="rollButton" class="primary-button">🎲 Roll New Card</button>
+              <button id="rerollButton" class="secondary-button hidden">🔁 Completely Reroll</button>
+              <button id="customizeButton" class="primary-button hidden">🎨 Customize This Player</button>
+            </div>
+          </div>
+
+          <div class="panel roll-log">
+            <h2>One-by-one reveal</h2>
+            <p>The card rolls each attribute in order. The position is hidden internally until its reveal, allowing goalkeepers to use goalkeeper stats.</p>
+            <div id="stepList" class="step-list"></div>
+            <div class="tip-box">
+              <strong>Rarity system:</strong> overall determines which rarities are eligible, then luck chooses between overlapping options such as Gold, Shiny, Champion, and GOAT.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="customizeView" class="view">
+        <div class="customizer-grid">
+          <div class="panel preview-panel">
+            <div id="customCard" class="football-card">
+              <div class="card-top">
+                <div class="rating-block">
+                  <span id="customOverall" class="overall">--</span>
+                  <span id="customPosition" class="position-label">---</span>
+                </div>
+                <div id="customRarity" class="rarity-label">Rarity</div>
+              </div>
+              <div id="customPlaystyles" class="playstyle-stack" aria-label="Player playstyles"></div>
+              <div id="customAvatar" class="avatar-zone"></div>
+              <div id="customCardName" class="player-name">Your Player</div>
+              <div id="customStats" class="stat-strip"></div>
+            </div>
+          </div>
+
+          <div class="panel form-panel">
+            <h2>🎨 Customize your player</h2>
+            <p class="small-note">The rolled position, stats, overall, and rarity stay locked. Everything visual is yours.</p>
+
+            <div class="form-grid">
+              <label>
+                Player name
+                <input id="playerNameInput" maxlength="24" value="Your Player" />
+              </label>
+
+              <label>
+                Shirt number
+                <input id="shirtNumberInput" type="number" min="1" max="99" value="10" />
+              </label>
+
+              <label>
+                Face shape
+                <select id="faceInput">
+                  <option value="oval">Oval</option>
+                  <option value="round">Round</option>
+                  <option value="square">Square</option>
+                  <option value="angular">Angular</option>
+                </select>
+              </label>
+
+              <label>
+                Hairstyle
+                <select id="hairStyleInput">
+                  <option value="short">Short</option>
+                  <option value="curls">Curls</option>
+                  <option value="mohawk">Mohawk</option>
+                  <option value="long">Long</option>
+                  <option value="buzz">Buzz cut</option>
+                  <option value="bald">Bald</option>
+                </select>
+              </label>
+
+              <label>
+                Hair colour
+                <input id="hairColorInput" type="color" value="#2b1b12" />
+              </label>
+
+              <label>
+                Skin tone
+                <select id="skinToneInput">
+                  <option value="#f8d9c2">Light</option>
+                  <option value="#e6b98e">Warm</option>
+                  <option value="#c98f65" selected>Medium</option>
+                  <option value="#9a6546">Deep</option>
+                  <option value="#633f2e">Dark</option>
+                </select>
+              </label>
+
+              <label>
+                Facial hair
+                <select id="facialHairInput">
+                  <option value="none">None</option>
+                  <option value="stubble">Stubble</option>
+                  <option value="moustache">Moustache</option>
+                  <option value="beard">Beard</option>
+                  <option value="goatee">Goatee</option>
+                </select>
+              </label>
+
+              <label>
+                Accessory
+                <select id="accessoryInput">
+                  <option value="none">None</option>
+                  <option value="headband">Headband</option>
+                  <option value="glasses">Sport glasses</option>
+                  <option value="earring">Earring</option>
+                  <option value="armband">Captain armband</option>
+                </select>
+              </label>
+
+              <label>
+                Shirt colour
+                <input id="shirtColorInput" type="color" value="#2563eb" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button id="randomizePlayerButton" class="secondary-button">🎲 Randomize</button>
+              <button id="savePlayerButton" class="primary-button">✅ Add Player to Club</button>
+              <button id="backToRollButton" class="secondary-button">← Back to Rolled Card</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="teamView" class="view">
+        <div class="panel team-toolbar">
+          <div class="team-heading">
+            <div>
+              <h2>🏟️ Squad Builder</h2>
+              <p>Select an available player, then place them into a starter or substitute slot.</p>
+            </div>
+            <div class="squad-summary">
+              <div class="summary-chip"><strong id="starterSummary">0/11</strong><span>Starters</span></div>
+              <div class="summary-chip"><strong id="subSummary">0/4</strong><span>Subs</span></div>
+              <div class="summary-chip"><strong id="averageSummary">—</strong><span>Avg OVR</span></div>
+              <div class="summary-chip"><strong id="fitSummary">—</strong><span>Position fit</span></div>
+            </div>
+          </div>
+
+          <div class="team-toolbar-actions">
+            <label class="formation-control">
+              Formation
+              <select id="formationSelect">
+                <option value="4-3-3">4-3-3</option>
+                <option value="4-4-2">4-4-2</option>
+                <option value="4-2-3-1">4-2-3-1</option>
+                <option value="3-5-2">3-5-2</option>
+                <option value="5-3-2">5-3-2</option>
+              </select>
+            </label>
+            <button id="autoFillButton" class="secondary-button" type="button">✨ Auto Pick</button>
+            <button id="clearTeamButton" class="danger-button" type="button">Clear Team</button>
+            <button id="exportSaveButton" class="secondary-button" type="button" title="Download your club save as JSON">⬇ Backup</button>
+            <button id="importSaveButton" class="secondary-button" type="button" title="Restore a previously exported save">⬆ Restore</button>
+            <input id="importSaveInput" type="file" accept=".json,application/json" class="hidden" aria-label="Choose a saved club backup" />
+          </div>
+        </div>
+
+        <div class="team-layout">
+          <div>
+            <div class="panel pitch-panel">
+              <div id="pitch" class="pitch"></div>
+            </div>
+
+            <div class="panel subs-panel">
+              <h3>🪑 Substitutes — 4 slots</h3>
+              <div id="subsGrid" class="subs-grid"></div>
+            </div>
+          </div>
+
+          <aside class="panel club-panel">
+            <div class="club-heading">
+              <div>
+                <h2>🗃️ Available Players</h2>
+                <p id="clubCount">0 players saved</p>
+              </div>
+            </div>
+            <div class="club-filter-row">
+              <select id="clubPositionFilter" aria-label="Filter club by position">
+                <option value="ALL">All positions</option>
+                <option value="ST">ST</option>
+                <option value="LW">LW</option>
+                <option value="RW">RW</option>
+                <option value="LM">LM</option>
+                <option value="RM">RM</option>
+                <option value="CM">CM</option>
+                <option value="LB">LB</option>
+                <option value="RB">RB</option>
+                <option value="CB">CB</option>
+                <option value="GK">GK</option>
+              </select>
+              <select id="clubSortSelect" aria-label="Sort club players">
+                <option value="overall-desc">Highest overall</option>
+                <option value="overall-asc">Lowest overall</option>
+                <option value="newest">Newest</option>
+                <option value="playstyles">Most playstyles</option>
+              </select>
+            </div>
+            <div id="selectionBanner" class="selection-banner hidden"></div>
+            <div id="clubPager" class="club-pager hidden">
+              <button id="clubPrevButton" type="button">←</button>
+              <span id="clubPageLabel">Page 1 / 1</span>
+              <button id="clubNextButton" type="button">→</button>
+            </div>
+            <div id="clubGrid" class="club-grid"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="controlsOverlay" class="help-overlay hidden" role="dialog" aria-modal="true" aria-label="Game controls" aria-hidden="true">
+    <div class="help-dialog">
+      <h2>🎮 Controls &amp; platform tips</h2>
+      <h3>🖥️ PC keyboard and mouse</h3>
+      <p>Click any button, or use <kbd>Tab</kbd> / <kbd>Shift + Tab</kbd> and <kbd>Enter</kbd>. <kbd>Arrow keys</kbd> navigate buttons. <kbd>R</kbd> rolls or rerolls, <kbd>C</kbd> customises a completed card, <kbd>T</kbd> opens your team, <kbd>Esc</kbd> goes back, and <kbd>?</kbd> opens these controls.</p>
+      <h3>🎮 Controller (when supported by the browser)</h3>
+      <p><kbd>D-pad</kbd> / <kbd>left stick</kbd> move focus, <kbd>A / ✕</kbd> select, <kbd>B / ◯</kbd> back, <kbd>X / □</kbd> roll or primary action, <kbd>Y / △</kbd> squad, <kbd>LB / RB</kbd> switch tabs, <kbd>LT / RT</kbd> change club pages and <kbd>Menu / Options</kbd> open controls. Use left/right to change a focused dropdown, and A to move to its next option.</p>
+      <h3>📱 iPad and touch</h3>
+      <p>Tap to interact, scroll to see all sections, and use landscape or portrait. An iPad-compatible Bluetooth controller may work if Safari exposes it to the Gamepad API. You can also add the GitHub Pages site to your Home Screen.</p>
+      <h3>💾 Saves and hosting</h3>
+      <p>Progress saves locally in this browser. Use <strong>Backup</strong> and <strong>Restore</strong> to move it between devices. No automatic cloud sync is included. Xbox Edge may work with controllers; PlayStation and other consoles may restrict opening normal websites.</p>
+      <button id="closeControlsButton" class="primary-button help-close" type="button">Got it ✓</button>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "rngFootballCardMakerV1";
+    const ROLL_STEP_DELAY = 900;
+    const FAST_ROLL_KEY = "rngFootballFastRollV2";
+    let fastRollEnabled = false;
+    try { fastRollEnabled = localStorage.getItem(FAST_ROLL_KEY) === "true"; } catch (error) { /* Storage may be restricted. */ }
+    let storageWarningShown = false;
+
+    const POSITIONS = ["ST", "CB", "LB", "RB", "CM", "LM", "RM", "RW", "LW", "GK"];
+    const OUTFIELD_POSITIONS = POSITIONS.filter(position => position !== "GK");
+
+    const OUTFIELD_STATS = [
+      { key: "pace", label: "Pace", emoji: "⚡" },
+      { key: "shooting", label: "Shooting", emoji: "🎯" },
+      { key: "passing", label: "Passing", emoji: "🦶" },
+      { key: "defending", label: "Defending", emoji: "🛡️" },
+      { key: "physical", label: "Physical", emoji: "💪" }
+    ];
+
+    const GK_STATS = [
+      { key: "diving", label: "Diving", emoji: "🤿" },
+      { key: "catching", label: "Catching", emoji: "🧤" },
+      { key: "kicking", label: "Kicking", emoji: "🦵" },
+      { key: "reflexes", label: "Reflexes", emoji: "⚡" },
+      { key: "positioning", label: "Positioning", emoji: "📍" }
+    ];
+    const OUTFIELD_PLAYSTYLES = [
+      { id: "rapid", name: "Rapid", icon: "⚡", stats: [0] },
+      { id: "finesse", name: "Finesse Shot", icon: "🎯", stats: [1] },
+      { id: "power-shot", name: "Power Shot", icon: "💥", stats: [1, 4] },
+      { id: "incisive-pass", name: "Incisive Pass", icon: "🪡", stats: [2] },
+      { id: "tiki-taka", name: "Tiki Taka", icon: "🔄", stats: [2] },
+      { id: "technical", name: "Technical", icon: "🪄", stats: [0, 2] },
+      { id: "trivela", name: "Trivela", icon: "🌀", stats: [1, 2] },
+      { id: "intercept", name: "Intercept", icon: "🧱", stats: [3] },
+      { id: "anticipate", name: "Anticipate", icon: "🧠", stats: [3] },
+      { id: "bruiser", name: "Bruiser", icon: "🦾", stats: [3, 4] },
+      { id: "aerial", name: "Aerial", icon: "🦅", stats: [3, 4] },
+      { id: "relentless", name: "Relentless", icon: "🔋", stats: [0, 4] }
+    ];
+
+    const GK_PLAYSTYLES = [
+      { id: "far-reach", name: "Far Reach", icon: "🖐️", stats: [0] },
+      { id: "safe-hands", name: "Safe Hands", icon: "🧤", stats: [1] },
+      { id: "long-ball", name: "Long Ball", icon: "🦵", stats: [2] },
+      { id: "cat-reflexes", name: "Cat Reflexes", icon: "🐈", stats: [3] },
+      { id: "sweeper", name: "Sweeper Keeper", icon: "🧭", stats: [4] }
+    ];
+
+
+    const POSITION_WEIGHTS = {
+      ST: [0.22, 0.38, 0.14, 0.06, 0.20],
+      CB: [0.10, 0.05, 0.12, 0.45, 0.28],
+      LB: [0.25, 0.08, 0.22, 0.30, 0.15],
+      RB: [0.25, 0.08, 0.22, 0.30, 0.15],
+      CM: [0.16, 0.15, 0.35, 0.18, 0.16],
+      LM: [0.25, 0.18, 0.30, 0.10, 0.17],
+      RM: [0.25, 0.18, 0.30, 0.10, 0.17],
+      LW: [0.34, 0.26, 0.23, 0.05, 0.12],
+      RW: [0.34, 0.26, 0.23, 0.05, 0.12],
+      GK: [0.25, 0.22, 0.12, 0.28, 0.13]
+    };
+    // Describes the relative stat shape normally associated with each role.
+    // These are used to lean the position roll toward the generated stats
+    // without making the result completely deterministic.
+    const POSITION_FIT_PROFILES = {
+      ST: [0.24, 0.43, 0.14, 0.03, 0.16],
+      CB: [0.08, 0.03, 0.10, 0.52, 0.27],
+      LB: [0.27, 0.06, 0.22, 0.30, 0.15],
+      RB: [0.27, 0.06, 0.22, 0.30, 0.15],
+      CM: [0.14, 0.13, 0.39, 0.19, 0.15],
+      LM: [0.27, 0.18, 0.31, 0.08, 0.16],
+      RM: [0.27, 0.18, 0.31, 0.08, 0.16],
+      LW: [0.36, 0.29, 0.22, 0.03, 0.10],
+      RW: [0.36, 0.29, 0.22, 0.03, 0.10]
+    };
+
+
+    const FORMATIONS = {
+      "4-3-3": [
+        ["LW", 16, 21], ["ST", 50, 17], ["RW", 84, 21],
+        ["CM", 28, 43], ["CM", 50, 49], ["CM", 72, 43],
+        ["LB", 13, 68], ["CB", 37, 73], ["CB", 63, 73], ["RB", 87, 68],
+        ["GK", 50, 88]
+      ],
+      "4-4-2": [
+        ["ST", 35, 18], ["ST", 65, 18],
+        ["LM", 13, 41], ["CM", 39, 47], ["CM", 61, 47], ["RM", 87, 41],
+        ["LB", 13, 68], ["CB", 37, 73], ["CB", 63, 73], ["RB", 87, 68],
+        ["GK", 50, 88]
+      ],
+      "4-2-3-1": [
+        ["ST", 50, 17],
+        ["LW", 18, 35], ["CM", 50, 35], ["RW", 82, 35],
+        ["CM", 37, 55], ["CM", 63, 55],
+        ["LB", 13, 70], ["CB", 37, 75], ["CB", 63, 75], ["RB", 87, 70],
+        ["GK", 50, 89]
+      ],
+      "3-5-2": [
+        ["ST", 35, 18], ["ST", 65, 18],
+        ["LM", 10, 41], ["CM", 31, 45], ["CM", 50, 51], ["CM", 69, 45], ["RM", 90, 41],
+        ["CB", 25, 73], ["CB", 50, 78], ["CB", 75, 73],
+        ["GK", 50, 89]
+      ],
+      "5-3-2": [
+        ["ST", 35, 18], ["ST", 65, 18],
+        ["CM", 28, 45], ["CM", 50, 51], ["CM", 72, 45],
+        ["LB", 8, 68], ["CB", 29, 73], ["CB", 50, 78], ["CB", 71, 73], ["RB", 92, 68],
+        ["GK", 50, 89]
+      ]
+    };
+
+    const defaultAppearance = {
+      face: "oval",
+      hairStyle: "short",
+      hairColor: "#2b1b12",
+      skinTone: "#c98f65",
+      facialHair: "none",
+      accessory: "none",
+      shirtColor: "#2563eb",
+      shirtNumber: 10
+    };
+
+    let state = loadState();
+    let currentRoll = null;
+    let rolling = false;
+    let selectedPlayerId = null;
+    let clubPage = 0;
+    let clubPageCount = 1;
+    const CLUB_PAGE_SIZE = 8;
+
+    const $ = (id) => document.getElementById(id);
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, fastRollEnabled ? Math.max(15, Math.round(ms * .20)) : ms));
+    const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const randomChoice = (items) => items[Math.floor(Math.random() * items.length)];
+    const roundLuck = (value) => Math.round(value * 10) / 10;
+
+    function rollStatWithLuck(luckMultiplier) {
+      // A multiplier above 1 gently biases the hidden RNG upward.
+      // A multiplier below 1 biases it downward. Results always stay within 1–99.
+      const safeLuck = Math.max(1, luckMultiplier);
+      const biasedRoll = Math.pow(Math.random(), 1 / safeLuck);
+      return Math.max(1, Math.min(99, Math.floor(biasedRoll * 99) + 1));
+    }
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (saved && Array.isArray(saved.club) && saved.squad) {
+          return {
+            club: saved.club,
+            luckMultiplier: Number.isFinite(saved.luckMultiplier)
+              ? Math.max(1, roundLuck(saved.luckMultiplier))
+              : 1,
+            rollsSinceGolden: Number.isInteger(saved.rollsSinceGolden)
+              ? Math.max(0, Math.min(7, saved.rollsSinceGolden))
+              : 0,
+            squad: {
+              formation: FORMATIONS[saved.squad.formation] ? saved.squad.formation : "4-3-3",
+              starters: saved.squad.starters || {},
+              subs: Array.isArray(saved.squad.subs) ? saved.squad.subs.slice(0, 4) : [null, null, null, null]
+            }
+          };
+        }
+      } catch (error) {
+        console.warn("Could not load save:", error);
+      }
+      return {
+        club: [],
+        luckMultiplier: 1,
+        rollsSinceGolden: 0,
+        squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
+      };
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        return true;
+      } catch (error) {
+        console.warn("Could not save progress:", error);
+        if (!storageWarningShown) {
+          storageWarningShown = true;
+          toast("Browser storage is blocked or full. Use Backup to keep your club!");
+        }
+        return false;
+      }
+    }
+
+    function updateLuckDisplay(activeRollLuck = null, isGoldenRoll = false) {
+      const display = $("luckDisplay");
+      if (!display) return;
+
+      const baseLuck = Math.max(1, roundLuck(state.luckMultiplier || 1));
+      const rollsCompleted = Math.max(0, Math.min(7, state.rollsSinceGolden || 0));
+      const rollsRemaining = Math.max(0, 7 - rollsCompleted);
+
+      display.classList.toggle("golden-active", isGoldenRoll);
+
+      if (isGoldenRoll && activeRollLuck !== null) {
+        display.textContent = `✨ GOLDEN ${activeRollLuck.toFixed(2)}×`;
+        display.title = `Golden roll: ${baseLuck.toFixed(1)}× luck multiplied by 4.75`;
+      } else {
+        display.textContent = `🍀 ${baseLuck.toFixed(1)}× · Golden in ${rollsRemaining}`;
+        display.title = `${rollsRemaining} normal roll${rollsRemaining === 1 ? "" : "s"} until the next Golden Roll`;
+      }
+    }
+
+    function getPlayerPositions(player) {
+      if (!player) return [];
+      if (Array.isArray(player.positions) && player.positions.length) {
+        return [...new Set(player.positions.filter(position => OUTFIELD_POSITIONS.includes(position) || position === "GK"))];
+      }
+      return player.position ? [player.position] : [];
+    }
+
+    function formatPositions(positions) {
+      return positions.join(" / ");
+    }
+
+    function setPositionText(element, positions) {
+      const list = Array.isArray(positions) ? positions : [positions];
+      element.textContent = formatPositions(list);
+      element.classList.toggle("multi-position", list.length > 1);
+    }
+
+    function playerCanPlayPosition(player, requiredPosition) {
+      return getPlayerPositions(player).includes(requiredPosition);
+    }
+
+    function toast(message) {
+      const element = $("toast");
+      element.textContent = message;
+      element.classList.add("show");
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => element.classList.remove("show"), 2300);
+    }
+
+    const SFX_SETTINGS_KEY = "rngFootballCardSfxV1";
+    let audioContext = null;
+    let masterGain = null;
+    let soundSettings = loadSoundSettings();
+
+    function loadSoundSettings() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(SFX_SETTINGS_KEY));
+        return {
+          enabled: saved?.enabled !== false,
+          volume: Number.isFinite(saved?.volume)
+            ? Math.max(0, Math.min(1, saved.volume))
+            : 0.55
+        };
+      } catch {
+        return { enabled: true, volume: 0.55 };
+      }
+    }
+
+    function saveSoundSettings() {
+      try { localStorage.setItem(SFX_SETTINGS_KEY, JSON.stringify(soundSettings)); }
+      catch (error) { console.warn("Sound settings could not be saved:", error); }
+    }
+
+    function updateSoundControls() {
+      const toggle = $("soundToggleButton");
+      const volume = $("volumeControl");
+      if (!toggle || !volume) return;
+
+      toggle.textContent = soundSettings.enabled ? "🔊" : "🔇";
+      toggle.setAttribute(
+        "aria-label",
+        soundSettings.enabled ? "Mute sound effects" : "Enable sound effects"
+      );
+      volume.value = String(soundSettings.volume);
+      volume.disabled = !soundSettings.enabled;
+
+      if (masterGain && audioContext) {
+        masterGain.gain.setTargetAtTime(
+          soundSettings.enabled ? soundSettings.volume : 0,
+          audioContext.currentTime,
+          0.015
+        );
+      }
+    }
+
+    function ensureAudioContext() {
+      if (!soundSettings.enabled) return null;
+
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        audioContext = new AudioContextClass();
+        masterGain = audioContext.createGain();
+        masterGain.gain.value = soundSettings.volume;
+        masterGain.connect(audioContext.destination);
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+
+      return audioContext;
+    }
+
+    function playTone(frequency, offset = 0, duration = 0.11, type = "sine", level = 0.16) {
+      const context = ensureAudioContext();
+      if (!context || !masterGain) return;
+
+      const start = context.currentTime + offset;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.001, level), start + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      oscillator.connect(gain);
+      gain.connect(masterGain);
+      oscillator.start(start);
+      oscillator.stop(start + duration + 0.025);
+    }
+
+    function playChord(frequencies, offset = 0, duration = 0.18, type = "sine", level = 0.09) {
+      frequencies.forEach((frequency, index) => {
+        playTone(frequency, offset + index * 0.012, duration, type, level);
+      });
+    }
+
+    function playSfx(name, detail = null) {
+      if (!soundSettings.enabled) return;
+
+      switch (name) {
+        case "click":
+          playTone(430, 0, 0.045, "sine", 0.045);
+          break;
+        case "tick":
+          playTone(260 + Math.random() * 90, 0, 0.035, "square", 0.028);
+          break;
+        case "roll":
+          playTone(190, 0, 0.09, "triangle", 0.09);
+          playTone(285, 0.07, 0.09, "triangle", 0.08);
+          playTone(410, 0.14, 0.12, "triangle", 0.07);
+          break;
+        case "golden":
+          [330, 494, 659, 988].forEach((frequency, index) =>
+            playTone(frequency, index * 0.09, 0.22, "sine", 0.11)
+          );
+          break;
+        case "stat":
+          playTone(610, 0, 0.08, "triangle", 0.08);
+          playTone(780, 0.055, 0.1, "sine", 0.06);
+          break;
+        case "playstyle":
+          playChord([440, 554, 659], 0, 0.15, "triangle", 0.065);
+          break;
+        case "playstylePlus":
+          playChord([523, 659, 784, 1047], 0, 0.28, "sine", 0.09);
+          break;
+        case "position":
+          playTone(392, 0, 0.12, "triangle", 0.085);
+          playTone(523, 0.08, 0.16, "triangle", 0.08);
+          break;
+        case "overall":
+          playChord([440, 660], 0, 0.17, "sine", 0.08);
+          break;
+        case "save":
+          [523, 659, 784].forEach((frequency, index) =>
+            playTone(frequency, index * 0.07, 0.16, "sine", 0.075)
+          );
+          break;
+        case "team":
+          playTone(330, 0, 0.1, "triangle", 0.07);
+          playTone(440, 0.07, 0.14, "triangle", 0.065);
+          break;
+        case "remove":
+          playTone(300, 0, 0.09, "triangle", 0.06);
+          playTone(180, 0.07, 0.13, "triangle", 0.055);
+          break;
+        case "shuffle":
+          [310, 470, 390, 560].forEach((frequency, index) =>
+            playTone(frequency, index * 0.035, 0.07, "square", 0.035)
+          );
+          break;
+        case "error":
+          playTone(170, 0, 0.18, "square", 0.07);
+          playTone(135, 0.12, 0.22, "square", 0.06);
+          break;
+        case "rarity": {
+          const raritySounds = {
+            Bronze: { notes: [196], type: "triangle", level: 0.08 },
+            Silver: { notes: [294, 370], type: "sine", level: 0.065 },
+            Gold: { notes: [392, 523, 659], type: "sine", level: 0.075 },
+            Shiny: { notes: [523, 659, 784], type: "triangle", level: 0.08 },
+            Champion: { notes: [330, 494, 659, 831], type: "sine", level: 0.08 },
+            Icon: { notes: [392, 523, 659, 784, 1047], type: "sine", level: 0.085 },
+            Cosmic: { notes: [220, 330, 440, 660, 880], type: "sine", level: 0.075 },
+            GOAT: { notes: [523, 659, 784, 1047, 1319], type: "sine", level: 0.09 }
+          };
+          const sound = raritySounds[detail] || raritySounds.Bronze;
+          sound.notes.forEach((frequency, index) =>
+            playTone(frequency, index * 0.065, 0.26, sound.type, sound.level)
+          );
+          break;
+        }
+      }
+    }
+
+
+    function showView(viewId) {
+      document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === viewId));
+      document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.view === viewId));
+      // Fixed viewport: no page scrolling.
+      if (viewId === "teamView") renderTeam();
+    }
+
+    function weightedChoice(options) {
+      const total = options.reduce((sum, item) => sum + item.weight, 0);
+      let roll = Math.random() * total;
+      for (const item of options) {
+        roll -= item.weight;
+        if (roll <= 0) return item.value;
+      }
+      return options[options.length - 1].value;
+    }
+
+    function determineRarity(overall) {
+      // Overlapping ranges are resolved with weighted luck.
+      if (overall <= 55) return "Bronze";
+      if (overall <= 64) return "Silver";
+
+      if (overall <= 73) {
+        return weightedChoice([
+          { value: "Silver", weight: 78 },
+          { value: "Shiny", weight: 22 }
+        ]);
+      }
+
+      if (overall <= 76) {
+        return weightedChoice([
+          { value: "Silver", weight: 40 },
+          { value: "Gold", weight: 35 },
+          { value: "Shiny", weight: 25 }
+        ]);
+      }
+
+      if (overall <= 88) {
+        return weightedChoice([
+          { value: "Gold", weight: 72 },
+          { value: "Shiny", weight: 28 }
+        ]);
+      }
+
+      if (overall <= 89) {
+        return weightedChoice([
+          { value: "Gold", weight: 35 },
+          { value: "Shiny", weight: 25 },
+          { value: "Champion", weight: 40 }
+        ]);
+      }
+
+      if (overall <= 93) {
+        return weightedChoice([
+          { value: "Gold", weight: 15 },
+          { value: "Shiny", weight: 24 },
+          { value: "Champion", weight: 46 },
+          { value: "Icon", weight: 15 }
+        ]);
+      }
+
+      if (overall <= 95) {
+        return weightedChoice([
+          { value: "Shiny", weight: 18 },
+          { value: "Champion", weight: 40 },
+          { value: "Icon", weight: 30 },
+          { value: "Cosmic", weight: 12 }
+        ]);
+      }
+
+      return weightedChoice([
+        { value: "Shiny", weight: 4 },
+        { value: "Champion", weight: 20 },
+        { value: "Icon", weight: 20 },
+        { value: "Cosmic", weight: 20 },
+        { value: "GOAT", weight: 36 }
+      ]);
+    }
+
+    function calculateOverall(values, position) {
+      const weights = POSITION_WEIGHTS[position];
+      const score = values.reduce((sum, value, index) => sum + value * weights[index], 0);
+      return Math.max(1, Math.min(99, Math.round(score)));
+    }
+
+    function calculatePositionFit(values, position) {
+      const profile = POSITION_FIT_PROFILES[position];
+      // Goalkeepers have separate stat semantics and no outfield fit profile.
+      // Never dereference an undefined profile during Auto Pick.
+      if (!profile) return calculateOverall(values, position);
+      const total = Math.max(1, values.reduce((sum, value) => sum + value, 0));
+      const actualProfile = values.map(value => value / total);
+
+      // Compare the relative shape of the rolled stats with the role profile.
+      const profileDistance = actualProfile.reduce(
+        (sum, share, index) => sum + Math.abs(share - profile[index]),
+        0
+      );
+      const distributionMatch = Math.max(0, 100 - profileDistance * 60);
+      const roleOverall = calculateOverall(values, position);
+
+      // Absolute quality matters, but the shape of the card matters too.
+      return roleOverall * 0.62 + distributionMatch * 0.38;
+    }
+
+    function chooseOutfieldPositionFromStats(values) {
+      const scoredPositions = OUTFIELD_POSITIONS.map(position => ({
+        position,
+        score: calculatePositionFit(values, position)
+      }));
+
+      const bestScore = Math.max(...scoredPositions.map(item => item.score));
+
+      // A softmax-style choice keeps some randomness while strongly preferring
+      // roles that match the card. The tiny floor means surprises remain possible.
+      const choices = scoredPositions.map(item => ({
+        value: item.position,
+        weight: Math.exp((item.score - bestScore) / 4.5) + 0.008
+      }));
+
+      return weightedChoice(choices);
+    }
+
+    function choosePlayablePositions(values, primaryPosition) {
+      if (primaryPosition === "GK") return ["GK"];
+
+      const positions = [primaryPosition];
+      const candidates = OUTFIELD_POSITIONS
+        .filter(position => position !== primaryPosition)
+        .map(position => ({
+          position,
+          score: calculatePositionFit(values, position)
+        }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 4);
+
+      // Most players remain single-position. Secondary positions are more likely
+      // when another role fits the same stat profile closely.
+      const primaryFit = calculatePositionFit(values, primaryPosition);
+      const bestAlternative = candidates[0]?.score ?? 0;
+      const closenessBonus = Math.max(0, Math.min(0.22, (bestAlternative - primaryFit + 9) / 45));
+      const secondPositionChance = 0.30 + closenessBonus;
+
+      if (Math.random() < secondPositionChance && candidates.length) {
+        const bestScore = candidates[0].score;
+        const second = weightedChoice(candidates.map(candidate => ({
+          value: candidate.position,
+          weight: Math.exp((candidate.score - bestScore) / 3.8) + 0.01
+        })));
+        positions.push(second);
+
+        // A smaller chance for an especially versatile player to get a third role.
+        const thirdCandidates = candidates.filter(candidate => candidate.position !== second);
+        if (Math.random() < 0.08 && thirdCandidates.length) {
+          const thirdBest = thirdCandidates[0].score;
+          positions.push(weightedChoice(thirdCandidates.map(candidate => ({
+            value: candidate.position,
+            weight: Math.exp((candidate.score - thirdBest) / 3.5) + 0.006
+          }))));
+        }
+      }
+
+      return positions;
+    }
+
+    function rarityClass(rarity) {
+      return rarity ? `rarity-${rarity.toLowerCase()}` : "";
+    }
+
+    function clearRarityClasses(element) {
+      element.classList.remove(
+        "rarity-bronze", "rarity-silver", "rarity-gold",
+        "rarity-shiny", "rarity-champion", "rarity-icon",
+        "rarity-cosmic", "rarity-goat"
+      );
+    }
+
+    function getStatDefs(position) {
+      return position === "GK" ? GK_STATS : OUTFIELD_STATS;
+    }
+
+    function renderStats(container, statDefs, values = [], activeIndex = -1) {
+      container.innerHTML = statDefs.map((stat, index) => `
+        <div class="stat ${index === activeIndex ? "rolling-flash" : ""}">
+          <span class="stat-emoji">${stat.emoji}</span>
+          <span class="stat-value">${values[index] ?? "--"}</span>
+          <span class="stat-name">${stat.label}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderPlaystyles(container, playstyles = [], revealingIndex = -1) {
+      if (!container) return;
+      container.innerHTML = playstyles.slice(0, 5).map((playstyle, index) => `
+        <div
+          class="playstyle-badge ${playstyle.plus ? "plus" : ""} ${index === revealingIndex ? "revealing" : ""}"
+          title="${escapeHtml(playstyle.name)}${playstyle.plus ? "+" : ""}"
+          aria-label="${escapeHtml(playstyle.name)}${playstyle.plus ? " plus" : ""}"
+        >${playstyle.icon}</div>
+      `).join("");
+    }
+
+    function rollPlayerPlaystyles(isGoalkeeper, rarity, rollLuck, isGoldenRoll) {
+      const pool = isGoalkeeper ? GK_PLAYSTYLES : OUTFIELD_PLAYSTYLES;
+
+      // Chance of at least one Playstyle.
+      // Bronze is strictly 0%; Silver is exactly 1.25%.
+      const firstStyleChance = {
+        Bronze: 0,
+        Silver: 0.0125,
+        Gold: 0.05,
+        Shiny: 0.10,
+        Champion: 0.18,
+        Icon: 0.24,
+        Cosmic: 0.34,
+        GOAT: 0.30
+      }[rarity] ?? 0;
+
+      // Golden rolls provide only a small bonus. Bronze stays locked at 0%.
+      const goldenBonus = rarity === "Bronze" ? 0 : (isGoldenRoll ? 0.035 : 0);
+      const luckBonus = rarity === "Bronze"
+        ? 0
+        : Math.min(0.04, Math.max(0, rollLuck - 1) * 0.0025);
+
+      if (Math.random() >= Math.min(0.42, firstStyleChance + goldenBonus + luckBonus)) {
+        return [];
+      }
+
+      let count = 1;
+
+      // Getting more than one Playstyle is much rarer.
+      const extraChances = {
+        Silver: [0, 0, 0, 0],
+        Gold: [0.08, 0.015, 0.002, 0],
+        Shiny: [0.14, 0.035, 0.008, 0.001],
+        Champion: [0.22, 0.07, 0.02, 0.004],
+        Icon: [0.27, 0.09, 0.025, 0.006],
+        Cosmic: [0.36, 0.16, 0.06, 0.018],
+        GOAT: [0.32, 0.13, 0.045, 0.012]
+      }[rarity] ?? [0, 0, 0, 0];
+
+      for (const chance of extraChances) {
+        if (count >= 5 || Math.random() >= chance) break;
+        count += 1;
+      }
+
+      const plusChance = {
+        Bronze: 0,
+        Silver: 0,
+        Gold: 0.01,
+        Shiny: 0.035,
+        Champion: 0.09,
+        Icon: 0.14,
+        Cosmic: 0.25,
+        GOAT: 0.20
+      }[rarity] ?? 0;
+
+      const available = [...pool];
+      const selected = [];
+
+      while (selected.length < count && available.length) {
+        const index = randomInt(0, available.length - 1);
+        const base = available.splice(index, 1)[0];
+        selected.push({
+          ...base,
+          plus: Math.random() < plusChance
+        });
+      }
+
+      return selected;
+    }
+
+    async function applyPlaystyleRerolls(playstyles, values, statDefs, rollLuck) {
+      for (let playstyleIndex = 0; playstyleIndex < playstyles.length; playstyleIndex++) {
+        const playstyle = playstyles[playstyleIndex];
+        renderPlaystyles($("mainPlaystyles"), playstyles.slice(0, playstyleIndex + 1), playstyleIndex);
+        playSfx(playstyle.plus ? "playstylePlus" : "playstyle");
+
+        for (const statIndex of playstyle.stats) {
+          const attempts = playstyle.plus ? 2 : 1;
+          let bestValue = values[statIndex];
+
+          for (let attempt = 0; attempt < attempts; attempt++) {
+            const boostedLuck = rollLuck * (playstyle.plus ? 1.22 : 1.08);
+            bestValue = Math.max(bestValue, rollStatWithLuck(boostedLuck));
+          }
+
+          await animateNumber(bestValue, value => {
+            values[statIndex] = value;
+            renderStats($("statStrip"), statDefs, values, statIndex);
+          }, 340);
+
+          values[statIndex] = bestValue;
+          renderStats($("statStrip"), statDefs, values);
+        }
+
+        await sleep(260);
+      }
+    }
+
+    function getPlayerPlaystyles(player) {
+      return Array.isArray(player?.playstyles) ? player.playstyles.slice(0, 5) : [];
+    }
+
+    function buildSteps(statDefs) {
+      return [
+        ...statDefs.map(stat => ({ icon: stat.emoji, name: stat.label })),
+        { icon: "🧩", name: "Playstyles" },
+        { icon: "📌", name: "Position" },
+        { icon: "⭐", name: "Overall" },
+        { icon: "🌈", name: "Rarity" }
+      ];
+    }
+
+    function renderStepList(statDefs, results = [], activeIndex = -1) {
+      const steps = buildSteps(statDefs);
+      $("stepList").innerHTML = steps.map((step, index) => `
+        <div class="step-row ${index === activeIndex ? "active" : ""} ${results[index] !== undefined ? "done" : ""}">
+          <div class="step-icon">${step.icon}</div>
+          <div class="step-name">${step.name}</div>
+          <div class="step-result">${results[index] ?? "—"}</div>
+        </div>
+      `).join("");
+    }
+
+    function resetMainCard() {
+      currentRoll = null;
+      clearRarityClasses($("mainCard"));
+      $("mainCard").classList.remove("golden-roll-active");
+      $("overallDisplay").textContent = "--";
+      setPositionText($("positionDisplay"), ["---"]);
+      $("rarityDisplay").textContent = "Unrolled";
+      $("cardName").textContent = "Mystery Player";
+      renderStats($("statStrip"), OUTFIELD_STATS);
+      renderPlaystyles($("mainPlaystyles"), []);
+      renderStepList(OUTFIELD_STATS);
+      renderAvatar($("mainAvatar"), defaultAppearance);
+      $("rerollButton").classList.add("hidden");
+      $("customizeButton").classList.add("hidden");
+      $("rollButton").classList.remove("hidden");
+      $("rollButton").disabled = false;
+      updateLuckDisplay();
+    }
+
+    async function animateNumber(target, update, duration = 560) {
+      if (fastRollEnabled) duration = Math.max(80, Math.round(duration * .24));
+      const start = performance.now();
+      while (performance.now() - start < duration) {
+        update(randomInt(1, 99));
+        await sleep(48);
+      }
+      update(target);
+    }
+
+    async function rollCard() {
+      if (rolling) return;
+      rolling = true;
+      selectedPlayerId = null;
+
+      try {
+
+      // Every full card roll adds +0.1 base luck.
+      state.luckMultiplier = roundLuck((state.luckMultiplier || 1) + 0.1);
+
+      // After seven normal rolls, the next roll becomes Golden and temporarily
+      // multiplies the current base luck by 4.75.
+      const isGoldenRoll = (state.rollsSinceGolden || 0) >= 7;
+      const rollLuck = roundLuck(
+        state.luckMultiplier * (isGoldenRoll ? 4.75 : 1)
+      );
+
+      if (isGoldenRoll) {
+        state.rollsSinceGolden = 0;
+      } else {
+        state.rollsSinceGolden = (state.rollsSinceGolden || 0) + 1;
+      }
+
+      saveState();
+      updateLuckDisplay(rollLuck, isGoldenRoll);
+      $("mainCard").classList.toggle("golden-roll-active", isGoldenRoll);
+      playSfx(isGoldenRoll ? "golden" : "roll");
+
+      $("rollButton").disabled = true;
+      $("rerollButton").classList.add("hidden");
+      $("customizeButton").classList.add("hidden");
+
+      clearRarityClasses($("mainCard"));
+      $("overallDisplay").textContent = "--";
+      setPositionText($("positionDisplay"), ["---"]);
+      $("rarityDisplay").textContent = "Rolling…";
+      $("cardName").textContent = "Mystery Player";
+      renderPlaystyles($("mainPlaystyles"), []);
+      renderAvatar($("mainAvatar"), defaultAppearance);
+
+      // Goalkeepers need a different set of five stat labels, so the card
+      // secretly decides only GK vs outfield here. The actual outfield position
+      // is selected from the completed stat profile after all five rolls.
+      const isGoalkeeperRoll = Math.random() < 0.10;
+      const statDefs = isGoalkeeperRoll ? GK_STATS : OUTFIELD_STATS;
+      const values = Array(5).fill(null);
+      const results = [];
+      renderStats($("statStrip"), statDefs, values);
+      renderStepList(statDefs, results, 0);
+
+      for (let index = 0; index < 5; index++) {
+        const finalValue = rollStatWithLuck(rollLuck);
+        renderStepList(statDefs, results, index);
+        await animateNumber(finalValue, value => {
+          values[index] = value;
+          renderStats($("statStrip"), statDefs, values, index);
+        });
+        values[index] = finalValue;
+        results[index] = finalValue;
+        renderStats($("statStrip"), statDefs, values);
+        renderStepList(statDefs, results, index + 1);
+        playSfx("stat");
+        await sleep(ROLL_STEP_DELAY);
+      }
+
+      // Rarity is secretly decided from the base card before Playstyles.
+      // It remains hidden until the final reveal.
+      const provisionalPosition = isGoalkeeperRoll
+        ? "GK"
+        : chooseOutfieldPositionFromStats(values);
+      const provisionalOverall = calculateOverall(values, provisionalPosition);
+      const playstyleRarity = determineRarity(provisionalOverall);
+
+      // Playstyles are determined before the visible position reveal and reroll
+      // the stats they affect. Playstyle+ gets two improved attempts.
+      renderStepList(statDefs, results, 5);
+      const playstyles = rollPlayerPlaystyles(
+        isGoalkeeperRoll,
+        playstyleRarity,
+        rollLuck,
+        isGoldenRoll
+      );
+
+      if (playstyles.length) {
+        await applyPlaystyleRerolls(playstyles, values, statDefs, rollLuck);
+      } else {
+        renderPlaystyles($("mainPlaystyles"), []);
+        await sleep(350);
+      }
+
+      const plusCount = playstyles.filter(playstyle => playstyle.plus).length;
+      results[5] = playstyles.length
+        ? `${playstyles.length}${plusCount ? ` (${plusCount}+)` : ""}`
+        : "None";
+      renderStepList(statDefs, results, 6);
+      await sleep(ROLL_STEP_DELAY);
+
+      // Position reveal: GK cards remain GK; outfield cards use the final,
+      // playstyle-adjusted stat profile.
+      const rolledPosition = isGoalkeeperRoll
+        ? "GK"
+        : chooseOutfieldPositionFromStats(values);
+      const playablePositions = choosePlayablePositions(values, rolledPosition);
+
+      const revealPool = isGoalkeeperRoll ? POSITIONS : OUTFIELD_POSITIONS;
+      for (let i = 0; i < 14; i++) {
+        setPositionText($("positionDisplay"), [randomChoice(revealPool)]);
+        if (i % 3 === 0) playSfx("tick");
+        await sleep(70);
+      }
+      setPositionText($("positionDisplay"), playablePositions);
+      playSfx("position");
+      results[6] = formatPositions(playablePositions);
+      renderStepList(statDefs, results, 7);
+      await sleep(ROLL_STEP_DELAY);
+
+      // Position-weighted overall uses the primary role.
+      const overall = calculateOverall(values, rolledPosition);
+      // Base rarity determines playstyle chances; the visible rarity must match
+      // the final card after its playstyle rerolls and position reveal.
+      const rarity = overall === provisionalOverall ? playstyleRarity : determineRarity(overall);
+      await animateNumber(overall, value => $("overallDisplay").textContent = value, 650);
+      playSfx("overall");
+      results[7] = overall;
+      renderStepList(statDefs, results, 8);
+
+      // Invisible pity-luck rule:
+      // Every roll already added +0.1 before generating the card.
+      // A 0–94 result keeps that increase, while 95+ resets luck to exactly 1x.
+      if (overall >= 95) {
+        state.luckMultiplier = 1;
+      } else {
+        state.luckMultiplier = Math.max(1, roundLuck(state.luckMultiplier));
+      }
+      saveState();
+      updateLuckDisplay(rollLuck, isGoldenRoll);
+
+      await sleep(ROLL_STEP_DELAY);
+
+      // Rarity reveal
+      const rarityNames = ["Bronze", "Silver", "Gold", "Shiny", "Champion", "Icon", "Cosmic", "GOAT"];
+      for (let i = 0; i < 15; i++) {
+        $("rarityDisplay").textContent = randomChoice(rarityNames);
+        if (i % 3 === 0) playSfx("tick");
+        await sleep(65);
+      }
+      $("rarityDisplay").textContent = rarity;
+      playSfx("rarity", rarity);
+      clearRarityClasses($("mainCard"));
+      $("mainCard").classList.add(rarityClass(rarity));
+      results[8] = rarity;
+      renderStepList(statDefs, results, -1);
+
+      currentRoll = {
+        position: rolledPosition,
+        positions: playablePositions,
+        playstyles,
+        statDefs,
+        values: [...values],
+        overall,
+        rarity,
+        rollLuck,
+        isGoldenRoll
+      };
+
+      rolling = false;
+      $("rollButton").classList.add("hidden");
+      $("rerollButton").classList.remove("hidden");
+      $("customizeButton").classList.remove("hidden");
+      toast(`${rarity} ${overall} ${formatPositions(playablePositions)} rolled!`);
+      } catch (error) {
+        console.error("Card roll failed:", error);
+        rolling = false;
+        $("rollButton").disabled = false;
+        $("rollButton").classList.remove("hidden");
+        $("rerollButton").classList.add("hidden");
+        $("customizeButton").classList.add("hidden");
+        playSfx("error");
+        toast("The roll hit an error and was safely reset.");
+      }
+    }
+
+    function getAppearanceFromForm() {
+      return {
+        face: $("faceInput").value,
+        hairStyle: $("hairStyleInput").value,
+        hairColor: $("hairColorInput").value,
+        skinTone: $("skinToneInput").value,
+        facialHair: $("facialHairInput").value,
+        accessory: $("accessoryInput").value,
+        shirtColor: $("shirtColorInput").value,
+        shirtNumber: Math.max(1, Math.min(99, Number($("shirtNumberInput").value) || 1))
+      };
+    }
+
+    const RANDOM_FIRST_NAMES = [
+      "Alex", "Mateo", "Kai", "Leo", "Noah", "Luca", "Amari", "Theo",
+      "Jude", "Milo", "Rafael", "Nico", "Eli", "Sam", "Dani", "Ibrahim"
+    ];
+
+    const RANDOM_LAST_NAMES = [
+      "Silva", "Morgan", "Santos", "Okafor", "Costa", "Reyes", "Diallo",
+      "Bennett", "Khan", "Martins", "Cole", "Navarro", "Mensah", "Rossi"
+    ];
+
+    const RANDOM_HAIR_COLORS = [
+      "#160f0b", "#2b1b12", "#4a2f20", "#704214", "#8b5a2b",
+      "#c49a6c", "#d7b56d", "#9ca3af", "#7f1d1d"
+    ];
+
+    const RANDOM_SHIRT_COLORS = [
+      "#2563eb", "#dc2626", "#16a34a", "#f59e0b", "#7c3aed",
+      "#db2777", "#0891b2", "#111827", "#f8fafc", "#ea580c"
+    ];
+
+    function setRandomCustomization() {
+      $("playerNameInput").value =
+        `${randomChoice(RANDOM_FIRST_NAMES)} ${randomChoice(RANDOM_LAST_NAMES)}`;
+      $("shirtNumberInput").value = randomInt(1, 99);
+      $("faceInput").value = randomChoice(["oval", "round", "square", "angular"]);
+      $("hairStyleInput").value = randomChoice(["short", "curls", "mohawk", "long", "buzz", "bald"]);
+      $("hairColorInput").value = randomChoice(RANDOM_HAIR_COLORS);
+      $("skinToneInput").value = randomChoice(["#f8d9c2", "#e6b98e", "#c98f65", "#9a6546", "#633f2e"]);
+      $("facialHairInput").value = randomChoice(["none", "stubble", "moustache", "beard", "goatee"]);
+      $("accessoryInput").value = randomChoice(["none", "none", "headband", "glasses", "earring", "armband"]);
+      $("shirtColorInput").value = randomChoice(RANDOM_SHIRT_COLORS);
+      updateCustomizerPreview();
+    }
+
+    function openCustomizer() {
+      if (!currentRoll) return;
+      showView("customizeView");
+      $("playerNameInput").value = "Your Player";
+      $("shirtNumberInput").value = "10";
+      updateCustomizerPreview();
+    }
+
+    function updateCustomizerPreview() {
+      if (!currentRoll) return;
+      const appearance = getAppearanceFromForm();
+      const name = $("playerNameInput").value.trim() || "Your Player";
+      const card = $("customCard");
+
+      clearRarityClasses(card);
+      card.classList.add(rarityClass(currentRoll.rarity));
+      $("customOverall").textContent = currentRoll.overall;
+      setPositionText($("customPosition"), currentRoll.positions || [currentRoll.position]);
+      $("customRarity").textContent = currentRoll.rarity;
+      $("customCardName").textContent = name;
+      renderStats($("customStats"), currentRoll.statDefs, currentRoll.values);
+      renderPlaystyles($("customPlaystyles"), currentRoll.playstyles || []);
+      renderAvatar($("customAvatar"), appearance);
+    }
+
+    function saveCurrentPlayer() {
+      if (!currentRoll) return;
+      const name = $("playerNameInput").value.trim();
+      if (!name) {
+        toast("Please choose a player name.");
+        $("playerNameInput").focus();
+        return;
+      }
+
+      const player = {
+        id: window.crypto && typeof window.crypto.randomUUID === "function" ? window.crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        name,
+        position: currentRoll.position,
+        positions: [...(currentRoll.positions || [currentRoll.position])],
+        playstyles: [...(currentRoll.playstyles || [])],
+        statDefs: currentRoll.statDefs,
+        values: [...currentRoll.values],
+        overall: currentRoll.overall,
+        rarity: currentRoll.rarity,
+        appearance: getAppearanceFromForm(),
+        createdAt: Date.now()
+      };
+
+      state.club.unshift(player);
+      saveState();
+      playSfx("save");
+      toast(`${player.name} joined your club!`);
+      resetMainCard();
+      showView("teamView");
+    }
+
+    function avatarSvg(appearance, uid) {
+      const skin = appearance.skinTone || defaultAppearance.skinTone;
+      const hair = appearance.hairColor || defaultAppearance.hairColor;
+      const shirt = appearance.shirtColor || defaultAppearance.shirtColor;
+      const faceShapes = {
+        oval: '<path d="M92 64 C62 64 50 88 55 120 C59 153 75 170 92 172 C109 170 125 153 129 120 C134 88 122 64 92 64Z"/>',
+        round: '<ellipse cx="92" cy="118" rx="38" ry="48"/>',
+        square: '<path d="M56 78 Q61 62 92 62 Q123 62 128 78 L127 139 Q115 169 92 172 Q69 169 57 139Z"/>',
+        angular: '<path d="M58 74 Q68 60 92 61 Q116 60 126 74 L122 141 L104 167 L92 173 L80 167 L62 141Z"/>'
+      };
+
+      const hairStyles = {
+        short: `<path d="M56 93 Q55 58 92 55 Q129 58 128 94 Q115 74 92 76 Q70 73 56 93Z" fill="${hair}"/>`,
+        curls: `<g fill="${hair}">
+          <circle cx="58" cy="84" r="15"/><circle cx="70" cy="68" r="17"/><circle cx="91" cy="63" r="18"/>
+          <circle cx="112" cy="68" r="17"/><circle cx="126" cy="84" r="15"/><circle cx="76" cy="84" r="15"/><circle cx="106" cy="83" r="15"/>
+        </g>`,
+        mohawk: `<path d="M80 66 Q85 31 93 22 Q104 36 105 68Z" fill="${hair}"/><path d="M62 88 Q70 66 92 65 Q116 67 124 88 Q108 75 92 76 Q76 75 62 88Z" fill="${hair}"/>`,
+        long: `<path d="M52 89 Q54 52 92 52 Q132 54 132 96 L126 154 L112 148 L116 92 Q108 72 92 73 Q74 73 65 93 L70 151 L55 154Z" fill="${hair}"/>`,
+        buzz: `<path d="M58 86 Q62 59 92 58 Q122 60 126 86 Q109 74 92 75 Q74 74 58 86Z" fill="${hair}" opacity=".82"/>`,
+        bald: ""
+      };
+
+      const facialHair = {
+        none: "",
+        stubble: `<path d="M70 137 Q92 158 114 137 Q110 164 92 169 Q74 164 70 137Z" fill="${hair}" opacity=".28"/>`,
+        moustache: `<path d="M77 137 Q84 130 92 137 Q100 130 108 137 Q101 146 92 141 Q83 146 77 137Z" fill="${hair}"/>`,
+        beard: `<path d="M65 130 Q70 166 92 177 Q114 166 119 130 Q112 151 92 155 Q72 151 65 130Z" fill="${hair}" opacity=".95"/>`,
+        goatee: `<path d="M84 145 Q92 151 100 145 L97 169 L92 175 L87 169Z" fill="${hair}"/>`
+      };
+
+      const accessory = {
+        none: "",
+        headband: `<path d="M57 88 Q92 74 127 88" fill="none" stroke="#f8fafc" stroke-width="7"/>`,
+        glasses: `<g fill="none" stroke="#111827" stroke-width="4"><rect x="64" y="103" width="24" height="17" rx="7"/><rect x="96" y="103" width="24" height="17" rx="7"/><path d="M88 110 H96"/></g>`,
+        earring: `<circle cx="126" cy="126" r="5" fill="#fde047" stroke="#fff" stroke-width="2"/>`,
+        armband: `<rect x="140" y="211" width="21" height="14" rx="4" fill="#fde047"/><text x="150.5" y="222" text-anchor="middle" font-size="10" font-weight="900" fill="#111827">C</text>`
+      };
+
+      return `
+        <svg viewBox="0 0 184 260" xmlns="http://www.w3.org/2000/svg" aria-label="Custom football player avatar">
+          <defs>
+            <linearGradient id="shirt-${uid}" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="${shirt}"/>
+              <stop offset=".58" stop-color="${shirt}"/>
+              <stop offset="1" stop-color="#08111f" stop-opacity=".42"/>
+            </linearGradient>
+            <linearGradient id="skin-${uid}" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+              <stop offset=".25" stop-color="${skin}"/>
+              <stop offset="1" stop-color="${skin}"/>
+            </linearGradient>
+            <filter id="shadow-${uid}">
+              <feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".24"/>
+            </filter>
+          </defs>
+
+          <g filter="url(#shadow-${uid})">
+            <path d="M28 260 Q30 202 57 187 Q72 177 78 174 L106 174 Q112 177 127 187 Q154 202 156 260Z"
+              fill="url(#shirt-${uid})"/>
+            <path d="M76 170 L76 190 Q92 203 108 190 L108 170Z" fill="${skin}"/>
+            <g fill="url(#skin-${uid})">${faceShapes[appearance.face] || faceShapes.oval}</g>
+            ${hairStyles[appearance.hairStyle] ?? hairStyles.short}
+
+            <ellipse cx="78" cy="114" rx="4" ry="5" fill="#111827"/>
+            <ellipse cx="106" cy="114" rx="4" ry="5" fill="#111827"/>
+            <circle cx="76.7" cy="112.4" r="1.1" fill="white"/>
+            <circle cx="104.7" cy="112.4" r="1.1" fill="white"/>
+            <path d="M89 119 Q87 131 92 132" fill="none" stroke="#7c4a35" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M79 143 Q92 151 105 143" fill="none" stroke="#5d2632" stroke-width="3" stroke-linecap="round"/>
+            <path d="M69 103 Q77 98 84 102 M100 102 Q107 98 115 103" fill="none" stroke="${hair}" stroke-width="3" stroke-linecap="round"/>
+
+            ${facialHair[appearance.facialHair] ?? ""}
+            ${accessory[appearance.accessory] ?? ""}
+
+            <path d="M49 206 Q66 190 77 188 Q92 199 107 188 Q121 191 136 206" fill="none" stroke="rgba(255,255,255,.48)" stroke-width="4"/>
+            <text x="92" y="242" text-anchor="middle" font-size="37" font-weight="1000" fill="rgba(255,255,255,.9)">
+              ${Number(appearance.shirtNumber) || 1}
+            </text>
+          </g>
+        </svg>
+      `;
+    }
+
+    function renderAvatar(container, appearance) {
+      const uid = Math.random().toString(36).slice(2, 10);
+      container.innerHTML = avatarSvg({ ...defaultAppearance, ...appearance }, uid);
+    }
+
+    function playerById(id) {
+      return state.club.find(player => player.id === id) || null;
+    }
+
+    function createMiniCard(player, requiredPosition = null) {
+      const wrapper = document.createElement("div");
+      wrapper.className = `mini-card ${rarityClass(player.rarity)}`;
+
+      const playablePositions = getPlayerPositions(player);
+      wrapper.innerHTML = `
+        <div class="mini-rating">${player.overall}<span class="mini-pos">${formatPositions(playablePositions)}</span></div>
+        <div class="mini-playstyle-stack"></div>
+        <div class="mini-avatar"></div>
+        <div class="mini-name">${escapeHtml(player.name)}</div>
+        ${requiredPosition && !playerCanPlayPosition(player, requiredPosition) ? '<div class="wrong-position" title="Out of position">!</div>' : ''}
+      `;
+      renderPlaystyles(wrapper.querySelector(".mini-playstyle-stack"), getPlayerPlaystyles(player));
+      renderAvatar(wrapper.querySelector(".mini-avatar"), player.appearance);
+      return wrapper;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[character]);
+    }
+
+    function removePlayerFromSquad(playerId) {
+      for (const key of Object.keys(state.squad.starters)) {
+        if (state.squad.starters[key] === playerId) state.squad.starters[key] = null;
+      }
+      state.squad.subs = state.squad.subs.map(id => id === playerId ? null : id);
+    }
+
+    function assignSelectedToStarter(slotKey) {
+      if (!selectedPlayerId) {
+        toast("Select a player from the club first.");
+        return;
+      }
+      removePlayerFromSquad(selectedPlayerId);
+      state.squad.starters[slotKey] = selectedPlayerId;
+      selectedPlayerId = null;
+      saveState();
+      playSfx("team");
+      renderTeam();
+    }
+
+    function assignSelectedToSub(index) {
+      if (!selectedPlayerId) {
+        toast("Select a player from the club first.");
+        return;
+      }
+      removePlayerFromSquad(selectedPlayerId);
+      state.squad.subs[index] = selectedPlayerId;
+      selectedPlayerId = null;
+      saveState();
+      playSfx("team");
+      renderTeam();
+    }
+
+    function slotKey(index, position) {
+      return `${index}-${position}`;
+    }
+
+    function positionPitchSlots() {
+      const pitch = $("pitch");
+      if (!pitch) return;
+
+      const pitchWidth = pitch.clientWidth;
+      const pitchHeight = pitch.clientHeight;
+      if (!pitchWidth || !pitchHeight) return;
+
+      const edgePadding = 8;
+
+      pitch.querySelectorAll(".slot").forEach(slot => {
+        const desiredX = pitchWidth * (Number(slot.dataset.x) || 50) / 100;
+        const desiredY = pitchHeight * (Number(slot.dataset.y) || 50) / 100;
+        const halfWidth = slot.offsetWidth / 2;
+        const halfHeight = slot.offsetHeight / 2;
+
+        const minX = halfWidth + edgePadding;
+        const maxX = Math.max(minX, pitchWidth - halfWidth - edgePadding);
+        const minY = halfHeight + edgePadding;
+        const maxY = Math.max(minY, pitchHeight - halfHeight - edgePadding);
+
+        slot.style.left = `${Math.min(maxX, Math.max(minX, desiredX))}px`;
+        slot.style.top = `${Math.min(maxY, Math.max(minY, desiredY))}px`;
+      });
+    }
+
+    function renderPitch() {
+      const pitch = $("pitch");
+      pitch.innerHTML = "";
+      const formation = FORMATIONS[state.squad.formation];
+
+      formation.forEach(([position, x, y], index) => {
+        const key = slotKey(index, position);
+        const player = playerById(state.squad.starters[key]);
+
+        const slot = document.createElement("div");
+        slot.className = `slot ${player ? "" : "empty"}`;
+        slot.dataset.position = position;
+        slot.dataset.focusId = `starter-${key}`;
+        slot.dataset.x = x;
+        slot.dataset.y = y;
+        slot.title = player ? `${player.name} — click to replace with selected player` : `Assign ${position}`;
+        slot.setAttribute("role", "button");
+        slot.tabIndex = 0;
+        const activateSlot = () => assignSelectedToStarter(key);
+        slot.addEventListener("click", activateSlot);
+        slot.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            activateSlot();
+          }
+        });
+
+        if (player) {
+          slot.appendChild(createMiniCard(player, position));
+          const remove = document.createElement("button");
+          remove.className = "slot-remove";
+          remove.dataset.focusId = `remove-starter-${key}`;
+          remove.type = "button";
+          remove.textContent = "×";
+          remove.title = `Remove ${player.name} from starters`;
+          remove.setAttribute("aria-label", `Remove ${player.name} from starters`);
+          remove.addEventListener("click", event => {
+            event.stopPropagation();
+            state.squad.starters[key] = null;
+            saveState();
+            playSfx("remove");
+            renderTeam();
+          });
+          slot.appendChild(remove);
+        }
+        pitch.appendChild(slot);
+      });
+
+      requestAnimationFrame(positionPitchSlots);
+    }
+
+    function renderSubs() {
+      const grid = $("subsGrid");
+      grid.innerHTML = "";
+      state.squad.subs = [...state.squad.subs, null, null, null, null].slice(0, 4);
+
+      state.squad.subs.forEach((playerId, index) => {
+        const player = playerById(playerId);
+        const slot = document.createElement("div");
+        slot.className = `sub-slot ${player ? "" : "empty"}`;
+        slot.title = "Activate to assign selected player";
+        slot.dataset.focusId = `sub-${index}`;
+        slot.setAttribute("role", "button");
+        slot.setAttribute("aria-label", `Substitute ${index + 1}${player ? `: ${player.name}` : ": empty"}`);
+        slot.tabIndex = 0;
+        slot.addEventListener("click", () => assignSelectedToSub(index));
+        slot.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            assignSelectedToSub(index);
+          }
+        });
+
+        if (player) {
+          slot.appendChild(createMiniCard(player));
+          const remove = document.createElement("button");
+          remove.className = "slot-remove";
+          remove.dataset.focusId = `remove-sub-${index}`;
+          remove.type = "button";
+          remove.textContent = "×";
+          remove.title = "Remove from substitutes";
+          remove.addEventListener("click", event => {
+            event.stopPropagation();
+            state.squad.subs[index] = null;
+            saveState();
+            playSfx("remove");
+            renderTeam();
+          });
+          slot.appendChild(remove);
+        } else {
+          slot.textContent = `Sub ${index + 1}`;
+        }
+        grid.appendChild(slot);
+      });
+    }
+
+    function renderClub() {
+      const assignedIds = getAssignedPlayerIds();
+      const positionFilter = $("clubPositionFilter")?.value || "ALL";
+      const sortMode = $("clubSortSelect")?.value || "overall-desc";
+
+      let availablePlayers = state.club.filter(player => !assignedIds.has(player.id));
+
+      if (positionFilter !== "ALL") {
+        availablePlayers = availablePlayers.filter(player =>
+          playerCanPlayPosition(player, positionFilter)
+        );
+      }
+
+      availablePlayers.sort((a, b) => {
+        if (sortMode === "overall-asc") return a.overall - b.overall;
+        if (sortMode === "newest") return (b.createdAt || 0) - (a.createdAt || 0);
+        if (sortMode === "playstyles") {
+          return getPlayerPlaystyles(b).length - getPlayerPlaystyles(a).length
+            || b.overall - a.overall;
+        }
+        return b.overall - a.overall;
+      });
+
+      const totalAvailable = state.club.filter(player => !assignedIds.has(player.id)).length;
+      $("clubCount").textContent =
+        `${availablePlayers.length} shown · ${totalAvailable} available · ${assignedIds.size} in team`;
+
+      const grid = $("clubGrid");
+      grid.innerHTML = "";
+
+      if (selectedPlayerId && assignedIds.has(selectedPlayerId)) {
+        selectedPlayerId = null;
+      }
+
+      const selected = playerById(selectedPlayerId);
+      $("selectionBanner").classList.toggle("hidden", !selected);
+      $("selectionBanner").textContent = selected
+        ? `Selected: ${selected.name} (${selected.overall} ${formatPositions(getPlayerPositions(selected))}) · ${getPlayerPlaystyles(selected).length} playstyle${getPlayerPlaystyles(selected).length === 1 ? "" : "s"}`
+        : "";
+
+      clubPageCount = Math.max(1, Math.ceil(availablePlayers.length / CLUB_PAGE_SIZE));
+      clubPage = Math.min(clubPage, clubPageCount - 1);
+      $("clubPager").classList.toggle("hidden", availablePlayers.length <= CLUB_PAGE_SIZE);
+      $("clubPageLabel").textContent = `Page ${clubPage + 1} / ${clubPageCount}`;
+      $("clubPrevButton").disabled = clubPage === 0;
+      $("clubNextButton").disabled = clubPage >= clubPageCount - 1;
+
+      if (!availablePlayers.length) {
+        grid.innerHTML = `<div class="empty-message">${
+          state.club.length
+            ? "No available players match this filter—or everyone is already in the team. 🏟️"
+            : "No players yet. Roll and customize your first card! ⚽"
+        }</div>`;
+        return;
+      }
+
+      const players = availablePlayers.slice(
+        clubPage * CLUB_PAGE_SIZE,
+        (clubPage + 1) * CLUB_PAGE_SIZE
+      );
+
+      players.forEach(player => {
+        const item = document.createElement("div");
+        item.className = `club-item ${selectedPlayerId === player.id ? "selected" : ""}`;
+        item.appendChild(createMiniCard(player));
+
+        const actions = document.createElement("div");
+        actions.className = "club-actions";
+
+        const select = document.createElement("button");
+        select.textContent = selectedPlayerId === player.id ? "Selected ✓" : "Select";
+        select.dataset.focusId = `select-${player.id}`;
+        select.addEventListener("click", () => {
+          selectedPlayerId = selectedPlayerId === player.id ? null : player.id;
+          renderTeam();
+        });
+
+        const release = document.createElement("button");
+        release.className = "release-button";
+        release.textContent = "Release";
+        release.dataset.focusId = `release-${player.id}`;
+        release.addEventListener("click", () => {
+          if (!confirm(`Release ${player.name} from the club?`)) return;
+          removePlayerFromSquad(player.id);
+          state.club = state.club.filter(item => item.id !== player.id);
+          if (selectedPlayerId === player.id) selectedPlayerId = null;
+          clubPage = 0;
+          saveState();
+          renderTeam();
+        });
+
+        actions.append(select, release);
+        item.appendChild(actions);
+        grid.appendChild(item);
+      });
+    }
+
+    function getAssignedPlayerIds() {
+      return new Set([
+        ...Object.values(state.squad.starters).filter(Boolean),
+        ...state.squad.subs.filter(Boolean)
+      ]);
+    }
+
+    function renderTeamSummary() {
+      const formation = FORMATIONS[state.squad.formation];
+      const starterEntries = formation.map(([position], index) => ({
+        position,
+        player: playerById(state.squad.starters[slotKey(index, position)])
+      }));
+
+      const starters = starterEntries.filter(entry => entry.player);
+      const subs = state.squad.subs.map(playerById).filter(Boolean);
+      const everyone = [...starters.map(entry => entry.player), ...subs];
+
+      const average = everyone.length
+        ? Math.round(
+            everyone.reduce((sum, player) => sum + player.overall, 0)
+            / everyone.length
+          )
+        : null;
+
+      const correctStarters = starters.filter(entry =>
+        playerCanPlayPosition(entry.player, entry.position)
+      ).length;
+
+      $("starterSummary").textContent = `${starters.length}/11`;
+      $("subSummary").textContent = `${subs.length}/4`;
+      $("averageSummary").textContent = average ?? "—";
+      $("fitSummary").textContent = starters.length
+        ? `${Math.round(correctStarters / starters.length * 100)}%`
+        : "—";
+    }
+
+    function autoFillTeam() {
+      const formation = FORMATIONS[state.squad.formation];
+      const remaining = [...state.club].sort((a, b) => b.overall - a.overall);
+
+      state.squad.starters = {};
+      state.squad.subs = [null, null, null, null];
+
+      formation.forEach(([requiredPosition], index) => {
+        let chosenIndex = remaining.findIndex(player =>
+          playerCanPlayPosition(player, requiredPosition)
+        );
+
+        if (chosenIndex < 0 && remaining.length) {
+          chosenIndex = remaining.reduce((bestIndex, player, candidateIndex) => {
+            if (bestIndex < 0) return candidateIndex;
+            const currentBest = remaining[bestIndex];
+            const fitFor = candidate => {
+              // Only put a GK outfield (or an outfielder in goal) as a last resort.
+              if ((candidate.position === "GK") !== (requiredPosition === "GK")) return -100;
+              return calculatePositionFit(candidate.values, requiredPosition);
+            };
+            const playerFit = fitFor(player);
+            const bestFit = fitFor(currentBest);
+            return playerFit > bestFit ? candidateIndex : bestIndex;
+          }, -1);
+        }
+
+        if (chosenIndex >= 0) {
+          const [player] = remaining.splice(chosenIndex, 1);
+          state.squad.starters[slotKey(index, requiredPosition)] = player.id;
+        }
+      });
+
+      state.squad.subs = remaining.slice(0, 4).map(player => player.id);
+      while (state.squad.subs.length < 4) state.squad.subs.push(null);
+
+      selectedPlayerId = null;
+      saveState();
+      renderTeam();
+      toast("Best available squad selected.");
+    }
+
+    function clearTeam() {
+      state.squad.starters = {};
+      state.squad.subs = [null, null, null, null];
+      selectedPlayerId = null;
+      saveState();
+      renderTeam();
+      toast("Team cleared. Everyone returned to the available club.");
+    }
+
+    function renderTeam() {
+      const restoreId = document.activeElement?.dataset?.focusId || null;
+      $("formationSelect").value = state.squad.formation;
+      renderPitch();
+      renderSubs();
+      renderClub();
+      renderTeamSummary();
+      if (restoreId) {
+        const replacement = [...document.querySelectorAll("[data-focus-id]")]
+          .find(element => element.dataset.focusId === restoreId);
+        if (replacement) {
+          replacement.focus({ preventScroll: true });
+          replacement.classList.add("controller-focus");
+        }
+      }
+    }
+
+    function changeFormation(newFormation) {
+      if (!FORMATIONS[newFormation] || newFormation === state.squad.formation) return;
+
+      const currentlyAssigned = Object.values(state.squad.starters)
+        .map(playerById)
+        .filter(Boolean);
+
+      state.squad.formation = newFormation;
+      state.squad.starters = {};
+
+      const slots = FORMATIONS[newFormation];
+      const remaining = [...currentlyAssigned];
+
+      // First place natural-position matches.
+      slots.forEach(([position], index) => {
+        const matchingIndex = remaining.findIndex(player => playerCanPlayPosition(player, position));
+        if (matchingIndex >= 0) {
+          state.squad.starters[slotKey(index, position)] = remaining.splice(matchingIndex, 1)[0].id;
+        }
+      });
+
+      // Then keep any remaining players in available slots, showing ! when out of position.
+      slots.forEach(([position], index) => {
+        const key = slotKey(index, position);
+        if (!state.squad.starters[key] && remaining.length) {
+          state.squad.starters[key] = remaining.shift().id;
+        }
+      });
+
+      saveState();
+      renderTeam();
+      toast(`Formation changed to ${newFormation}.`);
+    }
+
+    document.addEventListener("pointerdown", event => {
+      const interactive = event.target.closest("button, select, input[type='range']");
+      if (interactive && interactive.id !== "soundToggleButton") {
+        playSfx("click");
+      }
+    }, true);
+
+    $("soundToggleButton").addEventListener("click", () => {
+      soundSettings.enabled = !soundSettings.enabled;
+      saveSoundSettings();
+      updateSoundControls();
+      if (soundSettings.enabled) playSfx("save");
+    });
+
+    $("volumeControl").addEventListener("input", event => {
+      soundSettings.volume = Math.max(0, Math.min(1, Number(event.target.value)));
+      saveSoundSettings();
+      updateSoundControls();
+      playSfx("click");
+    });
+
+    document.querySelectorAll(".nav-button").forEach(button => {
+      button.addEventListener("click", () => showView(button.dataset.view));
+    });
+
+    $("rollButton").addEventListener("click", rollCard);
+    $("rerollButton").addEventListener("click", rollCard);
+    $("customizeButton").addEventListener("click", openCustomizer);
+    $("randomizePlayerButton").addEventListener("click", () => {
+      setRandomCustomization();
+      playSfx("shuffle");
+    });
+    $("savePlayerButton").addEventListener("click", saveCurrentPlayer);
+    $("backToRollButton").addEventListener("click", () => showView("rollView"));
+    $("formationSelect").addEventListener("change", event => changeFormation(event.target.value));
+    $("autoFillButton").addEventListener("click", autoFillTeam);
+    $("clearTeamButton").addEventListener("click", clearTeam);
+    $("clubPositionFilter").addEventListener("change", () => {
+      clubPage = 0;
+      renderClub();
+    });
+    $("clubSortSelect").addEventListener("change", () => {
+      clubPage = 0;
+      renderClub();
+    });
+
+    [
+      "playerNameInput", "shirtNumberInput", "faceInput", "hairStyleInput",
+      "hairColorInput", "skinToneInput", "facialHairInput",
+      "accessoryInput", "shirtColorInput"
+    ].forEach(id => {
+      $(id).addEventListener("input", updateCustomizerPreview);
+      $(id).addEventListener("change", updateCustomizerPreview);
+    });
+
+    window.addEventListener("resize", () => requestAnimationFrame(positionPitchSlots));
+    document.addEventListener("fullscreenchange", () => requestAnimationFrame(positionPitchSlots));
+
+    if (!document.documentElement.requestFullscreen || !document.fullscreenEnabled) {
+      $("fullscreenButton").classList.add("hidden");
+    }
+    $("fullscreenButton").addEventListener("click", async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+          $("fullscreenButton").textContent = "↙ Exit Fullscreen";
+        } else {
+          await document.exitFullscreen();
+          $("fullscreenButton").textContent = "⛶ Fullscreen";
+        }
+      } catch (error) {
+        toast("Fullscreen was blocked by the browser.");
+      }
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      $("fullscreenButton").textContent = document.fullscreenElement ? "↙ Exit Fullscreen" : "⛶ Fullscreen";
+    });
+
+    $("clubPrevButton").addEventListener("click", () => {
+      if (clubPage > 0) {
+        clubPage -= 1;
+        renderClub();
+      }
+    });
+
+    $("clubNextButton").addEventListener("click", () => {
+      if (clubPage < clubPageCount - 1) {
+        clubPage += 1;
+        renderClub();
+      }
+    });
+
+    $("resetEverythingButton").addEventListener("click", () => {
+      if (!confirm("Reset the entire club, squad, and saved data? This cannot be undone.")) return;
+      try { localStorage.removeItem(STORAGE_KEY); }
+      catch (error) { console.warn("Could not clear browser storage:", error); }
+      state = {
+        club: [],
+        luckMultiplier: 1,
+        rollsSinceGolden: 0,
+        squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
+      };
+      selectedPlayerId = null;
+      updateLuckDisplay();
+      resetMainCard();
+      renderTeam();
+      showView("rollView");
+      toast("Save data reset.");
+    });
+
+
+    // Controls and save portability (everything still runs as a static file on GitHub Pages).
+    function updateFastRollButton() {
+      $("fastRollButton").textContent = `⚡ Fast: ${fastRollEnabled ? "On" : "Off"}`;
+      $("fastRollButton").setAttribute("aria-pressed", String(fastRollEnabled));
+    }
+    $("fastRollButton").addEventListener("click", () => {
+      fastRollEnabled = !fastRollEnabled;
+      try { localStorage.setItem(FAST_ROLL_KEY, String(fastRollEnabled)); } catch (error) {}
+      updateFastRollButton();
+      toast(fastRollEnabled ? "Fast reveals enabled." : "Full reveal animations enabled.");
+    });
+    updateFastRollButton();
+
+    let focusBeforeHelp = null;
+    function toggleControls(open) {
+      const overlay = $("controlsOverlay");
+      const shouldOpen = typeof open === "boolean" ? open : overlay.classList.contains("hidden");
+      if (shouldOpen) focusBeforeHelp = document.activeElement;
+      overlay.classList.toggle("hidden", !shouldOpen);
+      overlay.setAttribute("aria-hidden", String(!shouldOpen));
+      if (shouldOpen) $("closeControlsButton").focus({ preventScroll: true });
+      else if (focusBeforeHelp?.isConnected) focusBeforeHelp.focus({ preventScroll: true });
+    }
+    $("controlsButton").addEventListener("click", () => toggleControls(true));
+    $("closeControlsButton").addEventListener("click", () => toggleControls(false));
+    $("controlsOverlay").addEventListener("click", event => {
+      if (event.target === $("controlsOverlay")) toggleControls(false);
+    });
+
+    function downloadBackup() {
+      const backup = { format: "rng-football-card-maker", version: 2, exportedAt: new Date().toISOString(), save: state };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `football-card-save-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      toast("Backup download started. Keep it somewhere safe!");
+    }
+    $("exportSaveButton").addEventListener("click", downloadBackup);
+    $("importSaveButton").addEventListener("click", () => $("importSaveInput").click());
+
+    function normalisePlayer(raw, ids) {
+      if (!raw || typeof raw !== "object") return null;
+      const name = String(raw.name || "").trim().slice(0, 24);
+      const position = POSITIONS.includes(raw.position) ? raw.position : null;
+      if (!name || !position || !Array.isArray(raw.values) || raw.values.length !== 5) return null;
+      const values = raw.values.map(value => Number(value));
+      if (values.some(value => !Number.isInteger(value) || value < 1 || value > 99)) return null;
+      const rawPositions = Array.isArray(raw.positions) ? raw.positions : [position];
+      const positions = [...new Set([position, ...rawPositions.filter(item => POSITIONS.includes(item))])].slice(0, 3);
+      const eligible = position === "GK" ? ["GK"] : positions.filter(item => item !== "GK");
+      const allowedStyles = position === "GK" ? GK_PLAYSTYLES : OUTFIELD_PLAYSTYLES;
+      const playstyles = Array.isArray(raw.playstyles)
+        ? [...new Set(raw.playstyles.map(item => item?.id))].slice(0, 5)
+          .map(id => {
+            const style = allowedStyles.find(item => item.id === id);
+            const original = raw.playstyles.find(item => item?.id === id);
+            return style ? { ...style, plus: original?.plus === true } : null;
+          }).filter(Boolean)
+        : [];
+      const appearance = { ...defaultAppearance };
+      const original = raw.appearance && typeof raw.appearance === "object" ? raw.appearance : {};
+      const options = {
+        face: ["oval", "round", "square", "angular"],
+        hairStyle: ["short", "curls", "mohawk", "long", "buzz", "bald"],
+        facialHair: ["none", "stubble", "moustache", "beard", "goatee"],
+        accessory: ["none", "headband", "glasses", "earring", "armband"]
+      };
+      for (const [field, choices] of Object.entries(options)) {
+        if (choices.includes(original[field])) appearance[field] = original[field];
+      }
+      for (const field of ["hairColor", "shirtColor", "skinTone"]) {
+        if (typeof original[field] === "string" && /^#[a-f0-9]{6}$/i.test(original[field])) appearance[field] = original[field];
+      }
+      const shirtNumber = Number(original.shirtNumber);
+      if (Number.isInteger(shirtNumber) && shirtNumber >= 1 && shirtNumber <= 99) appearance.shirtNumber = shirtNumber;
+      let id = String(raw.id || "").slice(0, 120);
+      if (!id || ids.has(id)) id = `restored-${Date.now()}-${ids.size}-${Math.random().toString(36).slice(2)}`;
+      ids.add(id);
+      const rarities = ["Bronze", "Silver", "Gold", "Shiny", "Champion", "Icon", "Cosmic", "GOAT"];
+      return {
+        id, name, position, positions: eligible,
+        playstyles, statDefs: getStatDefs(position), values,
+        overall: calculateOverall(values, position),
+        rarity: rarities.includes(raw.rarity) ? raw.rarity : "Bronze",
+        appearance, createdAt: Number.isFinite(raw.createdAt) ? raw.createdAt : Date.now()
+      };
+    }
+    $("importSaveInput").addEventListener("change", async event => {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) { toast("Backup file is too large (5 MB limit)."); return; }
+      try {
+        const parsed = JSON.parse(await file.text());
+        const backup = parsed?.format === "rng-football-card-maker" ? parsed.save : parsed;
+        if (!backup || !Array.isArray(backup.club) || !backup.squad || backup.club.length > 5000) {
+          throw new Error("Not a valid Football Card Maker save");
+        }
+        const ids = new Set();
+        const club = backup.club.map(player => normalisePlayer(player, ids));
+        if (club.some(player => !player)) throw new Error("Some players contain invalid data");
+        if (!confirm(`Replace your current club with ${club.length} restored player(s)? Back up your current progress first.`)) return;
+        const validIds = new Set(club.map(player => player.id));
+        const formation = FORMATIONS[backup.squad.formation] ? backup.squad.formation : "4-3-3";
+        const starters = {};
+        const usedIds = new Set();
+        FORMATIONS[formation].forEach(([position], index) => {
+          const key = slotKey(index, position);
+          const id = backup.squad.starters?.[key];
+          if (validIds.has(id) && !usedIds.has(id)) { starters[key] = id; usedIds.add(id); }
+        });
+        const subs = Array.from({ length: 4 }, (_, index) => {
+          const id = backup.squad.subs?.[index];
+          if (validIds.has(id) && !usedIds.has(id)) { usedIds.add(id); return id; }
+          return null;
+        });
+        state = {
+          club,
+          luckMultiplier: Number.isFinite(backup.luckMultiplier) ? Math.max(1, Math.min(1000, roundLuck(backup.luckMultiplier))) : 1,
+          rollsSinceGolden: Number.isInteger(backup.rollsSinceGolden) ? Math.max(0, Math.min(7, backup.rollsSinceGolden)) : 0,
+          squad: { formation, starters, subs }
+        };
+        selectedPlayerId = null;
+        clubPage = 0;
+        saveState();
+        resetMainCard();
+        renderTeam();
+        showView("teamView");
+        toast(`Restored ${club.length} players. ⚽`);
+      } catch (error) {
+        console.warn("Backup import failed:", error);
+        toast("Could not restore. Choose a valid Football Card Maker JSON backup.");
+      }
+    });
+
+    function getVisibleFocusable() {
+      const scope = $("controlsOverlay").classList.contains("hidden") ? document : $("controlsOverlay");
+      return [...scope.querySelectorAll('button:not(:disabled), input:not(:disabled):not([type="file"]):not([type="hidden"]), select:not(:disabled), [role="button"][tabindex="0"]')]
+        .filter(element => !element.classList.contains("hidden") && element.getClientRects().length &&
+          !element.closest(".hidden") && (!element.closest(".view") || element.closest(".view.active")));
+    }
+    function focusElement(element) {
+      if (!element) return;
+      document.querySelectorAll(".controller-focus").forEach(item => item.classList.remove("controller-focus"));
+      element.focus({ preventScroll: true });
+      element.classList.add("controller-focus");
+      element.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+    }
+    function moveFocus(direction) {
+      const focusable = getVisibleFocusable();
+      if (!focusable.length) return;
+      const current = focusable.includes(document.activeElement) ? document.activeElement : null;
+      if (!current) {
+        focusElement($("controlsOverlay").classList.contains("hidden") ?
+          (document.querySelector(".view.active .primary-button:not(.hidden)") || focusable[0]) : focusable[0]);
+        return;
+      }
+      const rect = current.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const candidates = focusable.filter(item => item !== current).map(item => {
+        const r = item.getBoundingClientRect();
+        const dx = r.left + r.width / 2 - cx;
+        const dy = r.top + r.height / 2 - cy;
+        const along = direction === "left" ? -dx : direction === "right" ? dx : direction === "up" ? -dy : dy;
+        const cross = direction === "left" || direction === "right" ? Math.abs(dy) : Math.abs(dx);
+        return { item, along, score: along + cross * 2.2 };
+      }).filter(candidate => candidate.along > 4).sort((a, b) => a.score - b.score);
+      if (candidates[0]) focusElement(candidates[0].item);
+    }
+    function cycleSelect(select, direction) {
+      const options = [...select.options].filter(option => !option.disabled);
+      if (!options.length) return;
+      const index = Math.max(0, options.findIndex(option => option.value === select.value));
+      select.value = options[(index + direction + options.length) % options.length].value;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    function primaryAction() {
+      const view = document.querySelector(".view.active")?.id;
+      if (view === "rollView") {
+        if (!rolling) (currentRoll ? $("rerollButton") : $("rollButton")).click();
+      } else if (view === "customizeView") $("savePlayerButton").click();
+      else if (view === "teamView") $("autoFillButton").click();
+    }
+    function goBack() {
+      if (!$("controlsOverlay").classList.contains("hidden")) { toggleControls(false); return; }
+      showView("rollView");
+    }
+    function switchView(delta) {
+      if (!$("controlsOverlay").classList.contains("hidden")) return;
+      const views = ["rollView", ...(currentRoll ? ["customizeView"] : []), "teamView"];
+      const index = views.indexOf(document.querySelector(".view.active")?.id);
+      showView(views[(index + delta + views.length) % views.length]);
+    }
+    function activateFocused() {
+      const focusable = getVisibleFocusable();
+      const target = focusable.includes(document.activeElement) ? document.activeElement : null;
+      if (!target) { moveFocus("down"); return; }
+      if (target.tagName === "SELECT") { cycleSelect(target, 1); return; }
+      if (target.tagName === "INPUT") { target.focus(); target.click(); return; }
+      target.click();
+    }
+    function navigate(direction) {
+      const target = document.activeElement;
+      if (target?.tagName === "SELECT" && (direction === "left" || direction === "right")) {
+        cycleSelect(target, direction === "left" ? -1 : 1);
+      } else if (target?.tagName === "INPUT" && ["range", "number"].includes(target.type)
+            && (direction === "left" || direction === "right")) {
+        const step = Number(target.step) || 1;
+        const minimum = target.min === "" ? 0 : Number(target.min);
+        const maximum = target.max === "" ? Infinity : Number(target.max);
+        target.value = String(Math.min(maximum, Math.max(minimum, Number(target.value || 0) + (direction === "left" ? -step : step))));
+        target.dispatchEvent(new Event("input", { bubbles: true }));
+        target.dispatchEvent(new Event("change", { bubbles: true }));
+      } else moveFocus(direction);
+    }
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") { event.preventDefault(); goBack(); return; }
+      if (!$("controlsOverlay").classList.contains("hidden")) {
+        if (event.key === "Tab") { /* Keep keyboard focus inside the dialog. */
+          const targets = getVisibleFocusable();
+          const first = targets[0], last = targets[targets.length - 1];
+          if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) {
+            event.preventDefault(); (event.shiftKey ? last : first)?.focus();
+          }
+        }
+        return;
+      }
+      const target = event.target;
+      const typing = target?.matches?.("input, select, textarea, [contenteditable]");
+      if (typing || event.ctrlKey || event.metaKey || event.altKey) return;
+      const key = event.key.toLowerCase();
+      if (event.key.startsWith("Arrow")) {
+        event.preventDefault(); navigate(key.slice(5));
+      } else if (key === "r") {
+        event.preventDefault(); if (!rolling && document.querySelector(".view.active")?.id === "rollView") primaryAction();
+        else showView("rollView");
+      } else if (key === "t") { event.preventDefault(); showView("teamView"); }
+      else if (key === "c" && currentRoll) { event.preventDefault(); openCustomizer(); }
+      else if (key === "?" || (event.key === "/" && event.shiftKey)) { event.preventDefault(); toggleControls(true); }
+    });
+    document.addEventListener("pointerdown", () => {
+      document.querySelectorAll(".controller-focus").forEach(item => item.classList.remove("controller-focus"));
+    }, { passive: true });
+
+    // Standard Gamepad API (A/B/X/Y, D-pad, thumbstick, shoulders and triggers).
+    // Browsers may not expose controllers, especially on console devices.
+    let previousPadButtons = [];
+    let previousPadDirection = "";
+    let lastDirectionMove = 0;
+    window.addEventListener("gamepadconnected", () => toast("Controller connected! Press A / ✕ to select. 🎮"));
+    window.addEventListener("gamepaddisconnected", () => {
+      previousPadButtons = []; previousPadDirection = "";
+      toast("Controller disconnected. Keyboard and touch still work.");
+    });
+    function pollGamepad(now) {
+      try {
+        const pad = typeof navigator.getGamepads === "function" ? [...navigator.getGamepads()].find(item => item?.connected) : null;
+        if (pad) {
+          const pressed = (index) => Boolean(pad.buttons[index]?.pressed || pad.buttons[index]?.value > .55);
+          const buttons = pad.buttons.map((_, index) => pressed(index));
+          const firstPress = index => buttons[index] && !previousPadButtons[index];
+          const dialogOpen = !$("controlsOverlay").classList.contains("hidden");
+          if (firstPress(9)) toggleControls();
+          else if (firstPress(1)) goBack();
+          else if (firstPress(0)) activateFocused();
+          else if (!dialogOpen) {
+            if (firstPress(2)) primaryAction();
+            if (firstPress(3)) showView("teamView");
+            if (firstPress(4)) switchView(-1);
+            if (firstPress(5)) switchView(1);
+            if (firstPress(6) && document.querySelector(".view.active")?.id === "teamView") $("clubPrevButton").click();
+            if (firstPress(7) && document.querySelector(".view.active")?.id === "teamView") $("clubNextButton").click();
+          }
+          previousPadButtons = buttons;
+          const ax = pad.axes[0] || 0, ay = pad.axes[1] || 0;
+          let direction = "";
+          if (pressed(12) || ay < -.65) direction = "up";
+          else if (pressed(13) || ay > .65) direction = "down";
+          else if (pressed(14) || ax < -.65) direction = "left";
+          else if (pressed(15) || ax > .65) direction = "right";
+          if (direction && (direction !== previousPadDirection || now - lastDirectionMove > 200)) {
+            navigate(direction);
+            lastDirectionMove = now;
+          }
+          previousPadDirection = direction;
+        } else {
+          previousPadButtons = [];
+          previousPadDirection = "";
+        }
+      } catch (error) { /* Hide API or disconnected controller shouldn't interrupt the game. */ }
+      requestAnimationFrame(pollGamepad);
+    }
+    if (typeof navigator.getGamepads === "function") requestAnimationFrame(pollGamepad);
+
+    updateSoundControls();
+    updateLuckDisplay();
+    resetMainCard();
+    renderTeam();
+  </script>
+</body>
+</html>
