@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#090f1a" />
+  <meta name="description" content="A premium football card collecting game. Roll and customise player cards, collect your club, and build your ultimate squad." />
+  <script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794434355698&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000c65881f4895bb771ea98c303%26fn%3Dindex%252820261111-220416%2529.html%26cd%3Dattachment%26ts%3D498454%26p%3Dfs%26cid%3D1%26sig%3D54d74ce80cc353b18f4e1c4af2eaa51af7f1d398fe76479e3732f274201de51d%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-ua=TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE1Ni4wLjAuMCBTYWZhcmkvNTM3LjM2&amp;st-ch-brands=W3siYnJhbmQiOiJOb3Q6QS1CcmFuZCIsInZlcnNpb24iOiI4In0sIHsiYnJhbmQiOiJDaHJvbWl1bSIsInZlcnNpb24iOiIxNTYifSwgeyJicmFuZCI6Ikdvb2dsZSBDaHJvbWUiLCJ2ZXJzaW9uIjoiMTU2In1d&amp;st-ch-mobile=ZmFsc2U=&amp;st-ch-platform=V2luZG93cw==&amp;st-push&amp;st-loc&amp;st-dnt&amp;st-1pcttl=4320"></script><script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794434355698&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;name=Web%20of%20Trust&amp;type=user-script"></script><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%230b1a20%22%2F%3E%3Cpath%20d%3D%22M32%207%2052%2016v21c0%2010-8%2017-20%2021C20%2054%2012%2047%2012%2037V16L32%207Z%22%20fill%3D%22none%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%224%22%2F%3E%3Cpath%20d%3D%22m32%2020%2012%208v12l-12%208-12-8V28Z%22%20fill%3D%22%23193d32%22%20stroke%3D%22%23c5fa67%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E" />
+  
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Roll football cards, customise your players and build a dream squad. Works with mouse, keyboard, touch and supported gamepads." />
-  <title>RNG Football Card Maker</title>
+  <title>RNG Football — Card Maker</title>
   <style>
     :root {
       --bg: #08111f;
@@ -1580,34 +1583,419 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     }
-  </style>
-<script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794432550763&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000d20c81f4aca0d87fcba8af01%26fn%3Dindex%252820261111-200254%2529.html%26cd%3Dattachment%26ts%3D498453%26p%3Dfs%26cid%3D1%26sig%3D6ecd14feb62dd27a42fc165afb80bdc371f8a31b0e08a83e8e063471267f2ca6%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-ua=TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE1Ni4wLjAuMCBTYWZhcmkvNTM3LjM2&amp;st-ch-brands=W3siYnJhbmQiOiJOb3Q6QS1CcmFuZCIsInZlcnNpb24iOiI4In0sIHsiYnJhbmQiOiJDaHJvbWl1bSIsInZlcnNpb24iOiIxNTYifSwgeyJicmFuZCI6Ikdvb2dsZSBDaHJvbWUiLCJ2ZXJzaW9uIjoiMTU2In1d&amp;st-ch-mobile=ZmFsc2U=&amp;st-ch-platform=V2luZG93cw==&amp;st-push&amp;st-loc&amp;st-dnt&amp;st-1pcttl=4320"></script><script type="text/javascript" nonce="556f4b0c3ace4af6acaafcbcdfe" src="//local.adguard.org?ts=1794432550763&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;name=Web%20of%20Trust&amp;type=user-script"></script></head>
+  /* ─────────────────────────────────────────────────────────────
+   RNG FOOTBALL / STUDIO EDITION
+   Visual overhaul: no new gameplay mechanics outside Cosmic Roll.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+  --bg: #070c14;
+  --panel: #101927;
+  --panel-2: #152131;
+  --line: rgba(199,226,236,.11);
+  --text: #f4f8f7;
+  --muted: #95a9b4;
+  --accent: #c5fa67;
+  --danger: #fb728e;
+  --warning: #ffcc6b;
+  --ink: #0b1218;
+  --card-radius: 25px;
+  --soft-shadow: 0 20px 65px rgba(0,0,0,.24);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+html { scroll-behavior: smooth; }
+html, body { width:100%; height:auto !important; min-height:100% !important; overflow-x:hidden !important; overflow-y:auto !important; }
+body {
+  min-height:100dvh !important;
+  background: radial-gradient(ellipse 68% 52% at -4% -8%,rgba(42,121,106,.21),transparent 75%),
+              radial-gradient(ellipse 58% 48% at 105% 0%,rgba(68,54,147,.17),transparent 75%),
+              linear-gradient(155deg,#0b141e 0%,#070d15 54%,#0a111a 100%) !important;
+  color:var(--text); -webkit-font-smoothing:antialiased;
+}
+body::before {
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.18;
+  background-image:linear-gradient(rgba(213,250,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(213,250,255,.07) 1px,transparent 1px);
+  background-size:68px 68px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+::selection { background:#b5fa69;color:#0a1418; }
+.app-shell { max-width:1630px !important; width:100% !important; height:auto !important; min-height:100dvh; display:flex !important; flex-direction:column; overflow:visible !important; padding:clamp(15px,2vw,28px) clamp(15px,3vw,44px) 40px !important; }
+main, .view, .view.active { height:auto !important; min-height:0 !important; overflow:visible !important; }
+.view { display:none !important; }
+.view.active { display:block !important; animation:appear .36s ease both; }
+#teamView.active { display:block !important; }
+button { font-weight:760; letter-spacing:-.01em; transition: transform .16s ease, background .16s ease, border-color .16s ease, box-shadow .18s ease, color .16s ease; }
+button:hover:not(:disabled) { transform:translateY(-2px); filter:none; }
+button:active:not(:disabled) { transform:translateY(1px) scale(.99); }
+button:focus-visible, select:focus-visible, input:focus-visible, [role='button']:focus-visible { outline:2px solid var(--accent) !important; outline-offset:3px !important; }
+input, select { accent-color:#c5fa67; }
+.panel { border:1px solid rgba(189,221,221,.11); background:linear-gradient(155deg,rgba(19,31,45,.98),rgba(13,22,34,.98)) !important; box-shadow:var(--soft-shadow); border-radius:24px; backdrop-filter:blur(18px); }
+.hidden {display:none !important;}
+/* Branding + navigation */
+header { display:flex !important; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px; min-height:75px; height:auto; padding:0 0 22px; margin:0 0 21px; overflow:visible; border-bottom:1px solid rgba(186,223,215,.10); }
+.brand { display:flex !important; align-items:center; gap:13px; flex:0 0 auto !important; }
+.brand-mark { display:grid; place-items:center; width:51px; height:57px; flex:0 0 51px; color:#ccff83; background:linear-gradient(140deg,rgba(197,250,103,.14),rgba(69,145,136,.04)); border:1px solid rgba(197,250,103,.25); border-radius:14px; box-shadow:inset 0 0 12px rgba(197,250,103,.07); }
+.brand-mark svg {width:35px; height:35px; filter:drop-shadow(0 0 8px rgba(197,250,103,.18)); }
+.brand-copy {min-width:0;}
+.brand-eyebrow {font-size:.57rem; font-weight:900; letter-spacing:.25em; color:#b9d2cf; margin-bottom:5px; }
+.brand h1 {margin:0; font-size:clamp(1.28rem,1.9vw,1.85rem) !important; font-weight:950; line-height:1; letter-spacing:-.055em; white-space:nowrap; }
+.brand h1 span { color:#c8fa79; }
+.brand p { display:block !important; margin:6px 0 0; font-size:.63rem; font-weight:700; letter-spacing:.14em; color:#829eaa; }
+.brand-separator {color:#b7fa78; padding:0 4px;}
+.top-actions { flex:1 1 660px; display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap !important; }
+.top-actions button {font-size:.75rem !important; padding:11px 13px !important; min-height:41px; white-space:nowrap; border:1px solid rgba(202,225,231,.11); }
+.top-actions button.nav-button {background:rgba(255,255,255,.045);color:#bacbd0;box-shadow:none;border-radius:12px; }
+.top-actions button.nav-button.active {background:#c7fa75;color:#0b1719;border-color:#c7fa75;box-shadow:0 5px 22px rgba(185,251,117,.17);}
+.top-actions button.nav-button:hover:not(.active) {background:rgba(199,250,117,.10);color:#eefedb;border-color:rgba(199,250,117,.32);}
+.top-actions button.secondary-button {background:#1d2a3c; color:#d8e8e9; border-radius:12px;}
+.top-actions button.secondary-button:hover {background:#263950;border-color:rgba(197,250,103,.24);}
+.top-actions button.danger-button {background:rgba(251,114,142,.08);border-color:rgba(251,114,142,.20);color:#ff9daf;border-radius:12px;}
+.top-actions button.danger-button:hover {background:rgba(251,114,142,.18);}
+.sound-controls {min-height:41px; padding:5px 9px; gap:6px; background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);border-radius:11px;}
+.top-actions .sound-toggle { width:28px; height:28px; min-height:28px;padding:0 !important;border:0;background:none;font-size:1rem !important; }
+#volumeControl {display:block;min-height:0;width:54px;accent-color:#c7fa75;}
+.luck-hud {display:flex; align-items:center; gap:8px; min-width:0; }
+.luck-display { min-height:41px; padding:9px 12px; background:#162d2c !important; border:1px solid rgba(148,241,161,.25);border-radius:11px;box-shadow:none; font-size:.69rem; font-weight:850; letter-spacing:.015em; color:#d9fbc2; }
+.luck-display.golden-active {background:linear-gradient(110deg,#564023,#9b681e) !important;color:#fff3ca; border-color:#ffc864;animation:goldenLuckPulse 1.2s ease-in-out infinite alternate; }
+.luck-display.cosmic-active {background:linear-gradient(110deg,#31255f,#16485c) !important;color:#f0d8ff;border-color:#be91ff; box-shadow:0 0 22px rgba(160,100,255,.22);animation:cosmicHud 1.4s ease-in-out infinite alternate;}
+@keyframes cosmicHud {to{box-shadow:0 0 28px rgba(196,141,255,.42),inset 0 0 16px rgba(108,72,211,.18);}}
+.cosmic-meter { width:147px; border:1px solid rgba(178,146,246,.28); background:linear-gradient(145deg,rgba(80,51,133,.23),rgba(12,25,38,.5));border-radius:11px; padding:7px 9px; }
+.cosmic-meter-top {display:flex;justify-content:space-between;align-items:center;gap:3px;margin-bottom:5px;font-size:.56rem;white-space:nowrap;font-weight:880;color:#c8bbfa; }
+.cosmic-label b { color:#f3e9ff; font-weight:950; }
+.cosmic-counter {color:#8796ad;font-variant-numeric:tabular-nums;font-size:.53rem;}
+.cosmic-track {height:4px;border-radius:999px;background:rgba(170,148,243,.15);overflow:hidden;}
+.cosmic-fill {height:100%;background:linear-gradient(90deg,#7b71f8,#d08bf8,#8de9ef);box-shadow:0 0 13px #cf94fa;border-radius:999px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+.cosmic-hud-active .cosmic-meter {border-color:#d4a1ff;box-shadow:0 0 20px rgba(194,141,255,.24);}
+/* Shared headings */
+.view-intro { display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:2px 0 22px; }
+.eyebrow {display:block;color:#b9f878;font-size:.63rem;font-weight:900;letter-spacing:.19em;text-transform:uppercase;line-height:1.5;}
+.kicker-divider {color:#547359;padding:0 5px;}
+.view-intro h2 {font-size:clamp(1.8rem,2.65vw,2.8rem);font-weight:950;letter-spacing:-.06em;line-height:1.05;margin:6px 0 8px;color:#f4f9f7; }
+.view-intro h2 em {font-style:normal;color:#c5fa67;}
+.view-intro p {font-size:.83rem;color:#99aeb6;margin:0;letter-spacing:.005em;}
+.view-intro-tag {display:inline-flex;gap:9px;align-items:center;white-space:nowrap;align-self:center;border:1px solid rgba(176,209,214,.14);border-radius:99px;background:#172534;padding:10px 13px;color:#d6e7e5;letter-spacing:.105em;font-size:.58rem;font-weight:850;}
+.view-intro-tag .mono {color:#7d91a0;padding-left:6px;}
+.signal-dot {width:7px;height:7px;border-radius:50%;background:#c5fa67;box-shadow:0 0 12px rgba(197,250,103,.8);}
+.period {color:#c5fa67;}
+/* Roll layout */
+.roll-layout, .customizer-grid {height:auto !important;display:grid;grid-template-columns:minmax(330px, .82fr) minmax(0,1.18fr) !important;gap:20px;overflow:visible !important;align-items:stretch;}
+.card-stage {display:flex !important;flex-direction:column; align-items:center;justify-content:flex-start; gap:0;padding:17px 18px 18px !important;overflow:hidden;min-height:0;}
+.stage-top {width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.62rem;font-weight:900;letter-spacing:.13em;color:#b4c6c4;}
+.stage-top > span:first-child {display:inline-flex;align-items:center;gap:9px;}
+.stage-orb {width:7px;height:7px;display:inline-block;flex:0 0 7px;border-radius:100%;background:#c5fa67;box-shadow:0 0 0 4px rgba(197,250,103,.1),0 0 10px rgba(197,250,103,.6);}
+.stage-status {font-weight:800;font-size:.58rem;letter-spacing:.08em;color:#92b0aa;text-align:right;}
+.card-spotlight {width:100%; flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:477px;isolation:isolate;padding:17px 15px 10px;}
+.card-spotlight::before {content:"";position:absolute;z-index:-1;inset:8% 2% 7%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse,rgba(96,160,117,.17),rgba(71,132,144,.055) 49%,transparent 69%);filter:blur(18px);}
+.card-spotlight::after {content:"";position:absolute;z-index:-1;width:79%;height:20px;bottom:10px;left:10%;border-radius:50%;background:rgba(0,0,0,.55);filter:blur(13px);}
+.card-stage .football-card, .preview-panel .football-card { width:min(100%, 375px) !important;height:auto !important;max-width:375px !important;max-height:none !important;aspect-ratio:.72;flex:0 0 auto;}
+.football-card { color:#fff !important; border:3px solid #768899; border-radius:var(--card-radius); background:radial-gradient(circle at 40% 25%,#415b6a,#111b30 57%,#0a121b) !important;
+  box-shadow:0 24px 55px rgba(0,0,0,.48),0 0 0 1px rgba(217,234,255,.12),inset 0 0 0 1px rgba(255,255,255,.15);transition:transform .4s ease,box-shadow .4s ease,background .3s ease,border-color .3s ease; }
+.football-card::before {z-index:0;inset:0;opacity:.72;background:radial-gradient(ellipse 50% 45% at 52% 31%,rgba(255,255,255,.16),transparent 75%),linear-gradient(140deg,transparent 15%,rgba(255,255,255,.10) 17%,transparent 19%,transparent 65%,rgba(255,255,255,.08) 67%,transparent 69%),repeating-linear-gradient(130deg,rgba(255,255,255,.025) 0 1px,transparent 1px 16px);}
+.football-card::after {content:"";position:absolute;z-index:1;inset:8px;border-radius:19px;pointer-events:none;border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 0 28px rgba(0,0,0,.11);}
+.football-card .card-top {inset:20px 18px auto;align-items:flex-start;}
+.football-card .rating-block {width:76px;min-height:81px;border:1px solid rgba(255,255,255,.38);background:rgba(10,18,29,.72);color:#fff;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:9px 5px;box-shadow:0 8px 25px rgba(0,0,0,.17);}
+.football-card .overall {font-size:2.35rem;font-weight:1000;letter-spacing:-.075em;line-height:.9;}
+.football-card .position-label {font-size:.78rem;letter-spacing:.08em;font-weight:1000;}
+.football-card .position-label.multi-position {font-size:.60rem;letter-spacing:0;}
+.football-card .rarity-label {max-width:142px;min-height:34px;display:grid;place-items:center;font-weight:950;font-size:.70rem;letter-spacing:.065em;text-transform:uppercase;padding:8px 11px;border:1px solid rgba(255,255,255,.32);background:rgba(11,21,34,.70);color:#f6f9ff;border-radius:10px;}
+.football-card .avatar-zone {top:18%;left:14%;right:14%;height:53%;}
+.football-card .avatar-zone svg {filter:drop-shadow(0 13px 13px rgba(0,0,0,.36));}
+.football-card .player-name {bottom:29%;left:9px;right:9px;font-size:1.35rem;line-height:1.08;color:#fff;font-weight:1000;letter-spacing:.05em;text-shadow:0 3px 11px rgba(0,0,0,.9);}
+.football-card .stat-strip {min-height:29%;padding:16px 10px 14px;gap:2px;color:#fff !important;background:linear-gradient(0deg,rgba(6,12,21,.94),rgba(6,12,21,.78));border-top:1px solid rgba(255,255,255,.25);backdrop-filter:blur(17px);}
+.football-card .stat {position:relative;}
+.football-card .stat + .stat::before {content:"";position:absolute;left:-2px;top:13%;bottom:12%;width:1px;background:rgba(255,255,255,.12);}
+.football-card .stat-emoji {font-size:1.08rem;}
+.football-card .stat-value {font-size:1.58rem;line-height:1.16;letter-spacing:-.06em;}
+.football-card .stat-name {font-size:.50rem;letter-spacing:.015em;color:#c6d0d8;}
+.football-card .playstyle-stack {top:29%;left:12px;gap:5px;}
+.football-card .playstyle-badge {width:32px;height:32px;border:1px solid rgba(255,255,255,.60);background:rgba(10,17,28,.92);border-radius:9px;box-shadow:0 8px 20px rgba(0,0,0,.35);}
+.football-card .playstyle-badge.plus {border-radius:100%;border-color:#ffdd6a;background:radial-gradient(circle at 35% 28%,#fff4a4,#f8bb36 53%,#815009);}
+.football-card.rarity-bronze {background:radial-gradient(circle at 35% 20%,#dfa77a,transparent 39%),linear-gradient(145deg,#ad6b47,#5e332a 58%,#21161e) !important;border-color:#e5ac79 !important;}
+.football-card.rarity-silver {background:radial-gradient(circle at 50% 18%,#e5f7ff,transparent 47%),linear-gradient(142deg,#c3d9e9,#6c8ba6 51%,#273a55) !important;border-color:#e3f7ff !important;}
+.football-card.rarity-gold {background:radial-gradient(circle at 30% 20%,#fff6bb,transparent 38%),linear-gradient(145deg,#ffc945,#af731a 54%,#40261c) !important;border-color:#ffe895 !important;}
+.football-card.rarity-shiny {background:radial-gradient(circle at 65% 17%,rgba(210,255,255,.88),transparent 25%),linear-gradient(140deg,#73cfe2,#2c6bc3 44%,#ba81e2 75%,#26426f) !important;border-color:#a7f7f0 !important;box-shadow:0 0 28px rgba(86,205,239,.32),0 25px 55px rgba(0,0,0,.45) !important;animation:shinyPulse 3.5s ease-in-out infinite alternate;}
+.football-card.rarity-champion {background:radial-gradient(circle at 50% 17%,rgba(254,218,110,.45),transparent 32%),linear-gradient(145deg,#2c3a3c,#2b2b23 49%,#130e18) !important;border-color:#f4d37a !important;box-shadow:0 0 25px rgba(249,196,80,.18),0 25px 55px rgba(0,0,0,.52) !important;}
+.football-card.rarity-icon {background:radial-gradient(circle at 37% 16%,#fffdf5,transparent 43%),linear-gradient(145deg,#ebe6d3,#b6a77b 50%,#665035 90%) !important;border-color:#fff2c5 !important;box-shadow:0 0 25px rgba(255,241,185,.26),0 25px 55px rgba(0,0,0,.52) !important;}
+.football-card.rarity-cosmic {background:radial-gradient(circle at 15% 16%,rgba(222,191,255,.65),transparent 22%),radial-gradient(circle at 80% 58%,rgba(84,224,237,.34),transparent 43%),radial-gradient(circle at 56% 32%,rgba(103,64,199,.7),transparent 36%),linear-gradient(145deg,#111b4a,#4d2a86 54%,#0b354a) !important;border-color:#c7aafa !important;box-shadow:0 0 28px rgba(161,104,244,.35),0 0 44px rgba(84,224,237,.15),0 25px 55px rgba(0,0,0,.50) !important;animation:cosmicDrift 5s ease-in-out infinite alternate;}
+.football-card.rarity-goat {background:radial-gradient(circle at 52% 15%,rgba(255,237,252,.84),transparent 32%),linear-gradient(145deg,#f087d0,#973bae 55%,#352168) !important;border-color:#ffc3f4 !important;box-shadow:0 0 28px rgba(233,100,201,.31),0 25px 55px rgba(0,0,0,.50) !important;}
+.football-card.golden-roll-active {border-color:#ffdd6a !important;box-shadow:0 0 0 4px rgba(255,213,94,.10),0 0 35px rgba(252,190,67,.42),0 28px 70px rgba(0,0,0,.52) !important;}
+.football-card.cosmic-roll-active {border-color:#d3afff !important;box-shadow:0 0 0 5px rgba(172,123,244,.10),0 0 50px rgba(156,105,255,.53),0 0 90px rgba(53,208,232,.21),0 28px 75px rgba(0,0,0,.57) !important;animation:cosmicCardLift 3s ease-in-out infinite alternate;}
+@keyframes cosmicCardLift {to{filter:saturate(1.18) brightness(1.10);transform:translateY(-3px);}}
+body.cosmic-roll-running .card-spotlight::before {background:radial-gradient(ellipse,rgba(177,97,255,.28),rgba(39,180,224,.17) 44%,transparent 73%);}
+.stage-bottom-label {width:100%;display:flex;justify-content:space-between;gap:10px;color:#718a93;font-weight:850;font-size:.55rem;letter-spacing:.14em;margin:0 0 15px;}
+.stage-sparkle {color:#c5fa67;}
+.roll-controls {width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;}
+.roll-controls button {width:100%;min-height:49px;padding:11px 12px;border-radius:12px;font-size:.81rem;font-weight:900;}
+.roll-controls #rollButton {grid-column:1/-1;}
+.roll-controls #rerollButton {grid-column:auto;}
+.roll-controls #rerollButton:not(.hidden):has(~ #customizeButton.hidden) {grid-column:1/-1;}
+.roll-controls .primary-button, .form-actions .primary-button {background:linear-gradient(115deg,#d0fe82,#b9ed66);color:#0c1c14;box-shadow:0 7px 22px rgba(158,246,105,.14);}
+.roll-controls .primary-button:hover, .form-actions .primary-button:hover {background:linear-gradient(115deg,#dfff9e,#c6fc7d);box-shadow:0 9px 25px rgba(158,246,105,.20);}
+.roll-controls .secondary-button {background:#233449;color:#e4f1f3;border:1px solid rgba(198,215,233,.12);}
+.roll-controls .secondary-button:hover {background:#2c4156;}
+/* Reveal sequence */
+.roll-log {display:flex !important;flex-direction:column;padding:25px 26px 22px !important;overflow:hidden;}
+.reveal-header {display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px;}
+.reveal-header h2 {font-size:clamp(1.35rem,2vw,2rem);line-height:1.1;margin:6px 0 8px;font-weight:950;letter-spacing:-.05em;}
+.reveal-header p {margin:0;color:#8aa1ad;font-size:.81rem;line-height:1.5;}
+.reveal-glyph {color:rgba(197,250,103,.22);font-size:4rem;line-height:1;flex:0 0 auto;}
+.reveal-progress {height:5px;border-radius:20px;background:rgba(168,198,212,.10);overflow:hidden;}
+.reveal-progress > span {height:100%;width:0;display:block;border-radius:20px;background:linear-gradient(90deg,#4fd6bd,#c5fa67);box-shadow:0 0 16px rgba(197,250,103,.55);transition:width .32s ease;}
+.reveal-progress-label {margin:9px 0 16px;display:flex;justify-content:space-between;font-size:.61rem;font-weight:850;letter-spacing:.14em;color:#7d99a7;font-variant-numeric:tabular-nums;}
+.reveal-progress-label > span:last-child {color:#d2fca0;}
+.step-list {margin:0;display:grid;grid-template-rows:repeat(9,minmax(0,1fr));gap:7px;flex:1 1 auto;min-height:0;overflow:visible;}
+.step-row {display:grid;grid-template-columns:37px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;min-height:46px;border:1px solid rgba(168,205,210,.10);border-radius:12px;background:rgba(255,255,255,.026);transition:background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease;}
+.step-row.active {background:linear-gradient(95deg,rgba(185,247,110,.12),rgba(43,115,110,.07));border-color:rgba(192,249,114,.55);box-shadow:inset 3px 0 0 #c5fa67,0 0 25px rgba(197,250,103,.045);transform:translateX(2px);}
+.step-row.done {background:rgba(83,173,127,.07);border-color:rgba(103,187,132,.16);}
+.step-icon {width:33px;height:33px;border-radius:9px;display:grid;place-items:center;font-size:1rem;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.045);}
+.step-row.active .step-icon {background:rgba(197,250,103,.17);}
+.step-name {display:flex;align-items:center;gap:13px;font-size:.83rem;font-weight:840;color:#dbe7ec;min-width:0;}
+.step-index {font-weight:750;font-size:.60rem;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:#6d8998;}
+.step-row.done .step-index {color:#7ec79d;}
+.step-result {max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.85rem;color:#c5fa67;font-weight:950;font-variant-numeric:tabular-nums;}
+.tip-box {display:block;margin:18px 0 0;padding:13px 15px;border:1px solid rgba(127,192,159,.15);border-radius:13px;background:rgba(40,107,80,.085);color:#8da6a7;font-size:.71rem;line-height:1.57;}
+.tip-box strong {color:#c3f48a;font-weight:900;}
+/* Customisation */
+.customizer-grid {grid-template-columns:minmax(330px,.82fr) minmax(0,1.18fr) !important;}
+.preview-panel {display:flex !important;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:17px 18px 18px !important;overflow:hidden;}
+.preview-panel .card-spotlight {min-height:477px;}
+.form-panel {padding:28px 29px !important;overflow:visible;display:flex;flex-direction:column;}
+.form-panel h2 {font-size:clamp(1.7rem,2.3vw,2.25rem);letter-spacing:-.055em;font-weight:950;margin:7px 0 6px;}
+.form-panel > p {font-size:.80rem;color:#91a6b0;margin:0 0 28px;line-height:1.5;}
+.form-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:23px 14px;}
+.form-grid label {font-size:.74rem;color:#bdcdd1;font-weight:750;gap:9px;letter-spacing:.005em;}
+.form-grid input,.form-grid select {width:100%;min-width:0;min-height:49px;color:#f4f7f9;background:#111f2d;border:1px solid rgba(165,194,204,.20);padding:11px 12px;border-radius:12px;font-size:.85rem;box-shadow:inset 0 1px 2px rgba(0,0,0,.13);}
+.form-grid input:focus,.form-grid select:focus {border-color:#c5fa67;box-shadow:0 0 0 3px rgba(197,250,103,.12);}
+.form-grid input[type='color'] {min-height:49px;padding:7px;cursor:pointer;}
+.form-actions {display:flex;flex-wrap:wrap;gap:9px;margin:auto 0 0;padding-top:34px;}
+.form-actions button {min-height:47px;padding:12px 16px;border-radius:11px;font-size:.8rem;border:1px solid rgba(255,255,255,.10);}
+.form-actions .secondary-button {background:#243348;color:#e1ebf1;}
+/* Squad and club */
+.team-toolbar {height:auto;min-height:0;padding:20px 23px;margin:0 0 20px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;}
+.team-heading {display:flex;align-items:center;gap:22px;min-width:0;flex-wrap:wrap;}
+.team-toolbar h2 {font-size:1.36rem;font-weight:940;letter-spacing:-.04em;margin:5px 0 4px;}
+.team-toolbar p {display:block;color:#7f9aa6;font-size:.73rem;}
+.squad-summary {grid-template-columns:repeat(4,minmax(78px,1fr));gap:7px;}
+.summary-chip {min-width:77px;padding:9px 13px;border:1px solid rgba(173,212,203,.12);border-radius:11px;background:rgba(255,255,255,.035);}
+.summary-chip strong {font-size:1.13rem;letter-spacing:-.025em;color:#c5fa67;}
+.summary-chip span {display:block;margin:4px 0 0;font-size:.57rem;letter-spacing:.075em;color:#78939d;}
+.team-toolbar-actions {display:flex;align-items:end;gap:8px;flex-wrap:wrap;}
+.team-toolbar-actions label {font-size:.64rem;font-weight:800;color:#9db5b6;gap:5px;}
+.team-toolbar-actions select {min-height:42px;padding:9px 12px;color:#d8e9e8;background:#111e2c;border:1px solid rgba(175,201,213,.20);border-radius:10px;}
+.team-toolbar-actions button {font-size:.73rem;padding:12px 14px;min-height:42px;border-radius:10px;background:#243449;color:#e1eced;}
+.team-toolbar-actions button.danger-button {background:rgba(224,87,113,.14);color:#ff9caf;border:1px solid rgba(255,127,150,.2);}
+.team-layout {display:grid;grid-template-columns:minmax(0,1.48fr) minmax(315px,.52fr);height:auto;min-height:0;gap:18px;align-items:stretch;overflow:visible;}
+.team-layout > div {display:flex;flex-direction:column;gap:14px;overflow:visible;min-height:0;}
+.pitch-panel {height:clamp(480px,61vh,600px);padding:11px !important;overflow:hidden;}
+.pitch {height:100%;min-height:0;width:100%;overflow:hidden;border:2px solid rgba(206,243,217,.48);border-radius:16px;
+  background:radial-gradient(ellipse at 50% 50%,rgba(37,137,95,.3),transparent 70%),repeating-linear-gradient(90deg,#0b553c 0 12.5%,#0c6043 12.5% 25%) !important;box-shadow:inset 0 0 65px rgba(0,0,0,.26),0 0 0 5px rgba(255,255,255,.024);}
+.pitch::before {left:0;top:50%;bottom:auto;right:0;width:auto;height:2px;background:rgba(238,255,244,.5);}
+.pitch::after {width:clamp(80px,12vw,120px);height:clamp(80px,12vw,120px);border:2px solid rgba(236,255,240,.52);}
+#teamView .slot {height:clamp(78px,12vh,109px);min-height:0;width:clamp(68px,6.2vw,93px);border:1px dashed rgba(232,255,232,.45);background:rgba(5,32,28,.2);border-radius:12px;padding:3px;transition:background .18s ease,border-color .18s ease;}
+#teamView .slot:hover {border-color:#d4fd9c;background:rgba(194,250,116,.1);}
+#teamView .slot.empty::after {font-size:.86rem;font-weight:930;letter-spacing:.08em;color:#e9fff0;}
+#teamView .slot-remove,.sub-slot .slot-remove {width:22px;height:22px;border:2px solid rgba(255,255,255,.92);border-radius:100%;background:#f05b77;box-shadow:0 2px 8px rgba(0,0,0,.45);font-size:.8rem;}
+.mini-card {min-height:0;border:1px solid rgba(255,255,255,.36);border-radius:10px; background:linear-gradient(140deg,#4c687b,#172433);box-shadow:0 6px 14px rgba(0,0,0,.25);color:#fff !important; }
+.mini-card .mini-rating {font-size:1rem;top:6px;left:7px;line-height:1.05;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.85);}
+.mini-card .mini-pos {font-size:.55rem;margin-top:2px;}
+.mini-card .mini-avatar {top:6%;left:13%;right:9%;height:77%;}
+.mini-card .mini-name {font-size:.57rem;bottom:3px;background:rgba(6,15,24,.77);border-radius:5px;padding:4px 3px;color:#fff;}
+.mini-card .mini-playstyle-stack {top:33px;left:2px;gap:2px;}
+.mini-card .mini-playstyle-stack .playstyle-badge {width:14px;height:14px;}
+.wrong-position {font-size:2.3rem;background:rgba(174,35,62,.75);border-radius:9px;}
+.subs-panel {height:auto;margin:0;overflow:visible;padding:13px 16px 16px;}
+.subs-panel h3 {margin:0 0 12px;font-size:.79rem;letter-spacing:.11em;color:#d8e8e5;font-weight:900;}
+.sub-counter {display:inline-block;margin-left:7px;font-size:.59rem;font-weight:800;letter-spacing:.09em;color:#78949d;}
+.subs-grid {height:115px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;gap:10px;}
+.sub-slot {height:115px;min-height:0;position:relative;overflow:visible;border:1px dashed rgba(193,220,225,.30);border-radius:12px;padding:5px;background:rgba(255,255,255,.027);}
+.sub-slot.empty {color:#8ba5ac;font-size:.73rem;letter-spacing:.06em;text-transform:uppercase;}
+.sub-slot .mini-card {height:100%;min-height:0;width:100%;}
+.club-panel {height:100%;min-height:710px;display:flex;flex-direction:column;overflow:hidden;padding:19px !important;}
+.club-heading h2 {font-size:1.52rem;margin:5px 0 3px;letter-spacing:-.055em;font-weight:950;}
+.club-heading p {font-size:.75rem;color:#92a9ae;}
+.club-filter-row {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 10px;}
+.club-filter-row select {min-height:42px;padding:9px 10px;color:#e4f0ed;border:1px solid rgba(179,212,215,.17);background:#111f2d;border-radius:10px;font-size:.75rem;}
+.club-pager {grid-template-columns:36px 1fr 36px;gap:7px;margin-bottom:10px;}
+.club-pager button {min-height:33px;background:#283b50;border-radius:9px;}
+.club-pager span {font-size:.67rem;}
+.selection-banner {margin-bottom:10px;padding:10px 12px;color:#d9ffc1;background:rgba(164,228,94,.10);border-color:rgba(185,241,123,.22);font-size:.73rem;}
+.club-grid {display:grid;flex:1;min-height:0;max-height:720px;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(148px,1fr);grid-template-rows:repeat(4,minmax(0,1fr));gap:9px;overflow:hidden;padding:1px;}
+.club-item {display:grid;grid-template-rows:minmax(85px,1fr) auto;min-height:0;padding:6px;border:1px solid rgba(174,209,207,.10);border-radius:12px;background:rgba(255,255,255,.035);transition:transform .15s,border-color .15s,background .15s;}
+.club-item:hover {border-color:rgba(197,250,103,.34);background:rgba(197,250,103,.055);}
+.club-item.selected {border-color:#c5fa67;box-shadow:0 0 0 2px rgba(197,250,103,.08);}
+.club-item .mini-card {min-height:85px;height:100%;}
+.club-actions {display:grid;grid-template-columns:1fr auto;gap:5px;margin-top:5px;}
+.club-actions button {padding:5px;min-height:32px;font-size:.66rem;border-radius:8px;background:#2b4052;color:#f1fcfc;}
+.club-actions button:hover {background:#39576a;}
+.club-actions button.release-button {background:rgba(240,91,119,.16);color:#ffacbc;}
+.club-actions button.release-button:hover {background:rgba(240,91,119,.32);}
+.empty-message {background:rgba(255,255,255,.018);border:1px dashed rgba(170,213,215,.18);border-radius:15px;color:#87a2ad;font-size:.83rem;line-height:1.5;padding:32px 20px;}
+/* Dialog, messages, micro-interactions */
+.toast {border:1px solid rgba(196,248,128,.28);border-radius:13px;padding:13px 20px;background:rgba(19,37,39,.96);color:#e9fce2;box-shadow:0 12px 50px rgba(0,0,0,.44);font-size:.83rem;font-weight:850;}
+.help-overlay {background:rgba(2,7,12,.86);}
+.help-dialog {border-radius:24px;padding:27px;background:linear-gradient(155deg,#192a35,#101b27);border:1px solid rgba(197,250,103,.20);}
+.help-dialog h2 {font-size:2rem;letter-spacing:-.06em;margin:7px 0 20px;}
+.help-dialog h3 {color:#e6faed;margin:17px 0 7px;font-weight:880;}
+.help-dialog p {font-size:.86rem;color:#b5ccd0;}
+.help-dialog kbd {background:#263a43;border-color:rgba(194,239,205,.22);font-size:.78rem;border-radius:5px;}
+.help-dialog .help-close {background:#c5fa67;color:#0b1a13;border-radius:11px;font-size:.83rem;}
+@media (prefers-reduced-motion:reduce) {html{scroll-behavior:auto;}*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}}
+/* Tablet & small PC: vertical space should always remain scrollable. */
+@media (max-width:1210px) {
+  .app-shell {max-width:1100px !important;}
+  header {align-items:flex-start;gap:15px;}
+  .top-actions {justify-content:flex-start;flex:1 1 100%;}
+  .team-layout {grid-template-columns: minmax(0,1.3fr) minmax(280px,.7fr);}
+  .club-panel {min-height:710px;}
+  .view-intro {margin-top:2px;}
+}
+@media (max-width:1000px) {
+  .roll-layout, .customizer-grid {grid-template-columns:minmax(0,1fr) !important;gap:16px;}
+  .card-stage,.preview-panel {padding:16px !important;}
+  .card-spotlight {min-height:500px;}
+  .card-stage .football-card,.preview-panel .football-card {width:min(100%,348px) !important;max-width:348px !important;}
+  .roll-controls {max-width:660px;}
+  .roll-log {padding:23px !important;}
+  .step-list {grid-template-rows:none;}
+  .step-row {min-height:47px;}
+  .team-layout {grid-template-columns: minmax(0,1fr);}
+  .club-panel {min-height:0;height:auto;overflow:visible;}
+  .club-grid {height:auto;max-height:none;grid-auto-rows:170px;grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;}
+  .club-item {grid-template-rows:minmax(115px,1fr) auto;}
+  .team-toolbar {align-items:flex-start;}
+  .form-panel {padding:24px !important;}
+  .form-actions {margin-top:0;}
+}
+@media (max-width:690px) {
+  .app-shell {padding:16px 13px 34px !important;}
+  header {padding-bottom:17px;margin-bottom:19px;gap:16px;}
+  .brand-mark {width:43px;height:48px;flex-basis:43px;border-radius:12px;}
+  .brand-mark svg {width:30px;height:30px;}
+  .brand h1 {font-size:1.43rem !important;}
+  .brand-eyebrow {font-size:.49rem;letter-spacing:.19em;}
+  .brand p {font-size:.52rem;letter-spacing:.08em;}
+  .top-actions {gap:6px;}
+  .luck-hud {flex:1 1 100%;justify-content:space-between;}
+  .luck-display {font-size:.73rem;flex:1;}
+  .cosmic-meter {width:168px;max-width:47%;}
+  .top-actions button {flex:1 1 auto;padding:10px !important;font-size:.71rem !important;}
+  .top-actions .sound-controls {order:3;}
+  .top-actions #resetEverythingButton {order:4;}
+  .view-intro {align-items:flex-start;margin:0 0 19px;}
+  .view-intro h2 {font-size:2rem;line-height:1.06;}
+  .view-intro p {font-size:.76rem;}
+  .view-intro-tag {display:none;}
+  .stage-top {font-size:.60rem;}
+  .card-stage,.preview-panel {padding:12px !important;}
+  .card-spotlight {min-height:455px;padding:16px 6px 10px;}
+  .card-stage .football-card,.preview-panel .football-card {width:min(100%, 315px) !important;max-width:315px !important;}
+  .roll-controls {grid-template-columns:1fr 1fr;}
+  .roll-controls button {font-size:.74rem;padding:10px 6px;min-height:48px;}
+  .roll-log {padding:18px !important;}
+  .reveal-header {margin-bottom:16px;}
+  .reveal-header h2 {font-size:1.52rem;}
+  .reveal-glyph {font-size:2.7rem;}
+  .step-row {padding:9px;gap:7px;grid-template-columns:34px minmax(0,1fr) auto;min-height:46px;}
+  .step-name {gap:8px;font-size:.74rem;}
+  .step-index {font-size:.55rem;}
+  .step-result {font-size:.76rem;max-width:120px;}
+  .form-panel {padding:20px !important;}
+  .form-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 11px;}
+  .form-grid label {font-size:.69rem;}
+  .form-grid input,.form-grid select {min-height:46px;font-size:.85rem;padding:10px;}
+  .form-actions {padding-top:20px;}
+  .form-actions button {flex:1 1 auto;min-height:47px;}
+  .team-toolbar {padding:15px !important;gap:18px;}
+  .team-heading {width:100%;gap:14px;}
+  .team-heading > div:first-child {display:block;}
+  .squad-summary {width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;}
+  .summary-chip {min-width:0;padding:8px 3px;}
+  .summary-chip strong {font-size:.96rem;}
+  .summary-chip span {display:block;font-size:.48rem;}
+  .team-toolbar-actions {width:100%;gap:7px;}
+  .team-toolbar-actions button {padding:10px;font-size:.70rem;}
+  .formation-control {flex:1 1 140px;}
+  .pitch-panel {height:580px;padding:6px !important;}
+  #teamView .slot {width:clamp(49px,13.7vw,72px);height:clamp(75px,10vw,93px);min-height:0;}
+  #teamView .slot .mini-rating {font-size:.9rem;}
+  .subs-grid {height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:115px;}
+  .sub-slot {height:115px;}
+  .club-grid {grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:174px;gap:8px;}
+  .club-panel {padding:15px !important;}
+  .club-filter-row {margin-top:14px;}
+}
+@media (max-width:380px) {
+  .brand h1{font-size:1.25rem !important;}
+  .top-actions button {font-size:.66rem !important;padding:8px !important;}
+  .card-spotlight {min-height:406px;}
+  .card-stage .football-card,.preview-panel .football-card {width:min(100%,285px) !important;max-width:285px !important;}
+  .football-card .player-name {font-size:1.17rem;}
+  .football-card .stat-name{font-size:.47rem;}
+  .stage-bottom-label{font-size:.49rem;}
+  .form-grid {grid-template-columns:1fr;}
+  .pitch-panel {height:530px;}
+  #teamView .slot {width:47px;height:69px;}
+  .club-grid {grid-auto-rows:160px;}
+  .club-actions button {font-size:.60rem;}
+}
+
+  
+/* Finish-pass details */
+.football-card .stat-value.elite-stat {color:#d2ff90;text-shadow:0 0 10px rgba(197,250,103,.2);}
+.step-result.elite-result {color:#d9ff92;text-shadow:0 0 9px rgba(197,250,103,.13);}
+.team-toolbar-actions #resetEverythingButton {background:rgba(234,83,114,.08);border:1px solid rgba(234,111,140,.2);color:#f49caf;}
+.team-toolbar-actions #resetEverythingButton:hover {background:rgba(234,83,114,.18);}
+@media (max-width:690px) {.top-actions #fullscreenButton {flex:0 1 auto;}.top-actions .sound-controls {order:4;}.team-toolbar-actions #resetEverythingButton {flex:0 1 auto;}}
+</style>
+</head>
 <body>
   <div class="app-shell">
     <header>
       <div class="brand">
-        <h1>⚽ RNG Football Card Maker</h1>
-        <p>Roll a player, build an avatar, and assemble your dream squad.</p>
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 3 43 11v16c0 9-8 15-19 18C13 42 5 36 5 27V11L24 3Z" stroke="currentColor" stroke-width="2.2"/><path d="M24 13 32.5 18v10L24 33l-8.5-5V18L24 13Z" stroke="currentColor" stroke-width="1.8"/><path d="M24 13V6M15.5 18 7 14M32.5 18l8.5-4M24 33v9" stroke="currentColor" stroke-width="1.6"/></svg>
+        </div>
+        <div class="brand-copy">
+          <div class="brand-eyebrow">THE PLAYER COLLECTING STUDIO</div>
+          <h1>RNG <span>FOOTBALL</span></h1>
+          <p>CARD MAKER <span class="brand-separator">/</span> THE NEXT LEGEND STARTS HERE</p>
+        </div>
       </div>
       <div class="top-actions">
         <div class="sound-controls" title="Sound effects">
           <button id="soundToggleButton" class="sound-toggle" type="button" aria-label="Mute sound effects">🔊</button>
           <input id="volumeControl" type="range" min="0" max="1" step="0.05" value="0.55" aria-label="Sound effects volume" />
         </div>
-        <div id="luckDisplay" class="luck-display" title="Higher luck gently improves future stat rolls">🍀 Luck 1.0×</div>
+        <div class="luck-hud" aria-label="Roll luck and Cosmic Roll progress">
+          <div id="luckDisplay" class="luck-display" title="Higher luck improves your stat rolls">🍀 1.0×</div>
+          <div class="cosmic-meter" title="Every 100th roll gets 15× base luck">
+            <div class="cosmic-meter-top"><span class="cosmic-label">✦ COSMIC <b id="cosmicCountdown">100 TO GO</b></span><span id="cosmicCounter" class="cosmic-counter">0/100</span></div>
+            <div class="cosmic-track"><div id="cosmicFill" class="cosmic-fill" style="width:0%"></div></div>
+          </div>
+        </div>
         <button class="nav-button active" data-view="rollView">🎲 Roll</button>
         <button class="nav-button" data-view="teamView">🏟️ Club & Team</button>
         <button class="secondary-button utility-button" id="fastRollButton" type="button" aria-pressed="false" title="Toggle shorter reveal animations">⚡ Fast: Off</button>
         <button class="secondary-button utility-button" id="controlsButton" type="button">🎮 Controls</button>
         <button class="secondary-button" id="fullscreenButton">⛶ Fullscreen</button>
-        <button class="danger-button" id="resetEverythingButton">🗑️ Reset Save</button>
+ 
       </div>
     </header>
 
     <main>
       <section id="rollView" class="view active">
+        <div class="view-intro">
+          <div>
+            <span class="eyebrow">01 <span class="kicker-divider">/</span> THE DRAW</span>
+            <h2>Every roll. <em>A new legend.</em></h2>
+            <p>Reveal the stats. Find the rarity. Build your eleven.</p>
+          </div>
+          <div class="view-intro-tag"><span class="signal-dot"></span> PLAYER GENERATOR <span class="mono">V3.0</span></div>
+        </div>
         <div class="roll-layout">
           <div class="panel card-stage">
+            <div class="stage-top"><span><span class="stage-orb"></span> CARD PREVIEW</span><span id="stageStatus" class="stage-status">READY TO ROLL</span></div>
+            <div class="card-spotlight">
             <div id="mainCard" class="football-card">
               <div class="card-top">
                 <div class="rating-block">
@@ -1623,7 +2011,8 @@
 
               <div id="statStrip" class="stat-strip"></div>
             </div>
-
+            </div>
+            <div class="stage-bottom-label"><span>ULTIMATE PLAYER CARD</span><span>EST. 2026 <span class="stage-sparkle">✦</span></span></div>
             <div class="roll-controls">
               <button id="rollButton" class="primary-button">🎲 Roll New Card</button>
               <button id="rerollButton" class="secondary-button hidden">🔁 Completely Reroll</button>
@@ -1632,20 +2021,29 @@
           </div>
 
           <div class="panel roll-log">
-            <h2>One-by-one reveal</h2>
-            <p>The card rolls each attribute in order. The position is hidden internally until its reveal, allowing goalkeepers to use goalkeeper stats.</p>
+            <div class="reveal-header">
+              <div><span class="eyebrow">LIVE REVEAL <span class="kicker-divider">/</span> NINE STAGES</span>
+                <h2>The making of a player<span class="period">.</span></h2>
+                <p>Every stat revealed. Every detail earned.</p>
+              </div>
+              <span class="reveal-glyph" aria-hidden="true">✳</span>
+            </div>
+            <div class="reveal-progress" aria-hidden="true"><span id="revealProgressFill"></span></div>
+            <div class="reveal-progress-label"><span>ROLL SEQUENCE</span><span id="revealProgressText">00 / 09</span></div>
             <div id="stepList" class="step-list"></div>
             <div class="tip-box">
-              <strong>Rarity system:</strong> overall determines which rarities are eligible, then luck chooses between overlapping options such as Gold, Shiny, Champion, and GOAT.
+              <strong>HOW IT WORKS</strong> Your overall determines which rarities are possible. Luck influences the stats that lead you there. Golden rolls happen every 8th draw; Cosmic Rolls fire every 100th for <strong>15× luck.</strong>
             </div>
           </div>
         </div>
       </section>
 
       <section id="customizeView" class="view">
+        <div class="view-intro"><div><span class="eyebrow">02 <span class="kicker-divider">/</span> THE STUDIO</span><h2>Make them <em>your own.</em></h2><p>Your ratings are locked. Your look is limitless.</p></div><div class="view-intro-tag"><span class="signal-dot"></span> PLAYER DESIGN</div></div>
         <div class="customizer-grid">
           <div class="panel preview-panel">
-            <div id="customCard" class="football-card">
+            <div class="stage-top"><span><span class="stage-orb"></span> LIVE PREVIEW</span><span class="stage-status">CUSTOM DESIGN</span></div>
+            <div class="card-spotlight"><div id="customCard" class="football-card">
               <div class="card-top">
                 <div class="rating-block">
                   <span id="customOverall" class="overall">--</span>
@@ -1657,12 +2055,14 @@
               <div id="customAvatar" class="avatar-zone"></div>
               <div id="customCardName" class="player-name">Your Player</div>
               <div id="customStats" class="stat-strip"></div>
-            </div>
+            </div></div>
+            <div class="stage-bottom-label"><span>YOUR PLAYER. YOUR STYLE.</span><span>✦ PERSONAL EDITION</span></div>
           </div>
 
           <div class="panel form-panel">
-            <h2>🎨 Customize your player</h2>
-            <p class="small-note">The rolled position, stats, overall, and rarity stay locked. Everything visual is yours.</p>
+            <span class="eyebrow">IDENTITY &amp; APPEARANCE</span>
+            <h2>Player design<span class="period">.</span></h2>
+            <p class="small-note">Give your card its signature look. Stats, position and rarity remain locked.</p>
 
             <div class="form-grid">
               <label>
@@ -1751,11 +2151,13 @@
       </section>
 
       <section id="teamView" class="view">
+        <div class="view-intro"><div><span class="eyebrow">03 <span class="kicker-divider">/</span> THE CLUB</span><h2>Build something <em>special.</em></h2><p>Eleven starters. Four subs. One dream squad.</p></div><div class="view-intro-tag"><span class="signal-dot"></span> SQUAD MANAGEMENT</div></div>
         <div class="panel team-toolbar">
           <div class="team-heading">
             <div>
-              <h2>🏟️ Squad Builder</h2>
-              <p>Select an available player, then place them into a starter or substitute slot.</p>
+              <span class="eyebrow">YOUR STARTING ELEVEN</span>
+              <h2>Squad builder<span class="period">.</span></h2>
+              <p>Select a card from your club, then assign it to a position.</p>
             </div>
             <div class="squad-summary">
               <div class="summary-chip"><strong id="starterSummary">0/11</strong><span>Starters</span></div>
@@ -1778,6 +2180,7 @@
             </label>
             <button id="autoFillButton" class="secondary-button" type="button">✨ Auto Pick</button>
             <button id="clearTeamButton" class="danger-button" type="button">Clear Team</button>
+            <button class="danger-button" id="resetEverythingButton" type="button" title="Permanently reset all saved players and progress">🗑 Reset Save</button>
             <button id="exportSaveButton" class="secondary-button" type="button" title="Download your club save as JSON">⬇ Backup</button>
             <button id="importSaveButton" class="secondary-button" type="button" title="Restore a previously exported save">⬆ Restore</button>
             <input id="importSaveInput" type="file" accept=".json,application/json" class="hidden" aria-label="Choose a saved club backup" />
@@ -1791,7 +2194,7 @@
             </div>
 
             <div class="panel subs-panel">
-              <h3>🪑 Substitutes — 4 slots</h3>
+              <h3>SUBSTITUTES <span class="sub-counter">FOUR SPOTS</span></h3>
               <div id="subsGrid" class="subs-grid"></div>
             </div>
           </div>
@@ -1799,7 +2202,8 @@
           <aside class="panel club-panel">
             <div class="club-heading">
               <div>
-                <h2>🗃️ Available Players</h2>
+                <span class="eyebrow">THE COLLECTION</span>
+                <h2>Your club<span class="period">.</span></h2>
                 <p id="clubCount">0 players saved</p>
               </div>
             </div>
@@ -1840,7 +2244,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="controlsOverlay" class="help-overlay hidden" role="dialog" aria-modal="true" aria-label="Game controls" aria-hidden="true">
     <div class="help-dialog">
-      <h2>🎮 Controls &amp; platform tips</h2>
+      <span class="eyebrow">THE PLAYBOOK</span><h2>Controls &amp; platform tips<span class="period">.</span></h2>
       <h3>🖥️ PC keyboard and mouse</h3>
       <p>Click any button, or use <kbd>Tab</kbd> / <kbd>Shift + Tab</kbd> and <kbd>Enter</kbd>. <kbd>Arrow keys</kbd> navigate buttons. <kbd>R</kbd> rolls or rerolls, <kbd>C</kbd> customises a completed card, <kbd>T</kbd> opens your team, <kbd>Esc</kbd> goes back, and <kbd>?</kbd> opens these controls.</p>
       <h3>🎮 Controller (when supported by the browser)</h3>
@@ -1848,7 +2252,7 @@
       <h3>📱 iPad and touch</h3>
       <p>Tap to interact, scroll to see all sections, and use landscape or portrait. An iPad-compatible Bluetooth controller may work if Safari exposes it to the Gamepad API. You can also add the GitHub Pages site to your Home Screen.</p>
       <h3>💾 Saves and hosting</h3>
-      <p>Progress saves locally in this browser. Use <strong>Backup</strong> and <strong>Restore</strong> to move it between devices. No automatic cloud sync is included. Xbox Edge may work with controllers; PlayStation and other consoles may restrict opening normal websites.</p>
+      <p>Progress saves locally in this browser. Use <strong>Backup</strong> and <strong>Restore</strong> to move it between devices. Every 8th roll is Golden (4.75× luck); every 100th roll is a Cosmic Roll (15× base luck), replacing Golden if both land together. Existing saves start their Cosmic counter at zero. Xbox Edge may work with controllers; other consoles may limit web access.</p>
       <button id="closeControlsButton" class="primary-button help-close" type="button">Got it ✓</button>
     </div>
   </div>
@@ -1857,7 +2261,7 @@
     "use strict";
 
     const STORAGE_KEY = "rngFootballCardMakerV1";
-    const ROLL_STEP_DELAY = 900;
+    const ROLL_STEP_DELAY = 520;
     const FAST_ROLL_KEY = "rngFootballFastRollV2";
     let fastRollEnabled = false;
     try { fastRollEnabled = localStorage.getItem(FAST_ROLL_KEY) === "true"; } catch (error) { /* Storage may be restricted. */ }
@@ -2012,6 +2416,8 @@
             rollsSinceGolden: Number.isInteger(saved.rollsSinceGolden)
               ? Math.max(0, Math.min(7, saved.rollsSinceGolden))
               : 0,
+            // Legacy saves have no lifetime roll counter; their Cosmic cycle starts at 0.
+            totalRolls: Number.isSafeInteger(saved.totalRolls) && saved.totalRolls >= 0 ? saved.totalRolls : 0,
             squad: {
               formation: FORMATIONS[saved.squad.formation] ? saved.squad.formation : "4-3-3",
               starters: saved.squad.starters || {},
@@ -2026,6 +2432,7 @@
         club: [],
         luckMultiplier: 1,
         rollsSinceGolden: 0,
+        totalRolls: 0,
         squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
       };
     }
@@ -2044,22 +2451,34 @@
       }
     }
 
-    function updateLuckDisplay(activeRollLuck = null, isGoldenRoll = false) {
+    function updateLuckDisplay(activeRollLuck = null, isGoldenRoll = false, isCosmicRoll = false) {
       const display = $("luckDisplay");
       if (!display) return;
-
       const baseLuck = Math.max(1, roundLuck(state.luckMultiplier || 1));
-      const rollsCompleted = Math.max(0, Math.min(7, state.rollsSinceGolden || 0));
-      const rollsRemaining = Math.max(0, 7 - rollsCompleted);
-
+      const goldenRemaining = 8 - Math.max(0, Math.min(7, state.rollsSinceGolden || 0));
+      const total = Math.max(0, state.totalRolls || 0);
+      const cosmicProgress = total % 100;
+      const cosmicRemaining = 100 - cosmicProgress;
+      const cosmicCount = $("cosmicCountdown");
+      const cosmicCounter = $("cosmicCounter");
+      const cosmicFill = $("cosmicFill");
+      cosmicCount.textContent = isCosmicRoll ? "LIVE · 15×" : `${cosmicRemaining} TO GO`;
+      cosmicCounter.textContent = `${isCosmicRoll ? 100 : cosmicProgress}/100`;
+      cosmicFill.style.width = `${isCosmicRoll ? 100 : cosmicProgress}%`;
+      const hud = document.querySelector(".luck-hud");
+      hud?.classList.toggle("cosmic-hud-active", isCosmicRoll);
       display.classList.toggle("golden-active", isGoldenRoll);
-
-      if (isGoldenRoll && activeRollLuck !== null) {
-        display.textContent = `✨ GOLDEN ${activeRollLuck.toFixed(2)}×`;
-        display.title = `Golden roll: ${baseLuck.toFixed(1)}× luck multiplied by 4.75`;
+      display.classList.toggle("cosmic-active", isCosmicRoll);
+      document.body.classList.toggle("cosmic-roll-running", isCosmicRoll && rolling);
+      if (isCosmicRoll && activeRollLuck !== null) {
+        display.textContent = `✦ COSMIC ${activeRollLuck.toFixed(2)}×`;
+        display.title = `Cosmic Roll: ${baseLuck.toFixed(1)}× base luck × 15`;
+      } else if (isGoldenRoll && activeRollLuck !== null) {
+        display.textContent = `✧ GOLDEN ${activeRollLuck.toFixed(2)}×`;
+        display.title = `Golden Roll: ${baseLuck.toFixed(1)}× base luck × 4.75`;
       } else {
-        display.textContent = `🍀 ${baseLuck.toFixed(1)}× · Golden in ${rollsRemaining}`;
-        display.title = `${rollsRemaining} normal roll${rollsRemaining === 1 ? "" : "s"} until the next Golden Roll`;
+        display.textContent = `☘ ${baseLuck.toFixed(1)}×  ·  GOLD IN ${goldenRemaining}`;
+        display.title = `Base luck ${baseLuck.toFixed(1)}× · ${goldenRemaining} roll${goldenRemaining === 1 ? "" : "s"} until Golden`;
       }
     }
 
@@ -2204,6 +2623,12 @@
             playTone(frequency, index * 0.09, 0.22, "sine", 0.11)
           );
           break;
+        case "cosmic-roll":
+          playTone(110, 0, .55, "sine", .15);
+          [220, 277, 330, 440, 554, 660, 880, 1109].forEach((frequency, index) =>
+            playTone(frequency, .08 + index * .075, .33, "sine", .10)
+          );
+          break;
         case "stat":
           playTone(610, 0, 0.08, "triangle", 0.08);
           playTone(780, 0.055, 0.1, "sine", 0.06);
@@ -2267,7 +2692,7 @@
     function showView(viewId) {
       document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === viewId));
       document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.view === viewId));
-      // Fixed viewport: no page scrolling.
+      window.scrollTo({top: 0, behavior: "instant"});
       if (viewId === "teamView") renderTeam();
     }
 
@@ -2449,7 +2874,7 @@
       container.innerHTML = statDefs.map((stat, index) => `
         <div class="stat ${index === activeIndex ? "rolling-flash" : ""}">
           <span class="stat-emoji">${stat.emoji}</span>
-          <span class="stat-value">${values[index] ?? "--"}</span>
+          <span class="stat-value ${values[index] >= 90 ? "elite-stat" : ""}">${values[index] ?? "--"}</span>
           <span class="stat-name">${stat.label}</span>
         </div>
       `).join("");
@@ -2583,16 +3008,22 @@
       $("stepList").innerHTML = steps.map((step, index) => `
         <div class="step-row ${index === activeIndex ? "active" : ""} ${results[index] !== undefined ? "done" : ""}">
           <div class="step-icon">${step.icon}</div>
-          <div class="step-name">${step.name}</div>
-          <div class="step-result">${results[index] ?? "—"}</div>
+          <div class="step-name"><span class="step-index">${String(index + 1).padStart(2, "0")}</span>${step.name}</div>
+          <div class="step-result ${typeof results[index] === "number" && results[index] >= 90 ? "elite-result" : ""}">${results[index] ?? "—"}</div>
         </div>
       `).join("");
+      const completed = results.filter(result => result !== undefined).length;
+      $("revealProgressFill").style.width = `${completed / steps.length * 100}%`;
+      $("revealProgressText").textContent = `${String(completed).padStart(2, "0")} / 09`;
+      if (!rolling && !completed) $("stageStatus").textContent = "READY TO ROLL";
     }
 
     function resetMainCard() {
       currentRoll = null;
       clearRarityClasses($("mainCard"));
-      $("mainCard").classList.remove("golden-roll-active");
+      $("mainCard").classList.remove("golden-roll-active", "cosmic-roll-active");
+      document.body.classList.remove("cosmic-roll-running");
+      $("stageStatus").textContent = "READY TO ROLL";
       $("overallDisplay").textContent = "--";
       setPositionText($("positionDisplay"), ["---"]);
       $("rarityDisplay").textContent = "Unrolled";
@@ -2628,23 +3059,21 @@
       // Every full card roll adds +0.1 base luck.
       state.luckMultiplier = roundLuck((state.luckMultiplier || 1) + 0.1);
 
-      // After seven normal rolls, the next roll becomes Golden and temporarily
-      // multiplies the current base luck by 4.75.
-      const isGoldenRoll = (state.rollsSinceGolden || 0) >= 7;
-      const rollLuck = roundLuck(
-        state.luckMultiplier * (isGoldenRoll ? 4.75 : 1)
-      );
-
-      if (isGoldenRoll) {
-        state.rollsSinceGolden = 0;
-      } else {
-        state.rollsSinceGolden = (state.rollsSinceGolden || 0) + 1;
-      }
+      // Special draw schedule: every 8th draw is Golden, every 100th is Cosmic.
+      // If both coincide (e.g. roll 200), Cosmic takes priority (15×, not stacked).
+      state.totalRolls = (Number.isSafeInteger(state.totalRolls) ? state.totalRolls : 0) + 1;
+      const isCosmicRoll = state.totalRolls % 100 === 0;
+      const goldenDue = (state.rollsSinceGolden || 0) >= 7;
+      const isGoldenRoll = goldenDue && !isCosmicRoll;
+      const rollLuck = roundLuck(state.luckMultiplier * (isCosmicRoll ? 15 : isGoldenRoll ? 4.75 : 1));
+      state.rollsSinceGolden = goldenDue ? 0 : (state.rollsSinceGolden || 0) + 1;
 
       saveState();
-      updateLuckDisplay(rollLuck, isGoldenRoll);
+      updateLuckDisplay(rollLuck, isGoldenRoll, isCosmicRoll);
       $("mainCard").classList.toggle("golden-roll-active", isGoldenRoll);
-      playSfx(isGoldenRoll ? "golden" : "roll");
+      $("mainCard").classList.toggle("cosmic-roll-active", isCosmicRoll);
+      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW · 15×" : isGoldenRoll ? "✧ GOLDEN DRAW · 4.75×" : `ROLL ${String(state.totalRolls).padStart(3, "0")} IN PROGRESS`;
+      playSfx(isCosmicRoll ? "cosmic-roll" : isGoldenRoll ? "golden" : "roll");
 
       $("rollButton").disabled = true;
       $("rerollButton").classList.add("hidden");
@@ -2753,7 +3182,7 @@
         state.luckMultiplier = Math.max(1, roundLuck(state.luckMultiplier));
       }
       saveState();
-      updateLuckDisplay(rollLuck, isGoldenRoll);
+      updateLuckDisplay(rollLuck, isGoldenRoll, isCosmicRoll);
 
       await sleep(ROLL_STEP_DELAY);
 
@@ -2780,17 +3209,24 @@
         overall,
         rarity,
         rollLuck,
-        isGoldenRoll
+        isGoldenRoll,
+        isCosmicRoll
       };
 
       rolling = false;
+      document.body.classList.remove("cosmic-roll-running");
+      // Return the HUD to the actual banked base luck and next scheduled draw.
+      updateLuckDisplay();
+      $("stageStatus").textContent = isCosmicRoll ? "✦ COSMIC DRAW COMPLETE" : isGoldenRoll ? "✧ GOLDEN DRAW COMPLETE" : "REVEAL COMPLETE";
       $("rollButton").classList.add("hidden");
       $("rerollButton").classList.remove("hidden");
       $("customizeButton").classList.remove("hidden");
-      toast(`${rarity} ${overall} ${formatPositions(playablePositions)} rolled!`);
+      toast(`${isCosmicRoll ? "✦ COSMIC ROLL! · " : ""}${rarity} ${overall} ${formatPositions(playablePositions)} rolled!`);
       } catch (error) {
         console.error("Card roll failed:", error);
         rolling = false;
+        document.body.classList.remove("cosmic-roll-running");
+        $("stageStatus").textContent = "ROLL INTERRUPTED";
         $("rollButton").disabled = false;
         $("rollButton").classList.remove("hidden");
         $("rerollButton").classList.add("hidden");
@@ -3515,6 +3951,7 @@
         club: [],
         luckMultiplier: 1,
         rollsSinceGolden: 0,
+        totalRolls: 0,
         squad: { formation: "4-3-3", starters: {}, subs: [null, null, null, null] }
       };
       selectedPlayerId = null;
@@ -3556,7 +3993,7 @@
     });
 
     function downloadBackup() {
-      const backup = { format: "rng-football-card-maker", version: 2, exportedAt: new Date().toISOString(), save: state };
+      const backup = { format: "rng-football-card-maker", version: 3, exportedAt: new Date().toISOString(), save: state };
       const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -3651,6 +4088,7 @@
           club,
           luckMultiplier: Number.isFinite(backup.luckMultiplier) ? Math.max(1, Math.min(1000, roundLuck(backup.luckMultiplier))) : 1,
           rollsSinceGolden: Number.isInteger(backup.rollsSinceGolden) ? Math.max(0, Math.min(7, backup.rollsSinceGolden)) : 0,
+          totalRolls: Number.isSafeInteger(backup.totalRolls) && backup.totalRolls >= 0 ? backup.totalRolls : 0,
           squad: { formation, starters, subs }
         };
         selectedPlayerId = null;
