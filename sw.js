@@ -1,5 +1,5 @@
-/* RNG Football offline shell v15: no third-party requests or save-data changes. */
-const CACHE_NAME = 'rng-football-offline-v15';
+/* RNG Football offline shell v16: no third-party requests or save-data changes. */
+const CACHE_NAME = 'rng-football-offline-v16';
 const APP_PAGE = new URL('./index.html', self.registration.scope).href;
 const ASSETS = [
   './index.html',
